@@ -1,13 +1,11 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Html, Head, Main, NextScript } from "next/document";
+import { Head, Html, Main, NextScript } from 'next/document';
 
 export default function Document() {
-
-    return (
+  return (
     <Html lang="fr">
       <Head />
       <body>
-      <Main />
+        <Main />
         <NextScript />
       </body>
     </Html>

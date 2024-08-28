@@ -1,7 +1,12 @@
 import { BodyType, ErrorType } from '@/src/api/customInstance';
-import { ErrorResponseApiDTO, SignInUserRequestApiDTO, SignInUserResponseApiDTO } from '@/src/api/generated/Api.schemas';
+import {
+  ErrorResponseApiDTO,
+  SignInUserRequestApiDTO,
+  SignInUserResponseApiDTO,
+} from '@/src/api/generated/Api.schemas';
 import { useSignInUser } from '@/src/api/generated/default';
 import { UseMutateFunction } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 import React, { createContext, ReactNode, useContext } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 
@@ -28,18 +33,23 @@ interface AuthContextProps {
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [authState, setAuthState, removeAuthState] = useLocalStorage<AuthState | null>('user_information', null);
+  const [authState, setAuthState, removeAuthState] =
+    useLocalStorage<AuthState | null>('user_information', null);
+
+  const router = useRouter();
+
   const {
     mutate: handleLogin,
     isPending: isSigningIn,
     error: signInError,
   } = useSignInUser({
     mutation: {
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
         setAuthState({
           accessToken: data.accessToken,
           refreshToken: data.refreshToken,
         });
+        await router.push('/');
       },
       onError: () => removeAuthState(),
     },
