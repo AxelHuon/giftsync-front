@@ -1,14 +1,14 @@
 'use client';
 
-import { Button } from '@/components/atoms/Buttons/ClassicButton/button';
+import {Button} from '@/components/atoms/Buttons/ClassicButton/Button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/atoms/Menu/DropDownMenu/dropdown-menu';
-import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
-import { useTheme } from 'next-themes';
+import {MoonIcon, SunIcon} from '@radix-ui/react-icons';
+import {useTheme} from 'next-themes';
 import * as React from 'react';
 
 export function ToggleButtonMode() {
