@@ -7,7 +7,7 @@ import { useTheme } from 'next-themes';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-const Signing: React.FC = () => {
+const Signin: React.FC = () => {
   const { theme } = useTheme();
   const router = useRouter();
   const { authState } = useAuthContext();
@@ -103,4 +103,4 @@ const Signing: React.FC = () => {
   );
 };
 
-export default Signing;
+export default Signin;
