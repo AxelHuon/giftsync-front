@@ -21,6 +21,8 @@ module.exports = {
         laptop: '1000px',
         laptopM: '1200px',
         laptopL: '1440px',
+        laptopXL: '1600px',
+        desktop: '1800px',
       },
     },
     extend: {
@@ -127,6 +129,7 @@ module.exports = {
           900: 'hsl(var(--destructive-900))',
         },
         neutral: {
+          always25: 'hsl(var(--neutral-always-25))',
           25: 'hsl(var(--neutral-25))',
           50: 'hsl(var(--neutral-50))',
           100: 'hsl(var(--neutral-100))',

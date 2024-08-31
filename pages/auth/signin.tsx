@@ -1,10 +1,9 @@
-import { Button } from '@/components/atoms/Buttons/ClassicButton/Button';
 import Logo from '@/components/atoms/Logo/Logo';
-import { LoginForm } from '@/components/organisms/Form/LoginForm/LoginForm';
-import { useAuthContext } from '@/context/AuthProvider';
+import {LoginForm} from '@/components/organisms/Form/LoginForm/LoginForm';
+import {useAuthContext} from '@/context/AuthProvider';
 import Colors from '@/utils/styles/colors';
-import { useTheme } from 'next-themes';
-import { useRouter } from 'next/router';
+import {useTheme} from 'next-themes';
+import {useRouter} from 'next/router';
 import React from 'react';
 
 const Signin: React.FC = () => {
@@ -19,12 +18,12 @@ const Signin: React.FC = () => {
   return (
     <section
       className={
-        'flex container flex-col laptop:flex-row gap-3 h-screen py-[80px] justify-between laptop:p-0'
+        'flex container flex-col laptop:flex-row h-screen justify-between py-[20px] mobileXL:py-[40px] laptop:py-[80px]'
       }
     >
-      <aside className={'w-full flex flex-col justify-center gap-[50px]'}>
+      <aside className={'w-full gap-[30px] flex flex-col laptop:w-1/2 justify-center laptop:pr-[40px]'}>
         <div
-          className={'flex justify-center laptop:absolute laptop:top-[80px]'}
+          className={'flex justify-center laptop:block laptop:absolute laptop:top-[80px]'}
         >
           <Logo
             width={200}
@@ -36,11 +35,11 @@ const Signin: React.FC = () => {
             colorIcon={Colors.Primary['900'].hex}
           />
         </div>
-        <div className={'laptop:w-1/2 w-full flex flex-col  gap-[50px]'}>
-          <div className={'flex-col flex gap-[20px] laptop:w-3/4'}>
+        <div className={'flex flex-col gap-[30px]'}>
+          <div className={'flex flex-col gap-2'}>
             <h2
               className={
-                'text-center laptop:text-left text-5xl font-variable font-600 text-neutral-900 '
+                'text-center laptop:text-left text-4xl laptop:text-5xl font-variable font-600 text-neutral-900 '
               }
             >
               Content de te revoir 👋
@@ -53,24 +52,14 @@ const Signin: React.FC = () => {
               Rentre t’es informations de connexion ci-dessous !
             </p>
           </div>
-          <div className={'flex flex-col gap-[20px] lg:w-3/4'}>
+          <div className={'laptop:max-w-xl'}>
             <LoginForm />
-            <p className={'text-sm font-variable font-500'}>
-              Vous n'avez pas encore de compte ?{'  '}
-              <Button
-                className={'p-0 h-fit font-variable font-600'}
-                onClick={() => router.push('/auth/signup')}
-                variant={'link'}
-              >
-                Inscrivez-vous
-              </Button>
-            </p>
           </div>
         </div>
       </aside>
       <aside
         className={
-          'laptop:w-1/2 w-full laptop:flex laptop:absolute laptop:right-0 laptop:p-2 laptop:h-full'
+          'laptop:w-1/2 top-0 w-full laptop:flex laptop:absolute laptop:right-0 laptop:p-[17px] laptop:h-full'
         }
       >
         <div
@@ -90,7 +79,7 @@ const Signin: React.FC = () => {
             }
           >
             <p
-              className={`font-variable text-lg text-neutral-900 laptop:text-neutral-${theme === 'light' ? '25' : '900'}`}
+              className={`font-variable text-sm laptop:text-lg text-neutral-900 laptop:text-neutral-always25`}
             >
               Transformez la magie de Noël en un jeu d'enfant : découvrez ce que
               vos proches désirent et organisez vos cadeaux en un clin d'œil !
