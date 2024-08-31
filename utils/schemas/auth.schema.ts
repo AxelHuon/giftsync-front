@@ -24,6 +24,9 @@ export const formRegisterSchema = z
       .string()
       .min(2, 'Le nom doit faire plus de 2 caractères')
       .max(50, 'Le nom doit faire moins de 50 caractères'),
+    birthDay: z.date({
+      required_error: 'La date de naissance est requise',
+    }),
     email: z
       .string()
       .email("Le format de l'adresse mail n'est pas bon")
@@ -38,10 +41,7 @@ export const formRegisterSchema = z
       .min(4, 'Le mot de passe doit faire plus de 4 caractères')
       .max(50, 'Le mot de passe doit faire moins de 50 caractères'),
   })
-  .refine(
-    (values) => values.password === values.confirmPassword,
-    {
-      message: 'Les mots de passe doivent correspondre',
-      path: ['confirmPassword'],
-    }
-  );
+  .refine((values) => values.password === values.confirmPassword, {
+    message: 'Les mots de passe doivent correspondre',
+    path: ['confirmPassword'],
+  });

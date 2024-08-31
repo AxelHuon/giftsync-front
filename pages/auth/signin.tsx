@@ -21,9 +21,9 @@ const Signin: React.FC = () => {
         'flex container flex-col laptop:flex-row h-screen justify-between py-[20px] mobileXL:py-[40px] laptop:py-[80px]'
       }
     >
-      <aside className={'w-full gap-[30px] flex flex-col laptop:w-1/2 justify-center laptop:pr-[40px]'}>
+      <aside className={'w-full gap-[15px] flex flex-col laptop:w-1/2 justify-center laptop:pr-[40px] '}>
         <div
-          className={'flex justify-center laptop:block laptop:absolute laptop:top-[80px]'}
+          className={'flex justify-center'}
         >
           <Logo
             width={200}
@@ -35,8 +35,8 @@ const Signin: React.FC = () => {
             colorIcon={Colors.Primary['900'].hex}
           />
         </div>
-        <div className={'flex flex-col gap-[30px]'}>
-          <div className={'flex flex-col gap-2'}>
+        <div className={'flex flex-col gap-[30px] items-center'}>
+          <div className={'flex flex-col gap-2 items-center'}>
             <h2
               className={
                 'text-center laptop:text-left text-4xl laptop:text-5xl font-variable font-600 text-neutral-900 '
@@ -52,7 +52,7 @@ const Signin: React.FC = () => {
               Rentre t’es informations de connexion ci-dessous !
             </p>
           </div>
-          <div className={'laptop:max-w-xl'}>
+          <div className={'w-full laptop:max-w-[550px]'}>
             <LoginForm />
           </div>
         </div>

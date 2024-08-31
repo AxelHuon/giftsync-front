@@ -69,13 +69,15 @@ export function LoginForm() {
                     )}
                 </FormMessage>
             )}
+            <div className={"flex justify-center"}>
             <Link href={'/auth/forgot-password'} className={buttonVariants({variant: "link"}) + " w-fit !p-0 h-fit"}>Mot
                 de passe oublié ?</Link>
+            </div>
             <Button className={'w-full'} disabled={isSigningIn} type="submit">
                 {isSigningIn && <ReloadIcon className="mr-2 h-4 w-4 animate-spin"/>}
                 Connexion
             </Button>
-            <p className={'text-sm font-variable font-500'}>
+            <p className={'text-sm font-variable font-500 text-center'}>
                 Vous n'avez pas encore de compte ?{'  '}
                 <Link href={'/auth/forgot-password'}
                       className={buttonVariants({variant: "link"}) + "  w-fit !p-0 h-fit"}>Inscris-toi</Link>
