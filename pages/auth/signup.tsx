@@ -1,5 +1,6 @@
 import { Button } from '@/components/atoms/Buttons/ClassicButton/Button';
 import Logo from '@/components/atoms/Logo/Logo';
+import { LoginForm } from '@/components/organisms/Form/LoginForm/LoginForm';
 import { RegisterForm } from '@/components/organisms/Form/RegisterForm/RegisterForm';
 import { useAuthContext } from '@/context/AuthProvider';
 import { useTheme } from 'next-themes';
@@ -20,10 +21,10 @@ const Signing: React.FC = () => {
       <aside className={'lg:w-1/2 w-full flex flex-col  gap-[50px]'}>
         <div className={'flex-col flex gap-[7px] lg:w-3/4'}>
           <h2 className={'text-5xl font-variable font-600 text-neutral-900 '}>
-            On commence une histoire ensemble 🤙
+            Content de te revoir 👋
           </h2>
           <p className={'font-variable font-400 text-neutral-700'}>
-            Rentre t’es informations d'inscription ci-dessous !
+            Rentre t’es informations de connexion ci-dessous !
           </p>
         </div>
         <div className={'flex flex-col gap-[20px] lg:w-3/4'}>

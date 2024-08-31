@@ -1,10 +1,12 @@
 import { BodyType, ErrorType } from '@/src/api/customInstance';
 import {
   ErrorResponseApiDTO,
+  RegisterUserRequestApiDTO,
+  RegisterUserResponseApiDTO,
   SignInUserRequestApiDTO,
   SignInUserResponseApiDTO,
 } from '@/src/api/generated/Api.schemas';
-import { useSignInUser } from '@/src/api/generated/default';
+import { useRegisterUser, useSignInUser } from '@/src/api/generated/default';
 import { UseMutateFunction } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { createContext, ReactNode, useContext } from 'react';
@@ -25,9 +27,19 @@ interface AuthContextProps {
     },
     unknown
   >;
+  handleRegister: UseMutateFunction<
+    RegisterUserResponseApiDTO,
+    ErrorType<ErrorResponseApiDTO>,
+    {
+      data: BodyType<RegisterUserRequestApiDTO>;
+    },
+    unknown
+  >;
   handleLogout: () => void;
   isSigningIn: boolean;
+  isRegistering: boolean;
   signInError: ErrorType<ErrorResponseApiDTO> | null;
+  registerError: ErrorType<ErrorResponseApiDTO> | null;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -55,6 +67,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     },
   });
 
+  const {
+    mutate: handleRegister,
+    isPending: isRegistering,
+    error: registerError,
+  } = useRegisterUser({
+    mutation: {
+      onSuccess: async (data, variables, context) => {
+        handleLogin({
+          data: {
+            email: variables.data.email,
+            password: variables.data.password,
+          },
+        });
+      },
+      onError: (error) => console.log(error),
+    },
+  });
+
   const handleLogout = () => {
     setAuthState(null);
   };
@@ -62,6 +92,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   return (
     <AuthContext.Provider
       value={{
+        handleRegister,
+        isRegistering,
+        registerError,
         authState,
         handleLogin,
         handleLogout,

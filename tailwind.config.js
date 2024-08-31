@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+const { size } = require('./utils/styles/breakpoints');
 module.exports = {
   darkMode: ['jit'],
   content: [
@@ -10,18 +11,32 @@ module.exports = {
   prefix: '',
   theme: {
     container: {
-      padding: '3rem',
       center: true,
+      padding: {
+        DEFAULT: '27px',
+        tablet: '0px',
+      },
       screens: {
-        sm: '100%',
-        md: '990px',
-        lg: '1100px',
-        xl: '1300px',
-        '2xl': '1560px',
-        '3xl': '1800px',
+        tablet: '95%',
+        laptop: '1000px',
+        laptopM: '1200px',
+        laptopL: '1440px',
       },
     },
     extend: {
+      screens: {
+        mobileS: size.mobileS,
+        mobileM: size.mobileM,
+        mobileL: size.mobileL,
+        mobileXL: size.mobileXL,
+        tablet: size.tablet,
+        tabletL: size.tabletL,
+        laptop: size.laptop,
+        laptopM: size.laptopM,
+        laptopL: size.laptopL,
+        laptopXL: size.laptopXL,
+        desktop: size.desktop,
+      },
       fontFamily: {
         variable: ['General Sans', 'sans-serif'],
       },

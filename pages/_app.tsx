@@ -26,11 +26,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 className={cn('h-[100vh] bg-background font-sans antialiased')}
               >
                 <Component {...pageProps} />
-                <div
-                  className={
-                    'fixed left-[50%] -translate-x-1/2 container mx-auto bottom-[5%]'
-                  }
-                >
+                <div className={'fixed container mx-auto bottom-[5%]'}>
                   <ToggleButtonMode />
                 </div>
               </main>
