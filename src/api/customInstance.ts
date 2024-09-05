@@ -1,6 +1,6 @@
 import { AuthState } from '@/context/AuthProvider';
 import { ErrorResponseApiDTO } from '@/src/api/generated/Api.schemas';
-import { refreshToken } from '@/src/api/generated/default';
+import { refreshToken } from '@/src/api/generated/auth';
 import Axios, {
   AxiosError,
   AxiosRequestConfig,

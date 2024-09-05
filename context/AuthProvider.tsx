@@ -6,7 +6,7 @@ import {
   SignInUserRequestApiDTO,
   SignInUserResponseApiDTO,
 } from '@/src/api/generated/Api.schemas';
-import { useRegisterUser, useSignInUser } from '@/src/api/generated/default';
+import { useRegisterUser, useSignInUser } from '@/src/api/generated/auth';
 import { UseMutateFunction } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { createContext, ReactNode, useContext } from 'react';

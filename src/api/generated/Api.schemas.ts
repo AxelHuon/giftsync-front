@@ -4,21 +4,21 @@
  * gift-sync-back-end
  * OpenAPI spec version: 1.0.0
  */
-export interface ForgotPasswordResetPasswordRequestApiDTO {
+export interface ResetPasswordRequestApiDTO {
   newPassword: string;
   token: string;
 }
 
-export interface ForgotPasswordResetPasswordResponseApiDTO {
+export interface ResetPasswordResponseApiDTO {
   code: string;
   message: string;
 }
 
-export interface ResetPasswordRequestApiDTO {
+export interface ForgotPasswordRequestApiDTO {
   email: string;
 }
 
-export interface ResetPasswordResponseApiDTO {
+export interface ForgotPasswordResponseApiDTO {
   code: string;
   message: string;
 }
@@ -39,6 +39,7 @@ export interface SignInUserRequestApiDTO {
 
 export interface SignInUserResponseApiDTO {
   accessToken: string;
+  birthDay: string;
   email: string;
   firstName: string;
   id: string;
@@ -46,13 +47,8 @@ export interface SignInUserResponseApiDTO {
   refreshToken: string;
 }
 
-export interface ErrorResponseApiDTO {
-  code: string;
-  message: string;
-}
-
 export interface RegisterUserRequestApiDTO {
-  birthDay?: string;
+  birthDay: string;
   email: string;
   firstName: string;
   lastName: string;
@@ -62,4 +58,19 @@ export interface RegisterUserRequestApiDTO {
 export interface RegisterUserResponseApiDTO {
   code: string;
   message: string;
+}
+
+export interface ErrorResponseApiDTO {
+  code: string;
+  message: string;
+}
+
+export interface UserClassGetMeResponseApiDTO {
+  birthDay: string;
+  createdAt?: string;
+  email: string;
+  firstName: string;
+  id: string;
+  lastName: string;
+  updatedAt?: string;
 }

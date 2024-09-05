@@ -5,12 +5,7 @@ import {
   buttonVariants,
 } from '@/components/atoms/Buttons/ClassicButton/Button';
 import { Input } from '@/components/atoms/Input/input';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/atoms/Popover/Popover';
-import { Calendar } from '@/components/moleculs/Calendar/Calendar';
+import { DatePicker } from '@/components/moleculs/DatePicker/DatePicker';
 import {
   Form,
   FormControl,
@@ -20,13 +15,9 @@ import {
   FormMessage,
 } from '@/components/organisms/Form/Form';
 import { useAuthContext } from '@/context/AuthProvider';
-
-import { cn } from '@/lib/utils';
 import { formRegisterSchema } from '@/utils/schemas/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CalendarIcon, ReloadIcon } from '@radix-ui/react-icons';
-import { format } from 'date-fns';
-import { fr } from 'date-fns/locale';
+import { ReloadIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import React from 'react';
 import { useForm } from 'react-hook-form';
@@ -47,10 +38,12 @@ export function RegisterForm() {
   });
 
   const onSubmit = async (values: z.infer<typeof formRegisterSchema>) => {
+    console.log(values);
     handleRegister({
       data: {
         email: values.email,
         password: values.password,
+        birthDay: values.birthDay.toISOString(),
         firstName: values.firstName,
         lastName: values.lastName,
       },
@@ -101,38 +94,7 @@ export function RegisterForm() {
           render={({ field }) => (
             <FormItem className="flex flex-col w-full">
               <FormLabel>Date of birth</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={'outline'}
-                      className={cn(
-                        'w-full pl-3 text-left font-normal',
-                        !field.value && 'text-muted-foreground',
-                      )}
-                    >
-                      {field.value ? (
-                        format(field.value, 'd MMMM yyyy', { locale: fr })
-                      ) : (
-                        <span>Choisis une date</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    showOutsideDays={false}
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) =>
-                      date > new Date() || date < new Date('1900-01-01')
-                    }
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
+              <DatePicker date={field.value} setDate={field.onChange} />
               <FormMessage />
             </FormItem>
           )}

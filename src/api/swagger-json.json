@@ -7,6 +7,56 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
+			"UserClassGetMeResponse": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"birthDay": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string"
+					},
+					"updatedAt": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"email",
+					"firstName",
+					"lastName",
+					"birthDay"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ErrorResponse": {
+				"properties": {
+					"message": {
+						"type": "string"
+					},
+					"code": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"message",
+					"code"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"RegisterUserResponse": {
 				"properties": {
 					"message": {
@@ -25,13 +75,13 @@
 			},
 			"RegisterUserRequest": {
 				"properties": {
+					"email": {
+						"type": "string"
+					},
 					"firstName": {
 						"type": "string"
 					},
 					"lastName": {
-						"type": "string"
-					},
-					"email": {
 						"type": "string"
 					},
 					"password": {
@@ -42,26 +92,11 @@
 					}
 				},
 				"required": [
+					"email",
 					"firstName",
 					"lastName",
-					"email",
-					"password"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ErrorResponse": {
-				"properties": {
-					"message": {
-						"type": "string"
-					},
-					"code": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"message",
-					"code"
+					"password",
+					"birthDay"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -83,6 +118,9 @@
 					"lastName": {
 						"type": "string"
 					},
+					"birthDay": {
+						"type": "string"
+					},
 					"email": {
 						"type": "string"
 					}
@@ -93,6 +131,7 @@
 					"refreshToken",
 					"firstName",
 					"lastName",
+					"birthDay",
 					"email"
 				],
 				"type": "object",
@@ -142,6 +181,34 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"ForgotPasswordResponse": {
+				"properties": {
+					"message": {
+						"type": "string"
+					},
+					"code": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"message",
+					"code"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ForgotPasswordRequest": {
+				"properties": {
+					"email": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"ResetPasswordResponse": {
 				"properties": {
 					"message": {
@@ -159,34 +226,6 @@
 				"additionalProperties": false
 			},
 			"ResetPasswordRequest": {
-				"properties": {
-					"email": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"email"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ForgotPasswordResetPasswordResponse": {
-				"properties": {
-					"message": {
-						"type": "string"
-					},
-					"code": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"message",
-					"code"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ForgotPasswordResetPasswordRequest": {
 				"properties": {
 					"token": {
 						"type": "string"
@@ -214,6 +253,58 @@
 		"contact": {}
 	},
 	"paths": {
+		"/user/get-me": {
+			"get": {
+				"operationId": "GetMe",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserClassGetMeResponse"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"User"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
 		"/auth/signup": {
 			"post": {
 				"operationId": "RegisterUser",
@@ -238,6 +329,16 @@
 							}
 						}
 					},
+					"422": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
 					"500": {
 						"description": "",
 						"content": {
@@ -249,6 +350,9 @@
 						}
 					}
 				},
+				"tags": [
+					"Auth"
+				],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -308,6 +412,9 @@
 						}
 					}
 				},
+				"tags": [
+					"Auth"
+				],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -367,6 +474,9 @@
 						}
 					}
 				},
+				"tags": [
+					"Auth"
+				],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -381,9 +491,61 @@
 				}
 			}
 		},
-		"/auth/request-forgot-password": {
+		"/auth/forgot-password": {
 			"post": {
 				"operationId": "RequetsForgotPassword",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ForgotPasswordResponse"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Auth"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ForgotPasswordRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/reset-password": {
+			"put": {
+				"operationId": "ForgotPassword",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -416,6 +578,9 @@
 						}
 					}
 				},
+				"tags": [
+					"Auth"
+				],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -424,55 +589,6 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/ResetPasswordRequest"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/auth/forgot-password": {
-			"put": {
-				"operationId": "ForgotPassword",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ForgotPasswordResetPasswordResponse"
-								}
-							}
-						}
-					},
-					"403": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/ForgotPasswordResetPasswordRequest"
 							}
 						}
 					}
