@@ -117,7 +117,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   } = useResetPassword({
     mutation: {
       onSuccess: () => {
-        router?.push('/auth/signin');
+        router?.push('/');
       },
       onError: (error) => {
         console.log(error);
