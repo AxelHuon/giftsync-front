@@ -1,9 +1,9 @@
 import Logo from '@/components/atoms/Logo/Logo';
-import {LoginForm} from '@/components/organisms/Form/LoginForm/LoginForm';
-import {useAuthContext} from '@/context/AuthProvider';
+import { LoginForm } from '@/components/organisms/Form/LoginForm/LoginForm';
+import { useAuthContext } from '@/hooks/useAuth';
 import Colors from '@/utils/styles/colors';
-import {useTheme} from 'next-themes';
-import {useRouter} from 'next/router';
+import { useTheme } from 'next-themes';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 const Signin: React.FC = () => {
@@ -21,10 +21,12 @@ const Signin: React.FC = () => {
         'flex container flex-col laptop:flex-row h-screen justify-between py-[20px] mobileXL:py-[40px] laptop:py-[80px]'
       }
     >
-      <aside className={'w-full gap-[15px] flex flex-col laptop:w-1/2 justify-center laptop:pr-[40px] '}>
-        <div
-          className={'flex justify-center'}
-        >
+      <aside
+        className={
+          'w-full gap-[15px] flex flex-col laptop:w-1/2 justify-center laptop:pr-[40px] '
+        }
+      >
+        <div className={'flex justify-center'}>
           <Logo
             width={200}
             colorText={
@@ -36,18 +38,16 @@ const Signin: React.FC = () => {
           />
         </div>
         <div className={'flex flex-col gap-[30px] items-center'}>
-          <div className={'flex flex-col gap-2 items-center'}>
+          <div className={'flex flex-col gap-[20px] items-center'}>
             <h2
               className={
-                'text-center laptop:text-left text-4xl laptop:text-5xl font-variable font-600 text-neutral-900 '
+                'text-center  text-4xl laptop:text-5xl font-variable font-600 text-neutral-900 '
               }
             >
               Content de te revoir 👋
             </h2>
             <p
-              className={
-                'font-variable text-center laptop:text-left font-400 text-neutral-700'
-              }
+              className={'font-variable text-center  font-400 text-neutral-700'}
             >
               Rentre t’es informations de connexion ci-dessous !
             </p>

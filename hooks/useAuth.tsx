@@ -1,24 +1,28 @@
 import { BodyType, ErrorType } from '@/src/api/customInstance';
 import {
   ErrorResponseApiDTO,
+  ForgotPasswordRequestApiDTO,
+  ForgotPasswordResponseApiDTO,
   RegisterUserRequestApiDTO,
   RegisterUserResponseApiDTO,
+  ResetPasswordRequestApiDTO,
+  ResetPasswordResponseApiDTO,
   SignInUserRequestApiDTO,
   SignInUserResponseApiDTO,
 } from '@/src/api/generated/Api.schemas';
-import { useRegisterUser, useSignInUser } from '@/src/api/generated/auth';
+import {
+  useForgotPassword,
+  useRegisterUser,
+  useResetPassword,
+  useSignInUser,
+} from '@/src/api/generated/auth';
 import { UseMutateFunction } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { createContext, ReactNode, useContext } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 
-export interface AuthState {
-  accessToken: string | null;
-  refreshToken: string | null;
-}
-
 interface AuthContextProps {
-  authState: AuthState | null;
+  authState: SignInUserResponseApiDTO | null;
   handleLogin: UseMutateFunction<
     SignInUserResponseApiDTO,
     ErrorType<ErrorResponseApiDTO>,
@@ -35,6 +39,24 @@ interface AuthContextProps {
     },
     unknown
   >;
+  handleForgotPassword: UseMutateFunction<
+    ForgotPasswordResponseApiDTO,
+    ErrorType<ErrorResponseApiDTO>,
+    { data: BodyType<ForgotPasswordRequestApiDTO> },
+    unknown
+  >;
+  handleResetPassword: UseMutateFunction<
+    ResetPasswordResponseApiDTO,
+    ErrorType<ErrorResponseApiDTO>,
+    { data: BodyType<ResetPasswordRequestApiDTO> },
+    unknown
+  >;
+  isPendingResetPassword: boolean;
+  resetPasswordError: ErrorType<ErrorResponseApiDTO> | null;
+  isSuccessResetPassword: boolean;
+  isPendingForgotPassword: boolean;
+  forgotPasswordError: ErrorType<ErrorResponseApiDTO> | null;
+  isSuccessForgotPassword: boolean;
   handleLogout: () => void;
   isSigningIn: boolean;
   isRegistering: boolean;
@@ -46,7 +68,7 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [authState, setAuthState, removeAuthState] =
-    useLocalStorage<AuthState | null>('user_information', null);
+    useLocalStorage<SignInUserResponseApiDTO | null>('user_information', null);
 
   const router = useRouter();
 
@@ -57,13 +79,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   } = useSignInUser({
     mutation: {
       onSuccess: async (data) => {
-        setAuthState({
-          accessToken: data.accessToken,
-          refreshToken: data.refreshToken,
-        });
+        setAuthState(data);
         await router.push('/');
       },
-      onError: () => removeAuthState(),
     },
   });
 
@@ -81,7 +99,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           },
         });
       },
-      onError: (error) => console.log(error),
+    },
+  });
+
+  const {
+    mutate: handleForgotPassword,
+    isPending: isPendingForgotPassword,
+    error: forgotPasswordError,
+    isSuccess: isSuccessForgotPassword,
+  } = useForgotPassword();
+
+  const {
+    mutate: handleResetPassword,
+    isPending: isPendingResetPassword,
+    error: resetPasswordError,
+    isSuccess: isSuccessResetPassword,
+  } = useResetPassword({
+    mutation: {
+      onSuccess: () => {
+        router?.push('/auth/signin');
+      },
+      onError: (error) => {
+        console.log(error);
+      },
     },
   });
 
@@ -92,6 +132,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   return (
     <AuthContext.Provider
       value={{
+        isPendingResetPassword,
+        resetPasswordError,
+        isSuccessResetPassword,
+        handleResetPassword,
+        handleForgotPassword,
+        isPendingForgotPassword,
+        forgotPasswordError,
+        isSuccessForgotPassword,
         handleRegister,
         isRegistering,
         registerError,
@@ -110,7 +158,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 export const useAuthContext = (): AuthContextProps => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuthContext must be used within an AuthProvider');
+    throw new Error('useAuthContext must be used within an UseAuth');
   }
   return context;
 };

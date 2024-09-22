@@ -7,6 +7,10 @@ export const formLoginSchema = z.object({
   password: z.string(),
 });
 
+export const formForgotPassword = z.object({
+  email: z.string().email("Le format de l'adresse mail n'est pas bon"),
+});
+
 export const formRegisterSchema = z
   .object({
     email: z.string().email('Invalid email format'),
@@ -27,9 +31,26 @@ export const formRegisterSchema = z
         'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
       ),
     confirmPassword: z.string(),
-    birthDay: z.date({
+    dateOfBirth: z.date({
       required_error: 'La date de naissance est requise',
     }),
+  })
+  .refine((values) => values.password === values.confirmPassword, {
+    message: 'Les mots de passe doivent correspondre',
+    path: ['confirmPassword'],
+  });
+
+export const formResetPassword = z
+  .object({
+    password: z
+      .string()
+      .min(8, 'Password must be at least 8 characters long')
+      .max(50, 'Password must be at most 50 characters long')
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+        'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+      ),
+    confirmPassword: z.string(),
   })
   .refine((values) => values.password === values.confirmPassword, {
     message: 'Les mots de passe doivent correspondre',

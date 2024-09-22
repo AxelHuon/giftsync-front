@@ -1,4 +1,3 @@
-import { AuthState } from '@/context/AuthProvider';
 import { ErrorResponseApiDTO } from '@/src/api/generated/Api.schemas';
 import { refreshToken } from '@/src/api/generated/auth';
 import Axios, {
@@ -19,7 +18,10 @@ export const AXIOS_INSTANCE = Axios.create({
 });
 
 AXIOS_INSTANCE.interceptors.request.use((config: CustomAxiosRequestConfig) => {
-  const accessToken = localStorage.getItem('accessToken');
+  const userInformation = localStorage.getItem('user_information');
+  const accessToken = userInformation
+    ? JSON.parse(userInformation).accessToken
+    : null;
   if (accessToken) {
     config.headers['Authorization'] = `Bearer ${accessToken}`;
   }
@@ -31,6 +33,7 @@ AXIOS_INSTANCE.interceptors.request.use((config: CustomAxiosRequestConfig) => {
   if (apiKey) {
     config.headers['x-api-key'] = apiKey;
   }
+  console.log(config);
   return config;
 });
 
@@ -38,30 +41,34 @@ AXIOS_INSTANCE.interceptors.response.use(
   (response) => {
     return response;
   },
-  async (error: AxiosError) => {
+  async (error: AxiosError<ErrorResponseApiDTO>) => {
     const originalRequest = error.config as CustomAxiosRequestConfig;
 
     if (
       originalRequest &&
-      error.response?.status === 401 &&
+      error.response?.data?.code === 'token_expired' &&
       !originalRequest._retry
     ) {
       originalRequest._retry = true;
+      const userInformation = localStorage.getItem('user_information');
+      if (!userInformation) {
+        return Promise.reject(error);
+      }
+      const userInformationParsed = JSON.parse(userInformation);
 
-      const refreshTokenStorage = localStorage.getItem('refreshToken');
-
-      if (refreshTokenStorage) {
+      if (userInformationParsed.refreshToken && userInformationParsed.id) {
         try {
           const refreshResponse = await refreshToken({
-            refreshToken: refreshTokenStorage,
+            refreshToken: userInformationParsed.refreshToken,
           });
-          const authState: AuthState = {
-            accessToken: refreshResponse.accessToken,
-            refreshToken: refreshResponse.refreshToken,
-          };
+          console.log(refreshResponse);
           localStorage.setItem(
             'user_information',
-            JSON.parse(JSON.stringify(authState)),
+            JSON.stringify({
+              ...userInformationParsed,
+              accessToken: refreshResponse.accessToken,
+              refreshToken: refreshResponse.refreshToken,
+            }),
           );
           originalRequest.headers['Authorization'] =
             `Bearer ${refreshResponse.accessToken}`;
@@ -72,7 +79,7 @@ AXIOS_INSTANCE.interceptors.response.use(
         }
       }
     }
-
+    localStorage.removeItem('user_information');
     return Promise.reject(error);
   },
 );

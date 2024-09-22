@@ -247,7 +247,7 @@ export const useRefreshToken = <
 
   return useMutation(mutationOptions);
 };
-export const requetsForgotPassword = (
+export const forgotPassword = (
   forgotPasswordRequestApiDTO: BodyType<ForgotPasswordRequestApiDTO>,
   options?: SecondParameter<typeof customInstance>,
 ) => {
@@ -262,19 +262,19 @@ export const requetsForgotPassword = (
   );
 };
 
-export const getRequetsForgotPasswordMutationOptions = <
+export const getForgotPasswordMutationOptions = <
   TError = ErrorType<ErrorResponseApiDTO>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof requetsForgotPassword>>,
+    Awaited<ReturnType<typeof forgotPassword>>,
     TError,
     { data: BodyType<ForgotPasswordRequestApiDTO> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof requetsForgotPassword>>,
+  Awaited<ReturnType<typeof forgotPassword>>,
   TError,
   { data: BodyType<ForgotPasswordRequestApiDTO> },
   TContext
@@ -282,46 +282,45 @@ export const getRequetsForgotPasswordMutationOptions = <
   const { mutation: mutationOptions, request: requestOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof requetsForgotPassword>>,
+    Awaited<ReturnType<typeof forgotPassword>>,
     { data: BodyType<ForgotPasswordRequestApiDTO> }
   > = (props) => {
     const { data } = props ?? {};
 
-    return requetsForgotPassword(data, requestOptions);
+    return forgotPassword(data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type RequetsForgotPasswordMutationResult = NonNullable<
-  Awaited<ReturnType<typeof requetsForgotPassword>>
+export type ForgotPasswordMutationResult = NonNullable<
+  Awaited<ReturnType<typeof forgotPassword>>
 >;
-export type RequetsForgotPasswordMutationBody =
-  BodyType<ForgotPasswordRequestApiDTO>;
-export type RequetsForgotPasswordMutationError = ErrorType<ErrorResponseApiDTO>;
+export type ForgotPasswordMutationBody = BodyType<ForgotPasswordRequestApiDTO>;
+export type ForgotPasswordMutationError = ErrorType<ErrorResponseApiDTO>;
 
-export const useRequetsForgotPassword = <
+export const useForgotPassword = <
   TError = ErrorType<ErrorResponseApiDTO>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof requetsForgotPassword>>,
+    Awaited<ReturnType<typeof forgotPassword>>,
     TError,
     { data: BodyType<ForgotPasswordRequestApiDTO> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof requetsForgotPassword>>,
+  Awaited<ReturnType<typeof forgotPassword>>,
   TError,
   { data: BodyType<ForgotPasswordRequestApiDTO> },
   TContext
 > => {
-  const mutationOptions = getRequetsForgotPasswordMutationOptions(options);
+  const mutationOptions = getForgotPasswordMutationOptions(options);
 
   return useMutation(mutationOptions);
 };
-export const forgotPassword = (
+export const resetPassword = (
   resetPasswordRequestApiDTO: BodyType<ResetPasswordRequestApiDTO>,
   options?: SecondParameter<typeof customInstance>,
 ) => {
@@ -336,19 +335,19 @@ export const forgotPassword = (
   );
 };
 
-export const getForgotPasswordMutationOptions = <
+export const getResetPasswordMutationOptions = <
   TError = ErrorType<ErrorResponseApiDTO>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof forgotPassword>>,
+    Awaited<ReturnType<typeof resetPassword>>,
     TError,
     { data: BodyType<ResetPasswordRequestApiDTO> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof forgotPassword>>,
+  Awaited<ReturnType<typeof resetPassword>>,
   TError,
   { data: BodyType<ResetPasswordRequestApiDTO> },
   TContext
@@ -356,41 +355,41 @@ export const getForgotPasswordMutationOptions = <
   const { mutation: mutationOptions, request: requestOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof forgotPassword>>,
+    Awaited<ReturnType<typeof resetPassword>>,
     { data: BodyType<ResetPasswordRequestApiDTO> }
   > = (props) => {
     const { data } = props ?? {};
 
-    return forgotPassword(data, requestOptions);
+    return resetPassword(data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type ForgotPasswordMutationResult = NonNullable<
-  Awaited<ReturnType<typeof forgotPassword>>
+export type ResetPasswordMutationResult = NonNullable<
+  Awaited<ReturnType<typeof resetPassword>>
 >;
-export type ForgotPasswordMutationBody = BodyType<ResetPasswordRequestApiDTO>;
-export type ForgotPasswordMutationError = ErrorType<ErrorResponseApiDTO>;
+export type ResetPasswordMutationBody = BodyType<ResetPasswordRequestApiDTO>;
+export type ResetPasswordMutationError = ErrorType<ErrorResponseApiDTO>;
 
-export const useForgotPassword = <
+export const useResetPassword = <
   TError = ErrorType<ErrorResponseApiDTO>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof forgotPassword>>,
+    Awaited<ReturnType<typeof resetPassword>>,
     TError,
     { data: BodyType<ResetPasswordRequestApiDTO> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof forgotPassword>>,
+  Awaited<ReturnType<typeof resetPassword>>,
   TError,
   { data: BodyType<ResetPasswordRequestApiDTO> },
   TContext
 > => {
-  const mutationOptions = getForgotPasswordMutationOptions(options);
+  const mutationOptions = getResetPasswordMutationOptions(options);
 
   return useMutation(mutationOptions);
 };

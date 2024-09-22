@@ -30,6 +30,7 @@ export interface RefreshTokenRequestApiDTO {
 export interface RefreshTokenResponseApiDTO {
   accessToken: string;
   refreshToken: string;
+  id: string;
 }
 
 export interface SignInUserRequestApiDTO {
@@ -39,7 +40,7 @@ export interface SignInUserRequestApiDTO {
 
 export interface SignInUserResponseApiDTO {
   accessToken: string;
-  birthDay: string;
+  dateOfBirth: string;
   email: string;
   firstName: string;
   id: string;
@@ -48,7 +49,7 @@ export interface SignInUserResponseApiDTO {
 }
 
 export interface RegisterUserRequestApiDTO {
-  birthDay: string;
+  dateOfBirth: string;
   email: string;
   firstName: string;
   lastName: string;
@@ -60,17 +61,46 @@ export interface RegisterUserResponseApiDTO {
   message: string;
 }
 
-export interface ErrorResponseApiDTO {
-  code: string;
-  message: string;
+export interface JoinRoomRequestApiDTO {
+  email: string;
 }
 
-export interface UserClassGetMeResponseApiDTO {
-  birthDay: string;
+export interface JoinRoomResponseApiDTO {
+  message: string;
+  roomId: string;
+}
+
+export interface InviteUserRequestApiDTO {
+  email: string;
+  roomId: string;
+}
+
+export interface InviteUserResponseApiDTO {
+  roomInviteToken: string;
+}
+
+export interface CreateRoomRequestApiDTO {
+  title: string;
+}
+
+export interface RoomAttributesApiDTO {
+  id: string;
+  ownerId: string;
+  slug: string;
+  title: string;
+}
+
+export interface UserClassGetResponseApiDTO {
   createdAt?: string;
+  dateOfBirth: string;
   email: string;
   firstName: string;
   id: string;
   lastName: string;
   updatedAt?: string;
+}
+
+export interface ErrorResponseApiDTO {
+  code: string;
+  message: string;
 }

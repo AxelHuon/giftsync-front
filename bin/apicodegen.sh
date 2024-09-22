@@ -5,7 +5,7 @@ if [ -z "$API_KEY" ]; then
   echo "Erreur : La variable d'environnement API_KEY n'est pas définie."
   exit 1
 fi
-URL="https://noel-listing-eu-c736376029b8.herokuapp.com/swagger-json"
+URL="http://localhost:3001/swagger-json"
 
 
 

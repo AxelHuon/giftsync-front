@@ -1,9 +1,9 @@
-import {AuthProvider} from '@/context/AuthProvider';
-import {cn} from '@/lib/utils';
-import {ThemeProvider} from '@/providers/ThemeProvider';
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
-import type {AppProps} from 'next/app';
-import {useIsClient} from 'usehooks-ts';
+import { AuthProvider } from '@/hooks/useAuth';
+import { cn } from '@/lib/utils';
+import { ThemeProvider } from '@/providers/ThemeProvider';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import type { AppProps } from 'next/app';
+import { useIsClient } from 'usehooks-ts';
 import './global.css';
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -21,11 +21,9 @@ export default function App({ Component, pageProps }: AppProps) {
         <AuthProvider>
           {isClient && (
             <>
-              <main
-                className={cn('bg-background font-sans antialiased')}
-              >
+              <main className={cn('bg-background font-sans antialiased')}>
                 <Component {...pageProps} />
-         {/*       <div className={'fixed bottom-[5%]'}>
+                {/*       <div className={'fixed bottom-[5%]'}>
                   <ToggleButtonMode />
                 </div>*/}
               </main>

@@ -4,7 +4,6 @@
  * gift-sync-back-end
  * OpenAPI spec version: 1.0.0
  */
-import { useQuery } from '@tanstack/react-query';
 import type {
   DefinedInitialDataOptions,
   DefinedUseQueryResult,
@@ -14,110 +13,262 @@ import type {
   UseQueryOptions,
   UseQueryResult,
 } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
+import type { ErrorType } from '../customInstance';
+import { customInstance } from '../customInstance';
 import type {
   ErrorResponseApiDTO,
-  UserClassGetMeResponseApiDTO,
+  UserClassGetResponseApiDTO,
 } from './Api.schemas';
-import { customInstance } from '../customInstance';
-import type { ErrorType } from '../customInstance';
 
 type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1];
 
-export const getMe = (
+export const getRoomOfaUser = (
+  userId: string,
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
 ) => {
-  return customInstance<UserClassGetMeResponseApiDTO>(
-    { url: `/user/get-me`, method: 'GET', signal },
+  return customInstance<unknown>(
+    { url: `/user/${userId}/rooms`, method: 'GET', signal },
     options,
   );
 };
 
-export const getGetMeQueryKey = () => {
-  return [`/user/get-me`] as const;
+export const getGetRoomOfaUserQueryKey = (userId: string) => {
+  return [`/user/${userId}/rooms`] as const;
 };
 
-export const getGetMeQueryOptions = <
-  TData = Awaited<ReturnType<typeof getMe>>,
+export const getGetRoomOfaUserQueryOptions = <
+  TData = Awaited<ReturnType<typeof getRoomOfaUser>>,
   TError = ErrorType<ErrorResponseApiDTO>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof getMe>>, TError, TData>
-  >;
-  request?: SecondParameter<typeof customInstance>;
-}) => {
+>(
+  userId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getRoomOfaUser>>, TError, TData>
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetMeQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetRoomOfaUserQueryKey(userId);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getMe>>> = ({
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getRoomOfaUser>>> = ({
     signal,
-  }) => getMe(requestOptions, signal);
+  }) => getRoomOfaUser(userId, requestOptions, signal);
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getMe>>,
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!userId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getRoomOfaUser>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetMeQueryResult = NonNullable<Awaited<ReturnType<typeof getMe>>>;
-export type GetMeQueryError = ErrorType<ErrorResponseApiDTO>;
+export type GetRoomOfaUserQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getRoomOfaUser>>
+>;
+export type GetRoomOfaUserQueryError = ErrorType<ErrorResponseApiDTO>;
 
-export function useGetMe<
-  TData = Awaited<ReturnType<typeof getMe>>,
+export function useGetRoomOfaUser<
+  TData = Awaited<ReturnType<typeof getRoomOfaUser>>,
   TError = ErrorType<ErrorResponseApiDTO>,
->(options: {
-  query: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof getMe>>, TError, TData>
-  > &
-    Pick<
-      DefinedInitialDataOptions<
-        Awaited<ReturnType<typeof getMe>>,
-        TError,
-        TData
-      >,
-      'initialData'
+>(
+  userId: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getRoomOfaUser>>, TError, TData>
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRoomOfaUser>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetRoomOfaUser<
+  TData = Awaited<ReturnType<typeof getRoomOfaUser>>,
+  TError = ErrorType<ErrorResponseApiDTO>,
+>(
+  userId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getRoomOfaUser>>, TError, TData>
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRoomOfaUser>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetRoomOfaUser<
+  TData = Awaited<ReturnType<typeof getRoomOfaUser>>,
+  TError = ErrorType<ErrorResponseApiDTO>,
+>(
+  userId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getRoomOfaUser>>, TError, TData>
     >;
-  request?: SecondParameter<typeof customInstance>;
-}): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
-export function useGetMe<
-  TData = Awaited<ReturnType<typeof getMe>>,
-  TError = ErrorType<ErrorResponseApiDTO>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof getMe>>, TError, TData>
-  > &
-    Pick<
-      UndefinedInitialDataOptions<
-        Awaited<ReturnType<typeof getMe>>,
-        TError,
-        TData
-      >,
-      'initialData'
-    >;
-  request?: SecondParameter<typeof customInstance>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
-export function useGetMe<
-  TData = Awaited<ReturnType<typeof getMe>>,
-  TError = ErrorType<ErrorResponseApiDTO>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof getMe>>, TError, TData>
-  >;
-  request?: SecondParameter<typeof customInstance>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+    request?: SecondParameter<typeof customInstance>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
-export function useGetMe<
-  TData = Awaited<ReturnType<typeof getMe>>,
+export function useGetRoomOfaUser<
+  TData = Awaited<ReturnType<typeof getRoomOfaUser>>,
   TError = ErrorType<ErrorResponseApiDTO>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof getMe>>, TError, TData>
-  >;
-  request?: SecondParameter<typeof customInstance>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetMeQueryOptions(options);
+>(
+  userId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getRoomOfaUser>>, TError, TData>
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetRoomOfaUserQueryOptions(userId, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+export const getUserById = (
+  userId: string,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<UserClassGetResponseApiDTO>(
+    { url: `/user/${userId}`, method: 'GET', signal },
+    options,
+  );
+};
+
+export const getGetUserByIdQueryKey = (userId: string) => {
+  return [`/user/${userId}`] as const;
+};
+
+export const getGetUserByIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getUserById>>,
+  TError = ErrorType<ErrorResponseApiDTO>,
+>(
+  userId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getUserById>>, TError, TData>
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetUserByIdQueryKey(userId);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserById>>> = ({
+    signal,
+  }) => getUserById(userId, requestOptions, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!userId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getUserById>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetUserByIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getUserById>>
+>;
+export type GetUserByIdQueryError = ErrorType<ErrorResponseApiDTO>;
+
+export function useGetUserById<
+  TData = Awaited<ReturnType<typeof getUserById>>,
+  TError = ErrorType<ErrorResponseApiDTO>,
+>(
+  userId: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getUserById>>, TError, TData>
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getUserById>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetUserById<
+  TData = Awaited<ReturnType<typeof getUserById>>,
+  TError = ErrorType<ErrorResponseApiDTO>,
+>(
+  userId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getUserById>>, TError, TData>
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getUserById>>,
+          TError,
+          TData
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useGetUserById<
+  TData = Awaited<ReturnType<typeof getUserById>>,
+  TError = ErrorType<ErrorResponseApiDTO>,
+>(
+  userId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getUserById>>, TError, TData>
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+export function useGetUserById<
+  TData = Awaited<ReturnType<typeof getUserById>>,
+  TError = ErrorType<ErrorResponseApiDTO>,
+>(
+  userId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getUserById>>, TError, TData>
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetUserByIdQueryOptions(userId, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;

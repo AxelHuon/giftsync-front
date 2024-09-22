@@ -14,8 +14,9 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/organisms/Form/Form';
-import { useAuthContext } from '@/context/AuthProvider';
+import { useAuthContext } from '@/hooks/useAuth';
 import { formRegisterSchema } from '@/utils/schemas/auth.schema';
+import { translationSignupErrorMessageApi } from '@/utils/translationErrorMessageApi/translationErrorMessageApi';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
@@ -38,12 +39,11 @@ export function RegisterForm() {
   });
 
   const onSubmit = async (values: z.infer<typeof formRegisterSchema>) => {
-    console.log(values);
     handleRegister({
       data: {
         email: values.email,
         password: values.password,
-        birthDay: values.birthDay.toISOString(),
+        dateOfBirth: values.dateOfBirth.toISOString(),
         firstName: values.firstName,
         lastName: values.lastName,
       },
@@ -90,10 +90,10 @@ export function RegisterForm() {
         </div>
         <FormField
           control={form.control}
-          name="birthDay"
+          name="dateOfBirth"
           render={({ field }) => (
             <FormItem className="flex flex-col w-full">
-              <FormLabel>Date of birth</FormLabel>
+              <FormLabel>Date de naissance</FormLabel>
               <DatePicker date={field.value} setDate={field.onChange} />
               <FormMessage />
             </FormItem>
@@ -142,7 +142,13 @@ export function RegisterForm() {
             </FormItem>
           )}
         />
-        {registerError && <FormMessage>{registerError.message}</FormMessage>}
+        {registerError && (
+          <FormMessage>
+            {translationSignupErrorMessageApi(
+              registerError?.response?.data?.code ?? registerError.message,
+            )}
+          </FormMessage>
+        )}
         <Button
           className={'w-full'}
           disabled={isRegistering || isSigningIn}

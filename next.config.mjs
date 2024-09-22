@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 const cspHeader = `
-    default-src 'self' https://noel-listing-eu-c736376029b8.herokuapp.com;
+    default-src 'self' https://noel-listing-eu-c736376029b8.herokuapp.com http://localhost:3001;
     script-src 'self' 'unsafe-eval' 'unsafe-inline' https://noel-listing-eu-c736376029b8.herokuapp.com;
     style-src 'self' 'unsafe-inline' https://noel-listing-eu-c736376029b8.herokuapp.com;
     img-src 'self' blob: data: https://noel-listing-eu-c736376029b8.herokuapp.com;
