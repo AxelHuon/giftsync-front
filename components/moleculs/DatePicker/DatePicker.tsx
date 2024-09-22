@@ -52,7 +52,7 @@ export function DatePicker({ date, setDate }: DatePickerProps) {
         <Button
           variant={'outline'}
           className={cn(
-            'w-full justify-start text-left font-normal',
+            'w-full justify-start text-left font-normal border-neutral-400',
             !date && 'text-muted-foreground',
           )}
         >
@@ -60,7 +60,7 @@ export function DatePicker({ date, setDate }: DatePickerProps) {
           {date ? format(date, 'dd/MM/yyyy') : <span>Choisir une date</span>}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
+      <PopoverContent className="w-auto p-0 bg-neutral-50" align="start">
         <div className="flex items-center justify-center px-3 pt-2">
           <Select
             value={calendarDate.getFullYear().toString()}
