@@ -163,7 +163,7 @@ export function RegisterForm() {
         <p className={'text-sm font-variable font-500 text-center'}>
           T'as déjà un compte ?{'  '}
           <Link
-            href={'/auth/signin'}
+            href={'/'}
             className={
               buttonVariants({ variant: 'link' }) + '  w-fit !p-0 h-fit'
             }

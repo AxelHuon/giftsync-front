@@ -1,30 +1,57 @@
 'use client';
 
-import {Button} from '@/components/atoms/Buttons/ClassicButton/Button';
+import { Button } from '@/components/atoms/Buttons/ClassicButton/Button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/atoms/Menu/DropDownMenu/dropdown-menu';
-import {MoonIcon, SunIcon} from '@radix-ui/react-icons';
-import {useTheme} from 'next-themes';
+import { useSettings } from '@/providers/SettingsProvider';
+import { Moon, Sun } from 'lucide-react';
+import { useTheme } from 'next-themes';
 import * as React from 'react';
 
-export function ToggleButtonMode() {
-  const { setTheme } = useTheme();
-
+export function ToggleButtonMode({ withText = false }: { withText?: boolean }) {
+  const { setTheme, theme } = useTheme();
+  const { sideBarIsOpen } = useSettings();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Toggle theme</span>
+        <Button
+          className={`w-full items-center justify-start gap-2 ${
+            sideBarIsOpen ? 'px-4' : 'px-0'
+          } transition-all duration-200`}
+          variant="outline"
+        >
+          <div
+            className={`${
+              sideBarIsOpen ? '' : 'absolute left-1/2 -translate-x-1/2'
+            } transition-property:left,translate-x duration-150`}
+          >
+            <Sun
+              size={17}
+              className={`${theme === 'light' ? 'flex' : 'hidden'}`}
+            />
+            <Moon
+              size={17}
+              className={`${theme === 'light' ? 'hidden' : 'flex'}`}
+            />
+          </div>
+          <span
+            className={`${
+              sideBarIsOpen ? 'opacity-100 ml-2' : 'opacity-0 w-0'
+            } transition-property:opacity,width duration-100 overflow-hidden whitespace-nowrap`}
+          >
+            Changer le thème
+          </span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="center">
-        <DropdownMenuItem onClick={() => setTheme('light')}>
+      <DropdownMenuContent className={'bg-neutral-25'} align="center">
+        <DropdownMenuItem
+          className={'text-neutral-900'}
+          onClick={() => setTheme('light')}
+        >
           Light
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('dark')}>

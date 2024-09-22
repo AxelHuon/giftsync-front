@@ -1,5 +1,6 @@
 import { AuthProvider } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
+import { SettingsProvider } from '@/providers/SettingsProvider';
 import { ThemeProvider } from '@/providers/ThemeProvider';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { AppProps } from 'next/app';
@@ -14,21 +15,20 @@ export default function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider
         attribute="class"
-        defaultTheme="system"
+        defaultTheme="dark"
         enableSystem
         disableTransitionOnChange
       >
         <AuthProvider>
-          {isClient && (
-            <>
-              <main className={cn('bg-background font-sans antialiased')}>
-                <Component {...pageProps} />
-                {/*       <div className={'fixed bottom-[5%]'}>
-                  <ToggleButtonMode />
-                </div>*/}
-              </main>
-            </>
-          )}
+          <SettingsProvider>
+            {isClient && (
+              <>
+                <main className={cn('bg-background font-sans antialiased')}>
+                  <Component {...pageProps} />
+                </main>
+              </>
+            )}
+          </SettingsProvider>
         </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>

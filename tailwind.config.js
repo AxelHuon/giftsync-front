@@ -11,7 +11,6 @@ module.exports = {
   prefix: '',
   theme: {
     container: {
-      center: true,
       padding: {
         DEFAULT: '27px',
         tablet: '0px',

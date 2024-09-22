@@ -81,7 +81,7 @@ export function LoginForm() {
         )}
         <div className={'flex justify-center'}>
           <Link
-            href={'/auth/forgot-password'}
+            href={'forgot-password'}
             className={
               buttonVariants({ variant: 'link' }) + ' w-fit !p-0 h-fit'
             }
@@ -96,7 +96,7 @@ export function LoginForm() {
         <p className={'text-sm font-variable font-500 text-center'}>
           Vous n'avez pas encore de compte ?{' '}
           <Link
-            href={'/auth/signup'}
+            href={'signup'}
             className={
               buttonVariants({ variant: 'link' }) + '  w-fit !p-0 h-fit'
             }
