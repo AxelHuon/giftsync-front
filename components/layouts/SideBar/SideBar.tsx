@@ -26,7 +26,7 @@ const SideBar: React.FC<SideBarProps> = () => {
   return (
     <section
       className={`fixed flex flex-col justify-between left-0 h-[100vh] bg-neutral-50 transition-property:width duration-200 ${
-        sideBarIsOpen ? 'w-[350px]' : 'w-[160px]'
+        sideBarIsOpen ? 'w-[350px]' : 'w-[145px]'
       } p-10`}
     >
       <Button
@@ -57,7 +57,7 @@ const SideBar: React.FC<SideBarProps> = () => {
                 sideBarIsOpen ? 'left-[10px]' : 'left-1/2 -translate-x-1/2'
               } transition-property:left,translate-x duration-150`}
             >
-              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarImage src="/images/default-user-pdp.png" />
               <AvatarFallback>
                 {authState?.firstName[0]}
                 {authState?.lastName[0]}

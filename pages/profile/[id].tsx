@@ -12,11 +12,7 @@ const Home = () => {
 
   const { data: userInfo } = useGetUserById((id as string) ?? '');
 
-  return (
-    <AppLayout>
-      {authState?.id === userInfo?.id ? 'own account' : 'not own account'}
-    </AppLayout>
-  );
+  return <AppLayout>dsqdqs</AppLayout>;
 };
 
 export default Home;

@@ -14,6 +14,9 @@ const cspHeader = `
 `;
 
 const nextConfig = {
+  images: {
+    minimumCacheTTL: 900,
+  },
   async headers() {
     return [
       {
