@@ -1,8 +1,4 @@
-import {
-    Avatar,
-    AvatarFallback,
-    AvatarImage,
-} from '@/components/atoms/Avatar/Avatar'
+import { Avatar, AvatarFallback } from '@/components/atoms/Avatar/Avatar'
 import { buttonVariants } from '@/components/atoms/Buttons/ClassicButton/Button'
 import {
     DropdownMenu,
@@ -41,10 +37,6 @@ const UserButton: React.FC = () => {
                                 {authState?.firstName[0]}
                                 {authState?.lastName[0]}
                             </AvatarFallback>
-                            <AvatarImage
-                                src={'/images/default-user-pdp.png'}
-                                alt={'avatar'}
-                            />
                         </Avatar>
                         {sideBarIsOpen && (
                             <p className={'text-base'}>
@@ -71,10 +63,6 @@ const UserButton: React.FC = () => {
                                 {authState?.firstName[0]}
                                 {authState?.lastName[0]}
                             </AvatarFallback>
-                            <AvatarImage
-                                src={'/images/default-user-pdp.png'}
-                                alt={'avatar'}
-                            />
                         </Avatar>
                         <div>
                             <p className={'text-base font-500'}>
