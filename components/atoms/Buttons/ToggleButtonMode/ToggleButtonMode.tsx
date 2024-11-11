@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@/components/atoms/Buttons/ClassicButton/Button'
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -11,37 +12,25 @@ import { Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import * as React from 'react'
 
-export function ToggleButtonMode({ withText = false }: { withText?: boolean }) {
+export function ToggleButtonMode() {
     const { setTheme, theme } = useTheme()
     const { sideBarIsOpen } = useSettings()
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <div className={'flex items-center gap-1'}>
-                    <div
-                        className={`${
-                            sideBarIsOpen
-                                ? ''
-                                : 'absolute left-1/2 -translate-x-1/2'
-                        } transition-property:left,translate-x duration-150`}
-                    >
-                        <Sun
-                            size={17}
-                            className={`${theme === 'light' ? 'flex' : 'hidden'}`}
-                        />
-                        <Moon
-                            size={17}
-                            className={`${theme === 'light' ? 'hidden' : 'flex'}`}
-                        />
-                    </div>
-                    <span
-                        className={`${
-                            sideBarIsOpen ? 'opacity-1  00' : 'opacity-0 w-0'
-                        } transition-property:opacity,width duration-100 overflow-hidden whitespace-nowrap`}
-                    >
-                        Changer le thème
-                    </span>
-                </div>
+                <Button
+                    variant={'outline'}
+                    className={`flex items-center ${sideBarIsOpen ? 'justify-start' : 'justify-center'} gap-[8px]`}
+                >
+                    {theme === 'light' ? (
+                        <Sun size={20} />
+                    ) : theme === 'dark' ? (
+                        <Moon size={20} />
+                    ) : (
+                        <Sun size={20} />
+                    )}
+                    {sideBarIsOpen && <p>Changer le thème</p>}
+                </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className={'bg-neutral-25'} align="center">
                 <DropdownMenuItem

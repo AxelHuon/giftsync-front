@@ -30,13 +30,13 @@ const UserButton: React.FC = () => {
                 <div
                     className={
                         buttonVariants({ variant: 'outline' }) +
-                        `flex items-center justify-between h-[60px] p-[12px] gap-3 cursor-pointer relative`
+                        `flex items-center h-[60px] p-[12px] gap-3 cursor-pointer relative ${sideBarIsOpen ? 'justify-between' : 'justify-center'}`
                     }
                 >
-                    <div className={'flex items-center'}>
-                        <Avatar
-                            className={`absolute top-1/2 transition-all duration-200 -translate-y-1/2 transition-left ${sideBarIsOpen ? 'left-[12px]' : 'left-[52.5px] -translate-x-1/2'}`}
-                        >
+                    <div
+                        className={`flex items-center gap-2 ${sideBarIsOpen ? 'justify-start' : 'justify-center'}`}
+                    >
+                        <Avatar>
                             <AvatarFallback>
                                 {authState?.firstName[0]}
                                 {authState?.lastName[0]}
@@ -46,15 +46,17 @@ const UserButton: React.FC = () => {
                                 alt={'avatar'}
                             />
                         </Avatar>
-                        <p
-                            className={`text-base absolute left-[65px] transition-all duration-250 ${sideBarIsOpen ? 'opacity-100' : 'opacity-0'} font-500`}
-                        >
-                            {authState?.firstName} {authState?.lastName}
-                        </p>
+                        {sideBarIsOpen && (
+                            <p className={'text-base'}>
+                                {authState?.firstName} {authState?.lastName}
+                            </p>
+                        )}
                     </div>
-                    <EllipsisIcon
-                        className={`rotate-90 ${sideBarIsOpen ? 'opacity-100' : 'opacity-0'} transition-property:opacity duration-200 `}
-                    />
+                    {sideBarIsOpen && (
+                        <EllipsisIcon
+                            className={`rotate-90 ${sideBarIsOpen ? 'opacity-100' : 'opacity-0'} transition-property:opacity duration-200 `}
+                        />
+                    )}
                 </div>
             </DropdownMenuTrigger>
             {/*End Button*/}
