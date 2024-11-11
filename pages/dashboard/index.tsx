@@ -1,8 +1,18 @@
-import AppLayout from '@/components/layouts/AppLayout/AppLayout';
-import React from 'react';
+import AppLayoutServer from '@/components/layouts/AppLayout/AppLayout.server'
+import { withAuthRoute } from '@/lib/withAuthRoute'
+import { GetServerSideProps } from 'next'
+import React from 'react'
 
 const Home = () => {
-  return <AppLayout>Rien ici pour l'instant</AppLayout>;
-};
+    return <AppLayoutServer>Rien ici pour l'instant</AppLayoutServer>
+}
 
-export default Home;
+export default Home
+
+export const getServerSideProps: GetServerSideProps = withAuthRoute(
+    async (context) => {
+        return {
+            props: {},
+        }
+    }
+)
