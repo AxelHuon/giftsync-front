@@ -34,7 +34,7 @@ const Signing: React.FC = () => {
             }
         >
             <Dialog open={dialogIsOpen}>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent className="mobileL:max-w-[90%]  laptop:max-w-[800px]">
                     <DialogHeader>
                         <DialogTitle>C'est presque finis ✅</DialogTitle>
                     </DialogHeader>

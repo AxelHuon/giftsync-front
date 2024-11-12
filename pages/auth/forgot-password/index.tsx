@@ -26,7 +26,7 @@ const Signing: React.FC = () => {
             setDialogIsOpen(true)
         }
     }, [isSuccessForgotPassword])
-
+    const ref = React.useRef(null)
     return (
         <section
             className={
@@ -34,19 +34,26 @@ const Signing: React.FC = () => {
             }
         >
             <Dialog open={dialogIsOpen}>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent
+                    ref={ref}
+                    className="sm:max-w-[90%] laptop:max-w-[600px]"
+                >
                     <DialogHeader>
-                        <DialogTitle>C'est presque finis ✅</DialogTitle>
+                        <DialogTitle className={'text-2xl font-600'}>
+                            C'est presque terminé 📨
+                        </DialogTitle>
                     </DialogHeader>
-                    <DialogDescription>
+                    <DialogDescription className={'text-neutral-800 text-base'}>
                         Un mail vous a été envoyé pour réinitialiser votre mot
                         de passe. Verifiez votre boite mail et suivez les
                         instructions.
                     </DialogDescription>
-                    <DialogDescription>
+                    <DialogDescription
+                        className={'text-black text-base font-600'}
+                    >
                         Verifiez les spams si vous ne trouvez pas le mail.
                     </DialogDescription>
-                    <DialogFooter>
+                    <DialogFooter className={'w-full'}>
                         <Button onClick={() => setDialogIsOpen(false)}>
                             Compris !
                         </Button>

@@ -45,7 +45,7 @@ const MenuSideBar: React.FC = () => {
     return (
         <div className={'flex flex-col gap-[12px]'}>
             {sideBarIsOpen && (
-                <p className={'text-base text-neutral-500 font-500'}>Menu</p>
+                <p className={'text-base text-neutral-500 font-400'}>Menu</p>
             )}
             <div className={'flex flex-col gap-[18px]'}>
                 <Button
