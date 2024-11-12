@@ -14,10 +14,11 @@ interface SideBarProps {}
 const SideBar: React.FC<SideBarProps> = () => {
     const { sideBarIsOpen } = useSettings()
     const { theme } = useTheme()
+
     return (
         <section
             className={`hidden fixed tablet:flex flex-col justify-between left-0 top-0 h-[100dvh] bg-neutral-50 transition-property:width duration-200 ${
-                sideBarIsOpen ? 'w-[350px]' : 'w-[145px]'
+                sideBarIsOpen ? 'w-[300px]' : 'w-[145px]'
             }`}
         >
             <ArrowButtonToggleSideBar />

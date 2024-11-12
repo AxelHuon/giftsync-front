@@ -1,12 +1,11 @@
-import { Button } from '@/components/atoms/Buttons/ClassicButton/Button'
 import {
     Dialog,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
 } from '@/components/moleculs/Dialog/Dialog'
+import { EditUserInformationForm } from '@/components/organisms/Form/EditUserInformationForm/EditUserInformationForm'
 import React from 'react'
 
 interface DialogEditProfilProps {
@@ -19,18 +18,18 @@ const DialogEditProfil: React.FC<DialogEditProfilProps> = ({
     setOpen,
 }) => {
     return (
-        <Dialog open={open}>
-            <DialogContent className="mobileL:max-w-[90%]  laptop:max-w-[800px]">
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogContent className="mobileL:max-w-[90%]  laptop:max-w-[700px] gap-[35px]">
                 <DialogHeader>
-                    <DialogTitle>Paramètre de votre compte</DialogTitle>
-                    <DialogDescription>
+                    <DialogTitle className={'text-2xl'}>
+                        Paramètre de votre compte
+                    </DialogTitle>
+                    <DialogDescription className={'text-base'}>
                         Vous pouvez modifier les informations de votre compte
                         ici.
                     </DialogDescription>
                 </DialogHeader>
-                <DialogFooter>
-                    <Button type="submit">Enregistrer</Button>
-                </DialogFooter>
+                <EditUserInformationForm />
             </DialogContent>
         </Dialog>
     )

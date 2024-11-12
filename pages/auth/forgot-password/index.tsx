@@ -19,25 +19,22 @@ const Signing: React.FC = () => {
     const { theme } = useTheme()
     const { isSuccessForgotPassword } = useAuthContext()
 
-    const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false)
+    const [open, setOpen] = useState(false)
 
     useEffect(() => {
         if (isSuccessForgotPassword) {
-            setDialogIsOpen(true)
+            setOpen(true)
         }
     }, [isSuccessForgotPassword])
-    const ref = React.useRef(null)
+
     return (
         <section
             className={
                 'flex container flex-col laptop:flex-row h-screen justify-between py-[20px] mobileXL:py-[40px] laptop:py-[80px]'
             }
         >
-            <Dialog open={dialogIsOpen}>
-                <DialogContent
-                    ref={ref}
-                    className="sm:max-w-[90%] laptop:max-w-[600px]"
-                >
+            <Dialog open={open} onOpenChange={setOpen}>
+                <DialogContent className="sm:max-w-[90%] laptop:max-w-[600px]">
                     <DialogHeader>
                         <DialogTitle className={'text-2xl font-600'}>
                             C'est presque terminé 📨
@@ -54,7 +51,7 @@ const Signing: React.FC = () => {
                         Verifiez les spams si vous ne trouvez pas le mail.
                     </DialogDescription>
                     <DialogFooter className={'w-full'}>
-                        <Button onClick={() => setDialogIsOpen(false)}>
+                        <Button onClick={() => setOpen(false)}>
                             Compris !
                         </Button>
                     </DialogFooter>

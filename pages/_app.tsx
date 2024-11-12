@@ -1,3 +1,4 @@
+import { Toaster } from '@/components/atoms/Toast/toaster'
 import { AuthProvider } from '@/hooks/useAuth'
 import { cn } from '@/lib/utils'
 import { SettingsProvider } from '@/providers/SettingsProvider'
@@ -31,6 +32,7 @@ export default function App({ Component, pageProps }: AppProps) {
                                 >
                                     <Component {...pageProps} />
                                 </main>
+                                <Toaster />
                             </>
                         )}
                     </SettingsProvider>

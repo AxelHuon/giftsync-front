@@ -1,31 +1,11 @@
-import { Button } from '@/components/atoms/Buttons/ClassicButton/Button'
 import Logo from '@/components/atoms/Logo/Logo'
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/moleculs/Dialog/Dialog'
 import { ResetPasswordForm } from '@/components/organisms/Form/ResetPasswordForm/ResetPasswordForm'
-import { useAuthContext } from '@/hooks/useAuth'
 import Colors from '@/utils/styles/colors'
 import { useTheme } from 'next-themes'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 const Signing: React.FC = () => {
     const { theme } = useTheme()
-
-    const { isSuccessForgotPassword } = useAuthContext()
-
-    const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false)
-
-    useEffect(() => {
-        if (isSuccessForgotPassword) {
-            setDialogIsOpen(true)
-        }
-    }, [isSuccessForgotPassword])
 
     return (
         <section
@@ -33,26 +13,6 @@ const Signing: React.FC = () => {
                 'flex container flex-col laptop:flex-row h-screen justify-between py-[20px] mobileXL:py-[40px] laptop:py-[80px]'
             }
         >
-            <Dialog open={dialogIsOpen}>
-                <DialogContent className="mobileL:max-w-[90%]  laptop:max-w-[800px]">
-                    <DialogHeader>
-                        <DialogTitle>C'est presque finis ✅</DialogTitle>
-                    </DialogHeader>
-                    <DialogDescription>
-                        Un mail vous a été envoyé pour réinitialiser votre mot
-                        de passe. Verifiez votre boite mail et suivez les
-                        instructions.
-                    </DialogDescription>
-                    <DialogDescription>
-                        Verifiez les spams si vous ne trouvez pas le mail.
-                    </DialogDescription>
-                    <DialogFooter>
-                        <Button onClick={() => setDialogIsOpen(false)}>
-                            Compris !
-                        </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
             <aside
                 className={
                     'w-full  flex flex-col gap-[40px]  justify-center laptop:pr-[40px] '

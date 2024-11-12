@@ -12,6 +12,7 @@ import {
 import DialogEditProfil from '@/components/organisms/Dialog/DialogEditProfil/DialogEditProfil'
 import { useAuthContext } from '@/hooks/useAuth'
 import { useSettings } from '@/providers/SettingsProvider'
+import { useGetUserById } from '@/src/api/generated/user'
 import { EllipsisIcon, ReceiptText, UserRoundIcon } from 'lucide-react'
 import Link from 'next/link'
 import React, { useState } from 'react'
@@ -19,6 +20,8 @@ import React, { useState } from 'react'
 const UserButton: React.FC = () => {
     const { authState, handleLogout } = useAuthContext()
     const { sideBarIsOpen } = useSettings()
+
+    const { data: userData } = useGetUserById(authState?.id ?? '')
 
     const [editProfileDialogOpen, setEditProfileDialogOpen] =
         useState<boolean>(false)
@@ -39,13 +42,13 @@ const UserButton: React.FC = () => {
                         >
                             <Avatar>
                                 <AvatarFallback>
-                                    {authState?.firstName[0]}
-                                    {authState?.lastName[0]}
+                                    {userData?.firstName[0]}
+                                    {userData?.lastName[0]}
                                 </AvatarFallback>
                             </Avatar>
                             {sideBarIsOpen && (
                                 <p className={'text-base'}>
-                                    {authState?.firstName} {authState?.lastName}
+                                    {userData?.firstName} {userData?.lastName}
                                 </p>
                             )}
                         </div>
@@ -65,16 +68,16 @@ const UserButton: React.FC = () => {
                         <div className={'flex items-center gap-3'}>
                             <Avatar style={{ width: '35px', height: '35px' }}>
                                 <AvatarFallback>
-                                    {authState?.firstName[0]}
-                                    {authState?.lastName[0]}
+                                    {userData?.firstName[0]}
+                                    {userData?.lastName[0]}
                                 </AvatarFallback>
                             </Avatar>
                             <div>
                                 <p className={'text-base font-500'}>
-                                    {authState?.firstName} {authState?.lastName}
+                                    {userData?.firstName} {userData?.lastName}
                                 </p>
                                 <p className={'text-xs font-300'}>
-                                    {authState?.email}
+                                    {userData?.email}
                                 </p>
                             </div>
                         </div>
@@ -93,7 +96,7 @@ const UserButton: React.FC = () => {
                         <DropdownMenuItem asChild>
                             <Link
                                 className={'flex items-center gap-1'}
-                                href={`/user/${authState?.id}`}
+                                href={`/user/${userData?.id}`}
                             >
                                 <ReceiptText size={'16px'} />
                                 <p className={'text-sm'}>Support</p>
