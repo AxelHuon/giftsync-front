@@ -47,6 +47,14 @@ export interface SignInUserResponseApiDTO {
     refreshToken: string
 }
 
+export interface RegisterUserRequestApiDTO {
+    dateOfBirth: string
+    email: string
+    firstName: string
+    lastName: string
+    password: string
+}
+
 export interface RegisterUserResponseApiDTO {
     code: string
     message: string
@@ -81,15 +89,33 @@ export interface RoomAttributesApiDTO {
     title: string
 }
 
-export interface RegisterUserRequestApiDTO {
-    dateOfBirth: string
+export interface UserSecretSantaApiDTO {
     email: string
-    firstName: string
-    lastName: string
+    name: string
+}
+
+export interface SecretSantaRequestApiDTO {
+    maxPrice: number
+    users: UserSecretSantaApiDTO[]
+}
+
+export interface SecretSantaResponseApiDTO {
+    code: number
+    message: string
+}
+
+export interface UserClassEditPasswordRequestApiDTO {
+    confirmPassword: string
+    oldPassword: string
     password: string
 }
 
-export interface PostUserInformationsRequestApiDTO {
+export interface UserClassEditPasswordResponseApiDTO {
+    code: string
+    message: string
+}
+
+export interface UserClassEditRequestApiDTO {
     dateOfBirth: string
     firstName: string
     lastName: string

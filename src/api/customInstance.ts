@@ -41,7 +41,6 @@ AXIOS_INSTANCE.interceptors.request.use((config: CustomAxiosRequestConfig) => {
     if (apiKey) {
         config.headers['x-api-key'] = apiKey
     }
-    console.log(config)
     return config
 })
 
@@ -51,7 +50,6 @@ AXIOS_INSTANCE.interceptors.response.use(
     },
     async (error: AxiosError<ErrorResponseApiDTO>) => {
         const originalRequest = error.config as CustomAxiosRequestConfig
-
         if (
             originalRequest &&
             error.response?.data?.code === 'token_expired' &&
@@ -90,7 +88,6 @@ AXIOS_INSTANCE.interceptors.response.use(
                 }
             }
         }
-        localStorage.removeItem('user_information')
         return Promise.reject(error)
     }
 )

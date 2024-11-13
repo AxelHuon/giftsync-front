@@ -10,14 +10,10 @@ const Signin: React.FC = () => {
     return (
         <section
             className={
-                'flex container flex-col laptop:flex-row h-screen justify-between py-[20px] mobileXL:py-[40px] laptop:py-[80px]'
+                'container w-full laptop:w-1/2 gap-[20px] flex flex-col h-screen items-center justify-center'
             }
         >
-            <aside
-                className={
-                    'w-full gap-[21px] flex flex-col laptop:w-1/2 justify-center laptop:pr-[40px] '
-                }
-            >
+            <aside className={'w-full flex gap-[20px] flex-col'}>
                 <div className={'flex justify-center'}>
                     <Logo
                         width={250}
@@ -33,7 +29,7 @@ const Signin: React.FC = () => {
                     <div className={'flex flex-col gap-[20px] items-center'}>
                         <h2
                             className={
-                                'text-center  text-4xl laptop:text-5xl font-variable font-600 text-neutral-900 '
+                                'text-center  text-2xl laptop:text-4xl font-variable font-600 text-neutral-900 '
                             }
                         >
                             Content de te revoir 👋

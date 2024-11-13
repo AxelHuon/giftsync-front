@@ -5,6 +5,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/moleculs/Dialog/Dialog'
+import { EditPasswordForm } from '@/components/organisms/Form/EditPasswordForm/EditPasswordForm'
 import { EditUserInformationForm } from '@/components/organisms/Form/EditUserInformationForm/EditUserInformationForm'
 import React from 'react'
 
@@ -30,6 +31,7 @@ const DialogEditProfil: React.FC<DialogEditProfilProps> = ({
                     </DialogDescription>
                 </DialogHeader>
                 <EditUserInformationForm />
+                <EditPasswordForm />
             </DialogContent>
         </Dialog>
     )

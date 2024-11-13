@@ -30,38 +30,36 @@ const Signing: React.FC = () => {
     return (
         <section
             className={
-                'flex container flex-col laptop:flex-row h-screen justify-between py-[20px] mobileXL:py-[40px] laptop:py-[80px]'
+                'container m-auto w-full gap-[20px] flex flex-col h-screen items-center justify-center'
             }
         >
-            <Dialog open={open} onOpenChange={setOpen}>
-                <DialogContent className="sm:max-w-[90%] laptop:max-w-[600px]">
-                    <DialogHeader>
-                        <DialogTitle className={'text-2xl font-600'}>
-                            C'est presque terminé 📨
-                        </DialogTitle>
-                    </DialogHeader>
-                    <DialogDescription className={'text-neutral-800 text-base'}>
-                        Un mail vous a été envoyé pour réinitialiser votre mot
-                        de passe. Verifiez votre boite mail et suivez les
-                        instructions.
-                    </DialogDescription>
-                    <DialogDescription
-                        className={'text-black text-base font-600'}
-                    >
-                        Verifiez les spams si vous ne trouvez pas le mail.
-                    </DialogDescription>
-                    <DialogFooter className={'w-full'}>
-                        <Button onClick={() => setOpen(false)}>
-                            Compris !
-                        </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
-            <aside
-                className={
-                    'w-full  flex flex-col gap-[40px]  justify-center laptop:pr-[40px] '
-                }
-            >
+            <aside className={'w-full flex gap-[20px] flex-col'}>
+                <Dialog open={open} onOpenChange={setOpen}>
+                    <DialogContent className="sm:max-w-[90%] laptop:max-w-[600px]">
+                        <DialogHeader>
+                            <DialogTitle className={'text-2xl font-600'}>
+                                C'est presque terminé 📨
+                            </DialogTitle>
+                        </DialogHeader>
+                        <DialogDescription
+                            className={'text-neutral-800 text-base'}
+                        >
+                            Un mail vous a été envoyé pour réinitialiser votre
+                            mot de passe. Verifiez votre boite mail et suivez
+                            les instructions.
+                        </DialogDescription>
+                        <DialogDescription
+                            className={'text-neutral-900 text-base font-600'}
+                        >
+                            Verifiez les spams si vous ne trouvez pas le mail.
+                        </DialogDescription>
+                        <DialogFooter className={'w-full'}>
+                            <Button onClick={() => setOpen(false)}>
+                                Compris !
+                            </Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
                 <div className={'flex justify-center'}>
                     <Logo
                         width={250}
@@ -81,7 +79,7 @@ const Signing: React.FC = () => {
                     >
                         <h2
                             className={
-                                'text-center text-4xl laptop:text-5xl font-variable font-600 text-neutral-900 '
+                                'text-center text-2xl laptop:text-4xl font-variable font-600 text-neutral-900 '
                             }
                         >
                             Réinitialisation de mot de passe 🔐

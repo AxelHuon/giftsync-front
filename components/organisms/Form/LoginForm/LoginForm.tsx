@@ -17,7 +17,7 @@ import { translationSigninErrorMessageApi } from '@/utils/translationErrorMessag
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ReloadIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -35,10 +35,6 @@ export function LoginForm() {
     const onSubmit = async (values: z.infer<typeof formLoginSchema>) => {
         await handleLogin({ data: values })
     }
-
-    useEffect(() => {
-        console.log(signInError)
-    }, [signInError])
 
     return (
         <Form {...form}>

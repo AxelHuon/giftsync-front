@@ -14,10 +14,10 @@ import { useAuthContext } from '@/hooks/useAuth'
 import { useToast } from '@/hooks/useToast'
 import {
     useGetUserById,
-    usePostUserInformations,
+    usePatchUserInformations,
 } from '@/src/api/generated/user'
 import { formEditUser } from '@/utils/schemas/user.schema'
-import { translationResetPasswordErrorMessageApi } from '@/utils/translationErrorMessageApi/translationErrorMessageApi'
+import { translationPatchUserInformationsErrorMessageApi } from '@/utils/translationErrorMessageApi/translationErrorMessageApi'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ReloadIcon } from '@radix-ui/react-icons'
 import React from 'react'
@@ -41,10 +41,10 @@ export function EditUserInformationForm() {
     const { toast } = useToast()
 
     const {
-        mutate: handlePostEditUserInformation,
+        mutate,
         isPending: isPending,
         error,
-    } = usePostUserInformations({
+    } = usePatchUserInformations({
         mutation: {
             onSuccess: async () => {
                 toast({
@@ -54,11 +54,13 @@ export function EditUserInformationForm() {
                 })
                 await refetch()
             },
+            onError: async (error) => {
+                console.log(error)
+            },
         },
     })
     const onSubmit = async (values: z.infer<typeof formEditUser>) => {
-        console.log(values)
-        handlePostEditUserInformation({
+        await mutate({
             userId: authState?.id ?? '',
             data: {
                 firstName: values.firstName,
@@ -148,7 +150,7 @@ export function EditUserInformationForm() {
                 />
                 {error && (
                     <FormMessage>
-                        {translationResetPasswordErrorMessageApi(
+                        {translationPatchUserInformationsErrorMessageApi(
                             error?.response?.data.code ?? error.message
                         )}
                     </FormMessage>
@@ -157,7 +159,7 @@ export function EditUserInformationForm() {
                     {isPending && (
                         <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
                     )}
-                    Modifier
+                    Modifier les informations
                 </Button>
             </form>
         </Form>

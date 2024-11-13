@@ -23,6 +23,8 @@ const UserButton: React.FC = () => {
 
     const { data: userData } = useGetUserById(authState?.id ?? '')
 
+    console.log(authState?.id)
+
     const [editProfileDialogOpen, setEditProfileDialogOpen] =
         useState<boolean>(false)
 

@@ -4,6 +4,7 @@
  * gift-sync-back-end
  * OpenAPI spec version: 1.0.0
  */
+import { useMutation, useQuery } from '@tanstack/react-query'
 import type {
     DefinedInitialDataOptions,
     DefinedUseQueryResult,
@@ -16,15 +17,15 @@ import type {
     UseQueryOptions,
     UseQueryResult,
 } from '@tanstack/react-query'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import type { BodyType, ErrorType } from '../customInstance'
-import { customInstance } from '../customInstance'
-import {
+import type {
     ErrorResponseApiDTO,
-    PostUserInformationsRequestApiDTO,
-    RegisterUserRequestApiDTO,
+    UserClassEditPasswordRequestApiDTO,
+    UserClassEditPasswordResponseApiDTO,
+    UserClassEditRequestApiDTO,
     UserClassGetResponseApiDTO,
 } from './Api.schemas'
+import { customInstance } from '../customInstance'
+import type { ErrorType, BodyType } from '../customInstance'
 
 type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
 
@@ -324,9 +325,9 @@ export function useGetUserById<
     return query
 }
 
-export const postUserInformations = (
+export const patchUserInformations = (
     userId: string,
-    registerUserRequestApiDTO: BodyType<PostUserInformationsRequestApiDTO>,
+    userClassEditRequestApiDTO: BodyType<UserClassEditRequestApiDTO>,
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<UserClassGetResponseApiDTO>(
@@ -334,68 +335,143 @@ export const postUserInformations = (
             url: `/user/${userId}`,
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
-            data: registerUserRequestApiDTO,
+            data: userClassEditRequestApiDTO,
         },
         options
     )
 }
 
-export const getPostUserInformationsMutationOptions = <
+export const getPatchUserInformationsMutationOptions = <
     TError = ErrorType<ErrorResponseApiDTO>,
     TContext = unknown,
 >(options?: {
     mutation?: UseMutationOptions<
-        Awaited<ReturnType<typeof postUserInformations>>,
+        Awaited<ReturnType<typeof patchUserInformations>>,
         TError,
-        { userId: string; data: BodyType<PostUserInformationsRequestApiDTO> },
+        { userId: string; data: BodyType<UserClassEditRequestApiDTO> },
         TContext
     >
     request?: SecondParameter<typeof customInstance>
 }): UseMutationOptions<
-    Awaited<ReturnType<typeof postUserInformations>>,
+    Awaited<ReturnType<typeof patchUserInformations>>,
     TError,
-    { userId: string; data: BodyType<PostUserInformationsRequestApiDTO> },
+    { userId: string; data: BodyType<UserClassEditRequestApiDTO> },
     TContext
 > => {
     const { mutation: mutationOptions, request: requestOptions } = options ?? {}
 
     const mutationFn: MutationFunction<
-        Awaited<ReturnType<typeof postUserInformations>>,
-        { userId: string; data: BodyType<PostUserInformationsRequestApiDTO> }
+        Awaited<ReturnType<typeof patchUserInformations>>,
+        { userId: string; data: BodyType<UserClassEditRequestApiDTO> }
     > = (props) => {
         const { userId, data } = props ?? {}
 
-        return postUserInformations(userId, data, requestOptions)
+        return patchUserInformations(userId, data, requestOptions)
     }
 
     return { mutationFn, ...mutationOptions }
 }
 
-export type PostUserInformationsMutationResult = NonNullable<
-    Awaited<ReturnType<typeof postUserInformations>>
+export type PatchUserInformationsMutationResult = NonNullable<
+    Awaited<ReturnType<typeof patchUserInformations>>
 >
-export type PostUserInformationsMutationBody =
-    BodyType<RegisterUserRequestApiDTO>
-export type PostUserInformationsMutationError = ErrorType<ErrorResponseApiDTO>
+export type PatchUserInformationsMutationBody =
+    BodyType<UserClassEditRequestApiDTO>
+export type PatchUserInformationsMutationError = ErrorType<ErrorResponseApiDTO>
 
-export const usePostUserInformations = <
+export const usePatchUserInformations = <
     TError = ErrorType<ErrorResponseApiDTO>,
     TContext = unknown,
 >(options?: {
     mutation?: UseMutationOptions<
-        Awaited<ReturnType<typeof postUserInformations>>,
+        Awaited<ReturnType<typeof patchUserInformations>>,
         TError,
-        { userId: string; data: BodyType<PostUserInformationsRequestApiDTO> },
+        { userId: string; data: BodyType<UserClassEditRequestApiDTO> },
         TContext
     >
     request?: SecondParameter<typeof customInstance>
 }): UseMutationResult<
-    Awaited<ReturnType<typeof postUserInformations>>,
+    Awaited<ReturnType<typeof patchUserInformations>>,
     TError,
-    { userId: string; data: BodyType<PostUserInformationsRequestApiDTO> },
+    { userId: string; data: BodyType<UserClassEditRequestApiDTO> },
     TContext
 > => {
-    const mutationOptions = getPostUserInformationsMutationOptions(options)
+    const mutationOptions = getPatchUserInformationsMutationOptions(options)
+
+    return useMutation(mutationOptions)
+}
+export const patchPassword = (
+    userId: string,
+    userClassEditPasswordRequestApiDTO: BodyType<UserClassEditPasswordRequestApiDTO>,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<UserClassEditPasswordResponseApiDTO>(
+        {
+            url: `/user/${userId}/edit-password`,
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            data: userClassEditPasswordRequestApiDTO,
+        },
+        options
+    )
+}
+
+export const getPatchPasswordMutationOptions = <
+    TError = ErrorType<ErrorResponseApiDTO>,
+    TContext = unknown,
+>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<typeof patchPassword>>,
+        TError,
+        { userId: string; data: BodyType<UserClassEditPasswordRequestApiDTO> },
+        TContext
+    >
+    request?: SecondParameter<typeof customInstance>
+}): UseMutationOptions<
+    Awaited<ReturnType<typeof patchPassword>>,
+    TError,
+    { userId: string; data: BodyType<UserClassEditPasswordRequestApiDTO> },
+    TContext
+> => {
+    const { mutation: mutationOptions, request: requestOptions } = options ?? {}
+
+    const mutationFn: MutationFunction<
+        Awaited<ReturnType<typeof patchPassword>>,
+        { userId: string; data: BodyType<UserClassEditPasswordRequestApiDTO> }
+    > = (props) => {
+        const { userId, data } = props ?? {}
+
+        return patchPassword(userId, data, requestOptions)
+    }
+
+    return { mutationFn, ...mutationOptions }
+}
+
+export type PatchPasswordMutationResult = NonNullable<
+    Awaited<ReturnType<typeof patchPassword>>
+>
+export type PatchPasswordMutationBody =
+    BodyType<UserClassEditPasswordRequestApiDTO>
+export type PatchPasswordMutationError = ErrorType<ErrorResponseApiDTO>
+
+export const usePatchPassword = <
+    TError = ErrorType<ErrorResponseApiDTO>,
+    TContext = unknown,
+>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<typeof patchPassword>>,
+        TError,
+        { userId: string; data: BodyType<UserClassEditPasswordRequestApiDTO> },
+        TContext
+    >
+    request?: SecondParameter<typeof customInstance>
+}): UseMutationResult<
+    Awaited<ReturnType<typeof patchPassword>>,
+    TError,
+    { userId: string; data: BodyType<UserClassEditPasswordRequestApiDTO> },
+    TContext
+> => {
+    const mutationOptions = getPatchPasswordMutationOptions(options)
 
     return useMutation(mutationOptions)
 }
