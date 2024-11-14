@@ -123,9 +123,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             onSuccess: () => {
                 router?.push('/')
             },
-            onError: (error) => {
-                console.log(error)
-            },
         },
     })
 

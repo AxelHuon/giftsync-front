@@ -74,7 +74,6 @@ AXIOS_INSTANCE.interceptors.response.use(
                     const refreshResponse = await refreshToken({
                         refreshToken: userInformationParsed.refreshToken,
                     })
-                    console.log(refreshResponse)
                     localStorage.setItem(
                         'user_information',
                         JSON.stringify({

@@ -52,9 +52,6 @@ export function EditUserInformationForm() {
                 })
                 await refetch()
             },
-            onError: async (error) => {
-                console.log(error)
-            },
         },
     })
 
