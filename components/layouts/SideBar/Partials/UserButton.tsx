@@ -32,6 +32,8 @@ const UserButton: React.FC = () => {
     const [editProfileDialogOpen, setEditProfileDialogOpen] =
         useState<boolean>(false)
 
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
+
     return (
         <>
             <DropdownMenu>
@@ -48,7 +50,7 @@ const UserButton: React.FC = () => {
                         >
                             <Avatar>
                                 <AvatarImage
-                                    src={`http://localhost:3001${userData?.profilePicture}`}
+                                    src={`${backendUrl}${userData?.profilePicture}`}
                                 />
                                 <AvatarFallback>
                                     {userData?.firstName[0]}
@@ -77,7 +79,7 @@ const UserButton: React.FC = () => {
                         <div className={'flex items-center gap-3'}>
                             <Avatar style={{ width: '35px', height: '35px' }}>
                                 <AvatarImage
-                                    src={`http://localhost:3001${userData?.profilePicture}`}
+                                    src={`${backendUrl}${userData?.profilePicture}`}
                                 />
                                 <AvatarFallback>
                                     {userData?.firstName[0]}

@@ -31,7 +31,7 @@ import { z } from 'zod'
 export function EditUserInformationForm() {
     const { authState } = useAuthContext()
     const { data: userData, refetch } = useGetUserById(authState?.id ?? '')
-
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
     const form = useForm<z.infer<typeof formEditUser>>({
         resolver: zodResolver(formEditUser),
         defaultValues: {
@@ -83,7 +83,7 @@ export function EditUserInformationForm() {
                 <div className={'flex items-center gap-[15px]'}>
                     <Avatar className={'w-[72px] h-[72px]'}>
                         <AvatarImage
-                            src={`http://localhost:3001${userData?.profilePicture}`}
+                            src={`${backendUrl}${userData?.profilePicture}`}
                         />
                         <AvatarFallback className={'bg-neutral-100'}>
                             <p className={'text-xl'}>
