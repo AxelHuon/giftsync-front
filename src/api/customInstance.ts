@@ -12,9 +12,13 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 
 export const AXIOS_INSTANCE = Axios.create({
     baseURL: process.env.NEXT_PUBLIC_BASE_URL_API,
-    headers: {
-        'Content-Type': 'application/json',
-    },
+})
+
+AXIOS_INSTANCE.interceptors.request.use((config) => {
+    if (config.data instanceof FormData) {
+        config.headers['Content-Type'] = 'multipart/form-data'
+    }
+    return config
 })
 
 AXIOS_INSTANCE.interceptors.request.use((config: CustomAxiosRequestConfig) => {

@@ -1,4 +1,8 @@
-import { Avatar, AvatarFallback } from '@/components/atoms/Avatar/Avatar'
+import {
+    Avatar,
+    AvatarFallback,
+    AvatarImage,
+} from '@/components/atoms/Avatar/Avatar'
 import { buttonVariants } from '@/components/atoms/Buttons/ClassicButton/Button'
 import {
     DropdownMenu,
@@ -43,6 +47,9 @@ const UserButton: React.FC = () => {
                             className={`flex items-center gap-2 ${sideBarIsOpen ? 'justify-start' : 'justify-center'}`}
                         >
                             <Avatar>
+                                <AvatarImage
+                                    src={`http://localhost:3001${userData?.profilePicture}`}
+                                />
                                 <AvatarFallback>
                                     {userData?.firstName[0]}
                                     {userData?.lastName[0]}
@@ -69,6 +76,9 @@ const UserButton: React.FC = () => {
                     <DropdownMenuLabel>
                         <div className={'flex items-center gap-3'}>
                             <Avatar style={{ width: '35px', height: '35px' }}>
+                                <AvatarImage
+                                    src={`http://localhost:3001${userData?.profilePicture}`}
+                                />
                                 <AvatarFallback>
                                     {userData?.firstName[0]}
                                     {userData?.lastName[0]}

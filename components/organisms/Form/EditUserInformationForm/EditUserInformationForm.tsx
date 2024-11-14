@@ -1,4 +1,8 @@
-import { Avatar, AvatarFallback } from '@/components/atoms/Avatar/Avatar'
+import {
+    Avatar,
+    AvatarFallback,
+    AvatarImage,
+} from '@/components/atoms/Avatar/Avatar'
 import { Button } from '@/components/atoms/Buttons/ClassicButton/Button'
 import { Input } from '@/components/atoms/Input/input'
 import { DatePicker } from '@/components/moleculs/DatePicker/DatePicker'
@@ -26,30 +30,24 @@ import { z } from 'zod'
 
 export function EditUserInformationForm() {
     const { authState } = useAuthContext()
-
-    const { data: userBasedData, refetch } = useGetUserById(authState?.id ?? '')
+    const { data: userData, refetch } = useGetUserById(authState?.id ?? '')
 
     const form = useForm<z.infer<typeof formEditUser>>({
         resolver: zodResolver(formEditUser),
         defaultValues: {
-            firstName: userBasedData?.firstName ?? '',
-            lastName: userBasedData?.lastName ?? '',
-            dateOfBirth: new Date(userBasedData?.dateOfBirth ?? ''),
+            firstName: userData?.firstName ?? '',
+            lastName: userData?.lastName ?? '',
+            dateOfBirth: new Date(userData?.dateOfBirth ?? ''),
         },
     })
 
     const { toast } = useToast()
 
-    const {
-        mutate,
-        isPending: isPending,
-        error,
-    } = usePatchUserInformations({
+    const { mutate, isPending, error } = usePatchUserInformations({
         mutation: {
             onSuccess: async () => {
                 toast({
                     variant: 'success',
-
                     title: 'Vos informations ont bien été modifiées',
                 })
                 await refetch()
@@ -59,14 +57,20 @@ export function EditUserInformationForm() {
             },
         },
     })
+
     const onSubmit = async (values: z.infer<typeof formEditUser>) => {
+        const formData = new FormData()
+        formData.append('firstName', values.firstName)
+        formData.append('lastName', values.lastName)
+        formData.append('dateOfBirth', values.dateOfBirth.toISOString())
+
+        if (values.profilePicture && values.profilePicture.length > 0) {
+            formData.append('profilePicture', values.profilePicture[0])
+        }
+
         await mutate({
             userId: authState?.id ?? '',
-            data: {
-                firstName: values.firstName,
-                lastName: values.lastName,
-                dateOfBirth: values.dateOfBirth.toISOString(),
-            },
+            data: formData as any,
         })
     }
 
@@ -78,27 +82,47 @@ export function EditUserInformationForm() {
             >
                 <div className={'flex items-center gap-[15px]'}>
                     <Avatar className={'w-[72px] h-[72px]'}>
+                        <AvatarImage
+                            src={`http://localhost:3001${userData?.profilePicture}`}
+                        />
                         <AvatarFallback className={'bg-neutral-100'}>
                             <p className={'text-xl'}>
-                                {userBasedData?.firstName[0]}
-                                {userBasedData?.lastName[0]}
+                                {userData?.firstName[0]}
+                                {userData?.lastName[0]}
                             </p>
                         </AvatarFallback>
                     </Avatar>
                     <div className={'flex flex-col gap-[4px] relative'}>
                         <p className={'text-neutral-900 text-2xl font-500'}>
-                            {userBasedData?.firstName} {userBasedData?.lastName}
+                            {userData?.firstName} {userData?.lastName}
                         </p>
-                        <p className={'text-base hover:underline'}>
-                            Changer de photo de profils
-                        </p>
-                        <Input
-                            className={'opacity-0 absolute bottom-0'}
-                            id="picture"
-                            type="file"
+                        <FormField
+                            control={form.control}
+                            name="profilePicture"
+                            render={({
+                                field: { onChange, value, ...rest },
+                            }) => (
+                                <FormItem>
+                                    <FormLabel htmlFor="picture">
+                                        Changer de photo de profil
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            id="picture"
+                                            type="file"
+                                            onChange={(e) =>
+                                                onChange(e.target.files)
+                                            }
+                                            {...rest}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
                         />
                     </div>
                 </div>
+
                 <div className={'flex gap-[20px] w-full'}>
                     <div className={'w-1/2'}>
                         <FormField
@@ -134,6 +158,7 @@ export function EditUserInformationForm() {
                         />
                     </div>
                 </div>
+
                 <FormField
                     control={form.control}
                     name="dateOfBirth"
@@ -148,6 +173,7 @@ export function EditUserInformationForm() {
                         </FormItem>
                     )}
                 />
+
                 {error && (
                     <FormMessage>
                         {translationPatchUserInformationsErrorMessageApi(
@@ -155,6 +181,7 @@ export function EditUserInformationForm() {
                         )}
                     </FormMessage>
                 )}
+
                 <Button className={'w-fit'} disabled={isPending} type="submit">
                     {isPending && (
                         <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />

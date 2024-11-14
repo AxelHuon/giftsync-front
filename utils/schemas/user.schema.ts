@@ -2,11 +2,10 @@ import { notEmpty } from '@/utils/schemas/zod'
 import { z } from 'zod'
 
 export const formEditUser = z.object({
-    firstName: z.string().pipe(notEmpty),
-    lastName: z.string().pipe(notEmpty),
-    dateOfBirth: z.date({
-        required_error: 'La date de naissance est requise',
-    }),
+    firstName: z.string().min(1, { message: 'First name is required' }),
+    lastName: z.string().min(1, { message: 'Last name is required' }),
+    dateOfBirth: z.date({ required_error: 'La date de naissance est requise' }),
+    profilePicture: z.any().optional(),
 })
 
 export const formEditPassword = z
