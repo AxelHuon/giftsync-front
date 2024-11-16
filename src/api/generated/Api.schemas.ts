@@ -132,6 +132,7 @@ export interface UserClassGetResponseApiDTO {
     id: string
     lastName: string
     updatedAt?: string
+    profilePicture?: string
 }
 
 export interface ErrorResponseApiDTO {
