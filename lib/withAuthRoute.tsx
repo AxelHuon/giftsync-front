@@ -1,4 +1,3 @@
-// components/withAuth.tsx
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { parseCookies } from 'nookies'
 
@@ -14,6 +13,10 @@ export function withAuthRoute(gssp: GetServerSideProps) {
                     permanent: false,
                 },
             }
+        }
+
+        if (token) {
+            /*Get current user*/
         }
 
         // Appel de la fonction getServerSideProps d'origine

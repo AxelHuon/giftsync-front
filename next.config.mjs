@@ -17,6 +17,15 @@ const nextConfig = {
     images: {
         minimumCacheTTL: 900,
     },
+    async redirects() {
+        return [
+            {
+                source: '/',
+                destination: '/dashboard',
+                permanent: true,
+            },
+        ]
+    },
     async headers() {
         return [
             {
