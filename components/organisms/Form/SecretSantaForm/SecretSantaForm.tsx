@@ -38,6 +38,7 @@ export function SecretSantaForm() {
                 { name: '', email: '' },
             ],
             maxPrice: 20,
+            title: '',
         },
     })
 
@@ -84,33 +85,56 @@ export function SecretSantaForm() {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="flex flex-col gap-[25px] w-full"
             >
-                <div className={'laptop:w-1/2'}>
-                    <FormField
-                        control={form.control}
-                        name="maxPrice"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Prix maximum</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        type="number"
-                                        min="0"
-                                        onChange={(e) => {
-                                            const value = e.target.value
-                                            // Convertir la valeur en nombre ou mettre à zéro si vide
-                                            field.onChange(
-                                                value ? Number(value) : 0
-                                            )
-                                        }}
+                <div className={'flex gap-3'}>
+                    <div className={'laptop:w-1/2'}>
+                        <FormField
+                            control={form.control}
+                            name="maxPrice"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Prix maximum</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            type="number"
+                                            min="0"
+                                            onChange={(e) => {
+                                                const value = e.target.value
+                                                // Convertir la valeur en nombre ou mettre à zéro si vide
+                                                field.onChange(
+                                                    value ? Number(value) : 0
+                                                )
+                                            }}
+                                        />
+                                    </FormControl>
+                                    <FormMessage
+                                        className={
+                                            'absolute left-0 bottom-[-10px]'
+                                        }
                                     />
-                                </FormControl>
-                                <FormMessage
-                                    className={'absolute left-0 bottom-[-10px]'}
-                                />
-                            </FormItem>
-                        )}
-                    />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                    <div className={'laptop:w-1/2'}>
+                        <FormField
+                            control={form.control}
+                            name="title"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Titre</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} />
+                                    </FormControl>
+                                    <FormMessage
+                                        className={
+                                            'absolute left-0 bottom-[-10px]'
+                                        }
+                                    />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
                 </div>
                 <p className={'text-lg text-neutral-900 font-500'}>
                     Rentrez les personnes que vous shouaitez invitez 🙋‍♂️

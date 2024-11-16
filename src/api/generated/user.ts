@@ -19,9 +19,9 @@ import type {
 } from '@tanstack/react-query'
 import type {
     ErrorResponseApiDTO,
+    PatchUserInformationsApiBodies,
     UserClassEditPasswordRequestApiDTO,
     UserClassEditPasswordResponseApiDTO,
-    UserClassEditRequestApiDTO,
     UserClassGetResponseApiDTO,
 } from './Api.schemas'
 import { customInstance } from '../customInstance'
@@ -327,15 +327,35 @@ export function useGetUserById<
 
 export const patchUserInformations = (
     userId: string,
-    userClassEditRequestApiDTO: BodyType<UserClassEditRequestApiDTO>,
+    patchUserInformationsApiBodies?: BodyType<PatchUserInformationsApiBodies>,
     options?: SecondParameter<typeof customInstance>
 ) => {
+    const formData = new FormData()
+    if (patchUserInformationsApiBodies?.firstName !== undefined) {
+        formData.append('firstName', patchUserInformationsApiBodies.firstName)
+    }
+    if (patchUserInformationsApiBodies?.lastName !== undefined) {
+        formData.append('lastName', patchUserInformationsApiBodies.lastName)
+    }
+    if (patchUserInformationsApiBodies?.dateOfBirth !== undefined) {
+        formData.append(
+            'dateOfBirth',
+            patchUserInformationsApiBodies.dateOfBirth
+        )
+    }
+    if (patchUserInformationsApiBodies?.profilePicture !== undefined) {
+        formData.append(
+            'profilePicture',
+            patchUserInformationsApiBodies.profilePicture
+        )
+    }
+
     return customInstance<UserClassGetResponseApiDTO>(
         {
             url: `/user/${userId}`,
             method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            data: userClassEditRequestApiDTO,
+            headers: { 'Content-Type': 'multipart/form-data' },
+            data: formData,
         },
         options
     )
@@ -348,21 +368,21 @@ export const getPatchUserInformationsMutationOptions = <
     mutation?: UseMutationOptions<
         Awaited<ReturnType<typeof patchUserInformations>>,
         TError,
-        { userId: string; data: BodyType<UserClassEditRequestApiDTO> },
+        { userId: string; data: BodyType<PatchUserInformationsApiBodies> },
         TContext
     >
     request?: SecondParameter<typeof customInstance>
 }): UseMutationOptions<
     Awaited<ReturnType<typeof patchUserInformations>>,
     TError,
-    { userId: string; data: BodyType<UserClassEditRequestApiDTO> },
+    { userId: string; data: BodyType<PatchUserInformationsApiBodies> },
     TContext
 > => {
     const { mutation: mutationOptions, request: requestOptions } = options ?? {}
 
     const mutationFn: MutationFunction<
         Awaited<ReturnType<typeof patchUserInformations>>,
-        { userId: string; data: BodyType<UserClassEditRequestApiDTO> }
+        { userId: string; data: BodyType<PatchUserInformationsApiBodies> }
     > = (props) => {
         const { userId, data } = props ?? {}
 
@@ -376,7 +396,7 @@ export type PatchUserInformationsMutationResult = NonNullable<
     Awaited<ReturnType<typeof patchUserInformations>>
 >
 export type PatchUserInformationsMutationBody =
-    BodyType<UserClassEditRequestApiDTO>
+    BodyType<PatchUserInformationsApiBodies>
 export type PatchUserInformationsMutationError = ErrorType<ErrorResponseApiDTO>
 
 export const usePatchUserInformations = <
@@ -386,14 +406,14 @@ export const usePatchUserInformations = <
     mutation?: UseMutationOptions<
         Awaited<ReturnType<typeof patchUserInformations>>,
         TError,
-        { userId: string; data: BodyType<UserClassEditRequestApiDTO> },
+        { userId: string; data: BodyType<PatchUserInformationsApiBodies> },
         TContext
     >
     request?: SecondParameter<typeof customInstance>
 }): UseMutationResult<
     Awaited<ReturnType<typeof patchUserInformations>>,
     TError,
-    { userId: string; data: BodyType<UserClassEditRequestApiDTO> },
+    { userId: string; data: BodyType<PatchUserInformationsApiBodies> },
     TContext
 > => {
     const mutationOptions = getPatchUserInformationsMutationOptions(options)

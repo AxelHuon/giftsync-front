@@ -4,6 +4,13 @@
  * gift-sync-back-end
  * OpenAPI spec version: 1.0.0
  */
+export type PatchUserInformationsApiBodies = {
+    dateOfBirth?: string
+    firstName?: string
+    lastName?: string
+    profilePicture?: Blob
+}
+
 export interface ResetPasswordRequestApiDTO {
     newPassword: string
     token: string
@@ -44,6 +51,7 @@ export interface SignInUserResponseApiDTO {
     firstName: string
     id: string
     lastName: string
+    profilePicture?: string
     refreshToken: string
 }
 
@@ -96,6 +104,7 @@ export interface UserSecretSantaApiDTO {
 
 export interface SecretSantaRequestApiDTO {
     maxPrice: number
+    title: string
     users: UserSecretSantaApiDTO[]
 }
 
@@ -115,12 +124,6 @@ export interface UserClassEditPasswordResponseApiDTO {
     message: string
 }
 
-export interface UserClassEditRequestApiDTO {
-    dateOfBirth: string
-    firstName: string
-    lastName: string
-}
-
 export interface UserClassGetResponseApiDTO {
     createdAt?: string
     dateOfBirth: string
@@ -129,7 +132,6 @@ export interface UserClassGetResponseApiDTO {
     id: string
     lastName: string
     updatedAt?: string
-    profilePicture?: string
 }
 
 export interface ErrorResponseApiDTO {
