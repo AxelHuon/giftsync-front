@@ -19,9 +19,10 @@ import type {
 } from '@tanstack/react-query'
 import type {
     ErrorResponseApiDTO,
-    PatchUserInformationsApiBodies,
+    PatchUserApiBodies,
     UserClassEditPasswordRequestApiDTO,
     UserClassEditPasswordResponseApiDTO,
+    UserClassEditResponseApiDTO,
     UserClassGetResponseApiDTO,
 } from './Api.schemas'
 import { customInstance } from '../customInstance'
@@ -325,32 +326,26 @@ export function useGetUserById<
     return query
 }
 
-export const patchUserInformations = (
+export const patchUser = (
     userId: string,
-    patchUserInformationsApiBodies?: BodyType<PatchUserInformationsApiBodies>,
+    patchUserApiBodies?: BodyType<PatchUserApiBodies>,
     options?: SecondParameter<typeof customInstance>
 ) => {
     const formData = new FormData()
-    if (patchUserInformationsApiBodies?.firstName !== undefined) {
-        formData.append('firstName', patchUserInformationsApiBodies.firstName)
+    if (patchUserApiBodies?.firstName !== undefined) {
+        formData.append('firstName', patchUserApiBodies.firstName)
     }
-    if (patchUserInformationsApiBodies?.lastName !== undefined) {
-        formData.append('lastName', patchUserInformationsApiBodies.lastName)
+    if (patchUserApiBodies?.lastName !== undefined) {
+        formData.append('lastName', patchUserApiBodies.lastName)
     }
-    if (patchUserInformationsApiBodies?.dateOfBirth !== undefined) {
-        formData.append(
-            'dateOfBirth',
-            patchUserInformationsApiBodies.dateOfBirth
-        )
+    if (patchUserApiBodies?.dateOfBirth !== undefined) {
+        formData.append('dateOfBirth', patchUserApiBodies.dateOfBirth)
     }
-    if (patchUserInformationsApiBodies?.profilePicture !== undefined) {
-        formData.append(
-            'profilePicture',
-            patchUserInformationsApiBodies.profilePicture
-        )
+    if (patchUserApiBodies?.profilePicture !== undefined) {
+        formData.append('profilePicture', patchUserApiBodies.profilePicture)
     }
 
-    return customInstance<UserClassGetResponseApiDTO>(
+    return customInstance<UserClassEditResponseApiDTO>(
         {
             url: `/user/${userId}`,
             method: 'PATCH',
@@ -361,62 +356,61 @@ export const patchUserInformations = (
     )
 }
 
-export const getPatchUserInformationsMutationOptions = <
+export const getPatchUserMutationOptions = <
     TError = ErrorType<ErrorResponseApiDTO>,
     TContext = unknown,
 >(options?: {
     mutation?: UseMutationOptions<
-        Awaited<ReturnType<typeof patchUserInformations>>,
+        Awaited<ReturnType<typeof patchUser>>,
         TError,
-        { userId: string; data: BodyType<PatchUserInformationsApiBodies> },
+        { userId: string; data: BodyType<PatchUserApiBodies> },
         TContext
     >
     request?: SecondParameter<typeof customInstance>
 }): UseMutationOptions<
-    Awaited<ReturnType<typeof patchUserInformations>>,
+    Awaited<ReturnType<typeof patchUser>>,
     TError,
-    { userId: string; data: BodyType<PatchUserInformationsApiBodies> },
+    { userId: string; data: BodyType<PatchUserApiBodies> },
     TContext
 > => {
     const { mutation: mutationOptions, request: requestOptions } = options ?? {}
 
     const mutationFn: MutationFunction<
-        Awaited<ReturnType<typeof patchUserInformations>>,
-        { userId: string; data: BodyType<PatchUserInformationsApiBodies> }
+        Awaited<ReturnType<typeof patchUser>>,
+        { userId: string; data: BodyType<PatchUserApiBodies> }
     > = (props) => {
         const { userId, data } = props ?? {}
 
-        return patchUserInformations(userId, data, requestOptions)
+        return patchUser(userId, data, requestOptions)
     }
 
     return { mutationFn, ...mutationOptions }
 }
 
-export type PatchUserInformationsMutationResult = NonNullable<
-    Awaited<ReturnType<typeof patchUserInformations>>
+export type PatchUserMutationResult = NonNullable<
+    Awaited<ReturnType<typeof patchUser>>
 >
-export type PatchUserInformationsMutationBody =
-    BodyType<PatchUserInformationsApiBodies>
-export type PatchUserInformationsMutationError = ErrorType<ErrorResponseApiDTO>
+export type PatchUserMutationBody = BodyType<PatchUserApiBodies>
+export type PatchUserMutationError = ErrorType<ErrorResponseApiDTO>
 
-export const usePatchUserInformations = <
+export const usePatchUser = <
     TError = ErrorType<ErrorResponseApiDTO>,
     TContext = unknown,
 >(options?: {
     mutation?: UseMutationOptions<
-        Awaited<ReturnType<typeof patchUserInformations>>,
+        Awaited<ReturnType<typeof patchUser>>,
         TError,
-        { userId: string; data: BodyType<PatchUserInformationsApiBodies> },
+        { userId: string; data: BodyType<PatchUserApiBodies> },
         TContext
     >
     request?: SecondParameter<typeof customInstance>
 }): UseMutationResult<
-    Awaited<ReturnType<typeof patchUserInformations>>,
+    Awaited<ReturnType<typeof patchUser>>,
     TError,
-    { userId: string; data: BodyType<PatchUserInformationsApiBodies> },
+    { userId: string; data: BodyType<PatchUserApiBodies> },
     TContext
 > => {
-    const mutationOptions = getPatchUserInformationsMutationOptions(options)
+    const mutationOptions = getPatchUserMutationOptions(options)
 
     return useMutation(mutationOptions)
 }

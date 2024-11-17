@@ -4,7 +4,7 @@
  * gift-sync-back-end
  * OpenAPI spec version: 1.0.0
  */
-export type PatchUserInformationsApiBodies = {
+export type PatchUserApiBodies = {
     dateOfBirth?: string
     firstName?: string
     lastName?: string
@@ -124,6 +124,11 @@ export interface UserClassEditPasswordResponseApiDTO {
     message: string
 }
 
+export interface UserClassEditResponseApiDTO {
+    code: string
+    message: string
+}
+
 export interface UserClassGetResponseApiDTO {
     createdAt?: string
     dateOfBirth: string
@@ -131,8 +136,8 @@ export interface UserClassGetResponseApiDTO {
     firstName: string
     id: string
     lastName: string
-    updatedAt?: string
     profilePicture?: string
+    updatedAt?: string
 }
 
 export interface ErrorResponseApiDTO {

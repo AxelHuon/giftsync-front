@@ -16,10 +16,8 @@ import {
 } from '@/components/organisms/Form/Form'
 import { useAuthContext } from '@/hooks/useAuth'
 import { useToast } from '@/hooks/useToast'
-import {
-    useGetUserById,
-    usePatchUserInformations,
-} from '@/src/api/generated/user'
+import { PatchUserApiBodies } from '@/src/api/generated/Api.schemas'
+import { useGetUserById, usePatchUser } from '@/src/api/generated/user'
 import { formEditUser } from '@/utils/schemas/user.schema'
 import { translationPatchUserInformationsErrorMessageApi } from '@/utils/translationErrorMessageApi/translationErrorMessageApi'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -43,7 +41,7 @@ export function EditUserInformationForm() {
 
     const { toast } = useToast()
 
-    const { mutate, isPending, error } = usePatchUserInformations({
+    const { mutate, isPending, error } = usePatchUser({
         mutation: {
             onSuccess: async () => {
                 toast({
@@ -56,18 +54,17 @@ export function EditUserInformationForm() {
     })
 
     const onSubmit = async (values: z.infer<typeof formEditUser>) => {
-        const formData = new FormData()
-        formData.append('firstName', values.firstName)
-        formData.append('lastName', values.lastName)
-        formData.append('dateOfBirth', values.dateOfBirth.toISOString())
-
-        if (values.profilePicture && values.profilePicture.length > 0) {
-            formData.append('profilePicture', values.profilePicture[0])
+        const data: PatchUserApiBodies = {
+            firstName: values.firstName,
+            lastName: values.lastName,
+            dateOfBirth: values.dateOfBirth.toISOString(),
         }
-
+        if (values.profilePicture && values.profilePicture[0]) {
+            data.profilePicture = values.profilePicture[0]
+        }
         await mutate({
             userId: authState?.id ?? '',
-            data: formData as any,
+            data: data,
         })
     }
 
@@ -93,32 +90,28 @@ export function EditUserInformationForm() {
                         <p className={'text-neutral-900 text-2xl font-500'}>
                             {userData?.firstName} {userData?.lastName}
                         </p>
-                        <FormField
-                            control={form.control}
-                            name="profilePicture"
-                            render={({
-                                field: { onChange, value, ...rest },
-                            }) => (
-                                <FormItem>
-                                    <FormLabel htmlFor="picture">
-                                        Changer de photo de profil
-                                    </FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            id="picture"
-                                            type="file"
-                                            onChange={(e) =>
-                                                onChange(e.target.files)
-                                            }
-                                            {...rest}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
                     </div>
                 </div>
+                <FormField
+                    control={form.control}
+                    name="profilePicture"
+                    render={({ field: { onChange, value, ...rest } }) => (
+                        <FormItem>
+                            <FormLabel htmlFor="picture">
+                                Changer de photo de profil
+                            </FormLabel>
+                            <FormControl>
+                                <Input
+                                    id="picture"
+                                    type="file"
+                                    onChange={(e) => onChange(e.target.files)}
+                                    {...rest}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
 
                 <div className={'flex gap-[20px] w-full'}>
                     <div className={'w-1/2'}>
