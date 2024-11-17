@@ -22,6 +22,10 @@ const MenuSideBar: React.FC = () => {
 
     const [giftCollapseOpen, setGiftCollapseOpen] = useState<boolean>(false)
 
+    const handleContentClick = (e: React.MouseEvent) => {
+        e.stopPropagation()
+    }
+
     const handleClickCollapsible = (collapseToOpen: string) => {
         if (!sideBarIsOpen) {
             toggleSideBar()
@@ -72,15 +76,17 @@ const MenuSideBar: React.FC = () => {
                             {sideBarIsOpen && <p>Familles</p>}
                         </Button>
                     </CollapsibleTrigger>
-                    <CollapsibleContent>
+                    <CollapsibleContent onClick={handleContentClick}>
                         <ul
                             className={
                                 'ml-[20px] pl-[10px] border-l border-neutral-200'
                             }
                         >
                             <li>
-                                <Button size={'sm'} variant={'ghost'}>
-                                    Listes de familles
+                                <Button asChild size={'sm'} variant={'ghost'}>
+                                    <Link href={'/familles'}>
+                                        Listes de familles
+                                    </Link>
                                 </Button>
                             </li>
                             <li>

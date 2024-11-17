@@ -3,8 +3,8 @@ import { notEmpty } from '@/utils/schemas/zod'
 import { z } from 'zod'
 
 export const UserSecretSanta = z.object({
-    email: z.string().email(),
-    name: z.string(),
+    email: z.string().email("L'email n'est pas valide").pipe(notEmpty),
+    name: z.string().pipe(notEmpty),
 })
 
 export const SecretSantaRequest = z.object({

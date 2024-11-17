@@ -85,8 +85,27 @@ export function SecretSantaForm() {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="flex flex-col gap-[25px] w-full"
             >
-                <div className={'flex gap-3'}>
-                    <div className={'laptop:w-1/2'}>
+                <div className={'flex gap-[20px] laptop:gap-[43px]'}>
+                    <div className={'w-1/2'}>
+                        <FormField
+                            control={form.control}
+                            name="title"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Titre</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} />
+                                    </FormControl>
+                                    <FormMessage
+                                        className={
+                                            'absolute left-0 bottom-[-10px]'
+                                        }
+                                    />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                    <div className={'w-1/2'}>
                         <FormField
                             control={form.control}
                             name="maxPrice"
@@ -116,88 +135,84 @@ export function SecretSantaForm() {
                             )}
                         />
                     </div>
-                    <div className={'laptop:w-1/2'}>
-                        <FormField
-                            control={form.control}
-                            name="title"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Titre</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} />
-                                    </FormControl>
-                                    <FormMessage
-                                        className={
-                                            'absolute left-0 bottom-[-10px]'
-                                        }
+                </div>
+                <div
+                    className={
+                        'w-full grid gap-[20px] grid-cols-1 laptop:grid-cols-2 laptop:gap-[43px]'
+                    }
+                >
+                    {fields.map((field, index) => (
+                        <div className={'flex w-full flex-col gap-3'}>
+                            <p className={'font-500 text-xl'}>
+                                Personne {index + 1}
+                            </p>
+                            <div
+                                key={field.id}
+                                className="flex relative flex-col p-[20px] rounded-xl border border-neutral-500 gap-4 items-start"
+                            >
+                                <div className={'w-full'}>
+                                    <FormField
+                                        control={form.control}
+                                        name={`users.${index}.name`}
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Nom</FormLabel>
+                                                <FormControl>
+                                                    <Input
+                                                        type={'text'}
+                                                        {...field}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
                                     />
-                                </FormItem>
-                            )}
-                        />
+                                </div>
+                                <div className={'w-full'}>
+                                    <FormField
+                                        control={form.control}
+                                        name={`users.${index}.email`}
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Email</FormLabel>
+                                                <FormControl>
+                                                    <Input
+                                                        {...field}
+                                                        type="text"
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
+                                <Button
+                                    type={'button'}
+                                    disabled={index <= 2}
+                                    className={
+                                        'absolute  disabled:opacity-0 top-[-15px] right-[-15px]'
+                                    }
+                                    onClick={() => remove(index)}
+                                    variant={'destructive'}
+                                    size={'icon'}
+                                >
+                                    <TrashIcon width={'16'} />
+                                </Button>
+                            </div>
+                        </div>
+                    ))}
+                    <div
+                        onClick={() => append({ name: '', email: '' })}
+                        className={'flex w-full flex-col gap-3 cursor-pointer'}
+                    >
+                        <p className={'font-500 text-xl'}>
+                            Ajouter une personne
+                        </p>
+                        <div className="flex h-[202px] hover:border-primary-500 transition-all duration-150 border-dashed relative p-[20px] rounded-xl border border-neutral-500 gap-4 items-center justify-center">
+                            <PlusIcon width={'30'} />
+                        </div>
                     </div>
                 </div>
-                <p className={'text-lg text-neutral-900 font-500'}>
-                    Rentrez les personnes que vous shouaitez invitez 🙋‍♂️
-                </p>
-                {fields.map((field, index) => (
-                    <div
-                        key={field.id}
-                        className="flex flex-col laptop:flex-row p-[20px] rounded-xl border border-gray-500 gap-4 items-start"
-                    >
-                        <div className={'w-full laptop:w-1/2'}>
-                            <FormField
-                                control={form.control}
-                                name={`users.${index}.name`}
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Nom</FormLabel>
-                                        <FormControl>
-                                            <Input type={'text'} {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-                        <div className={'w-full laptop:w-1/2'}>
-                            <FormField
-                                control={form.control}
-                                name={`users.${index}.email`}
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Email</FormLabel>
-                                        <FormControl>
-                                            <Input {...field} type="text" />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-
-                        <Button
-                            className={
-                                'w-full flex items-center gap-2 bg-destructive-500 hover:bg-destructive-600 laptop:w-fit laptop:mt-[31px]'
-                            }
-                            disabled={index <= 2}
-                            type="button"
-                            onClick={() => remove(index)}
-                        >
-                            Supprimer ce participant
-                            <TrashIcon width={'16'} />
-                        </Button>
-                    </div>
-                ))}
-                <Button
-                    className={
-                        'w-fit flex items-center gap-2 bg-green-600 hover:bg-green-700'
-                    }
-                    type="button"
-                    onClick={() => append({ name: '', email: '' })}
-                >
-                    Ajouter un participant
-                    <PlusIcon width={'16'} />
-                </Button>
                 {error && (
                     <FormMessage>
                         {translationResetPasswordErrorMessageApi(
@@ -209,7 +224,7 @@ export function SecretSantaForm() {
                     {isPending && (
                         <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
                     )}
-                    Envoyer votre secret santa 🎁
+                    Envoyer
                 </Button>
             </form>
         </Form>
