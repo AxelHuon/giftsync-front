@@ -53,9 +53,7 @@ const SecretSanta: React.FC = () => {
                             Le titre que vous choisissez sera utilisé comme
                             objet du mail que chaque participant recevra. Pour
                             organiser un Secret Santa, il faut un minimum de 3
-                            participants pour garantir le tirage au sort, et un
-                            maximum de 20 pour que tout reste simple et
-                            convivial. 🎅🎁
+                            participants pour garantir le tirage au sort 🎅🎁
                         </p>
                     </div>
                 </div>

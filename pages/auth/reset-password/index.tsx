@@ -38,13 +38,6 @@ const Signing: React.FC = () => {
                         >
                             Nouveau mot de passe 🧐
                         </h2>
-                        <p
-                            className={
-                                'font-variable text-center  font-400 text-neutral-700'
-                            }
-                        >
-                            Change ton mot de passe pour continuer !
-                        </p>
                     </div>
                     <div className={'w-full laptop:max-w-[550px]'}>
                         <ResetPasswordForm />
