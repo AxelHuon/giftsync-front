@@ -28,14 +28,22 @@ import { z } from 'zod'
 
 export function EditUserInformationForm() {
     const { authState } = useAuthContext()
-    const { data: userData, refetch } = useGetUserById(authState?.id ?? '')
+    const {
+        data: userData,
+        refetch,
+        isLoading,
+    } = useGetUserById(authState?.id ?? '')
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
     const form = useForm<z.infer<typeof formEditUser>>({
         resolver: zodResolver(formEditUser),
         defaultValues: {
-            firstName: userData?.firstName ?? '',
-            lastName: userData?.lastName ?? '',
-            dateOfBirth: new Date(userData?.dateOfBirth ?? ''),
+            firstName: userData?.firstName ?? authState?.firstName ?? '',
+            lastName: userData?.lastName ?? authState?.lastName ?? '',
+            dateOfBirth: userData?.dateOfBirth
+                ? new Date(userData?.dateOfBirth)
+                : authState?.dateOfBirth
+                  ? new Date(authState?.dateOfBirth)
+                  : new Date(),
         },
     })
 
@@ -57,7 +65,7 @@ export function EditUserInformationForm() {
         const data: PatchUserApiBodies = {
             firstName: values.firstName,
             lastName: values.lastName,
-            dateOfBirth: values.dateOfBirth.toISOString(),
+            dateOfBirth: values.dateOfBirth.toString(),
         }
         if (values.profilePicture && values.profilePicture[0]) {
             data.profilePicture = values.profilePicture[0]

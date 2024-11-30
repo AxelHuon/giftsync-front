@@ -25,7 +25,9 @@ const UserButton: React.FC = () => {
     const { authState, handleLogout } = useAuthContext()
     const { sideBarIsOpen } = useSettings()
 
-    const { data: userData } = useGetUserById(authState?.id ?? '')
+    const { data: userData } = useGetUserById(authState?.id ?? '', {
+        query: { enabled: !!authState },
+    })
 
     const [editProfileDialogOpen, setEditProfileDialogOpen] =
         useState<boolean>(false)

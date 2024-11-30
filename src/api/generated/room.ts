@@ -394,25 +394,25 @@ export const useUpdateRoom = <
     return useMutation(mutationOptions)
 }
 export const getRoomById = (
-    roomId: string,
+    roomSlug: string,
     options?: SecondParameter<typeof customInstance>,
     signal?: AbortSignal
 ) => {
     return customInstance<RoomAttributesApiDTO>(
-        { url: `/room/${roomId}`, method: 'GET', signal },
+        { url: `/room/${roomSlug}`, method: 'GET', signal },
         options
     )
 }
 
-export const getGetRoomByIdQueryKey = (roomId: string) => {
-    return [`/room/${roomId}`] as const
+export const getGetRoomByIdQueryKey = (roomSlug: string) => {
+    return [`/room/${roomSlug}`] as const
 }
 
 export const getGetRoomByIdQueryOptions = <
     TData = Awaited<ReturnType<typeof getRoomById>>,
     TError = ErrorType<ErrorResponseApiDTO>,
 >(
-    roomId: string,
+    roomSlug: string,
     options?: {
         query?: Partial<
             UseQueryOptions<
@@ -426,16 +426,16 @@ export const getGetRoomByIdQueryOptions = <
 ) => {
     const { query: queryOptions, request: requestOptions } = options ?? {}
 
-    const queryKey = queryOptions?.queryKey ?? getGetRoomByIdQueryKey(roomId)
+    const queryKey = queryOptions?.queryKey ?? getGetRoomByIdQueryKey(roomSlug)
 
     const queryFn: QueryFunction<Awaited<ReturnType<typeof getRoomById>>> = ({
         signal,
-    }) => getRoomById(roomId, requestOptions, signal)
+    }) => getRoomById(roomSlug, requestOptions, signal)
 
     return {
         queryKey,
         queryFn,
-        enabled: !!roomId,
+        enabled: !!roomSlug,
         ...queryOptions,
     } as UseQueryOptions<
         Awaited<ReturnType<typeof getRoomById>>,
@@ -453,7 +453,7 @@ export function useGetRoomById<
     TData = Awaited<ReturnType<typeof getRoomById>>,
     TError = ErrorType<ErrorResponseApiDTO>,
 >(
-    roomId: string,
+    roomSlug: string,
     options: {
         query: Partial<
             UseQueryOptions<
@@ -477,7 +477,7 @@ export function useGetRoomById<
     TData = Awaited<ReturnType<typeof getRoomById>>,
     TError = ErrorType<ErrorResponseApiDTO>,
 >(
-    roomId: string,
+    roomSlug: string,
     options?: {
         query?: Partial<
             UseQueryOptions<
@@ -501,7 +501,7 @@ export function useGetRoomById<
     TData = Awaited<ReturnType<typeof getRoomById>>,
     TError = ErrorType<ErrorResponseApiDTO>,
 >(
-    roomId: string,
+    roomSlug: string,
     options?: {
         query?: Partial<
             UseQueryOptions<
@@ -518,7 +518,7 @@ export function useGetRoomById<
     TData = Awaited<ReturnType<typeof getRoomById>>,
     TError = ErrorType<ErrorResponseApiDTO>,
 >(
-    roomId: string,
+    roomSlug: string,
     options?: {
         query?: Partial<
             UseQueryOptions<
@@ -530,7 +530,7 @@ export function useGetRoomById<
         request?: SecondParameter<typeof customInstance>
     }
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-    const queryOptions = getGetRoomByIdQueryOptions(roomId, options)
+    const queryOptions = getGetRoomByIdQueryOptions(roomSlug, options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
         queryKey: QueryKey

@@ -4,6 +4,7 @@ import {
     CollapsibleContent,
     CollapsibleTrigger,
 } from '@/components/moleculs/Collapsible/Collapsible'
+import DialogCreateFamily from '@/components/organisms/Dialog/DialogCreateFamily/DialogCreateFamily'
 import { useSettings } from '@/providers/SettingsProvider'
 import {
     CandyCaneIcon,
@@ -46,6 +47,9 @@ const MenuSideBar: React.FC = () => {
         }
     }
 
+    const [modalCreateFamilyOpen, setModalCreateFamilyOpen] =
+        useState<boolean>(false)
+
     return (
         <div className={'flex flex-col gap-[12px]'}>
             {sideBarIsOpen && (
@@ -83,15 +87,21 @@ const MenuSideBar: React.FC = () => {
                             }
                         >
                             <li>
-                                <Button asChild size={'sm'} variant={'ghost'}>
-                                    <Link href={'/familles'}>
-                                        Listes de familles
-                                    </Link>
+                                <Button
+                                    onClick={() =>
+                                        setModalCreateFamilyOpen(true)
+                                    }
+                                    size={'sm'}
+                                    variant={'ghost'}
+                                >
+                                    Créer une nouvelle famille
                                 </Button>
                             </li>
                             <li>
-                                <Button size={'sm'} variant={'ghost'}>
-                                    Créer une nouvelle famille
+                                <Button asChild size={'sm'} variant={'ghost'}>
+                                    <Link href={'/family'}>
+                                        Listes de familles
+                                    </Link>
                                 </Button>
                             </li>
                             <li>
@@ -151,6 +161,10 @@ const MenuSideBar: React.FC = () => {
                     </Link>
                 </Button>
             </div>
+            <DialogCreateFamily
+                open={modalCreateFamilyOpen}
+                setOpen={setModalCreateFamilyOpen}
+            />
         </div>
     )
 }

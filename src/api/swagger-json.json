@@ -1199,7 +1199,7 @@
 				}
 			}
 		},
-		"/room/{roomId}": {
+		"/room/{roomSlug}": {
 			"get": {
 				"operationId": "GetRoomById",
 				"responses": {
@@ -1251,7 +1251,7 @@
 				"parameters": [
 					{
 						"in": "path",
-						"name": "roomId",
+						"name": "roomSlug",
 						"required": true,
 						"schema": {
 							"type": "string"

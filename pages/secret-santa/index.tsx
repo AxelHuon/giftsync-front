@@ -1,15 +1,11 @@
-import AppLayoutServer from '@/components/layouts/AppLayout/AppLayout.server'
 import { SecretSantaForm } from '@/components/organisms/Form/SecretSantaForm/SecretSantaForm'
 import { InfoIcon } from 'lucide-react'
-import { useTheme } from 'next-themes'
 import Image from 'next/image'
 import React from 'react'
 
 const SecretSanta: React.FC = () => {
-    const { theme } = useTheme()
-
     return (
-        <AppLayoutServer>
+        <section>
             <div
                 className={
                     'flex flex-col gap-[30px] relative max-w-[1200px] m-auto'
@@ -59,7 +55,7 @@ const SecretSanta: React.FC = () => {
                 </div>
                 <SecretSantaForm />
             </div>
-        </AppLayoutServer>
+        </section>
     )
 }
 
