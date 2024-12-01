@@ -19,6 +19,7 @@ import type {
 } from '@tanstack/react-query'
 import type {
     CreateRoomRequestApiDTO,
+    EditRoomRequestApiDTO,
     ErrorResponseApiDTO,
     GetRoomOfUserResponseApiDTO,
     InviteUserRequestApiDTO,
@@ -320,9 +321,9 @@ export const useDeleteRoom = <
 
     return useMutation(mutationOptions)
 }
-export const updateRoom = (
+export const putRoom = (
     roomId: string,
-    createRoomRequestApiDTO: BodyType<CreateRoomRequestApiDTO>,
+    editRoomRequestApiDTO: BodyType<EditRoomRequestApiDTO>,
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<RoomAttributesApiDTO>(
@@ -330,67 +331,136 @@ export const updateRoom = (
             url: `/room/update/${roomId}`,
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            data: createRoomRequestApiDTO,
+            data: editRoomRequestApiDTO,
         },
         options
     )
 }
 
-export const getUpdateRoomMutationOptions = <
+export const getPutRoomMutationOptions = <
     TError = ErrorType<ErrorResponseApiDTO>,
     TContext = unknown,
 >(options?: {
     mutation?: UseMutationOptions<
-        Awaited<ReturnType<typeof updateRoom>>,
+        Awaited<ReturnType<typeof putRoom>>,
         TError,
-        { roomId: string; data: BodyType<CreateRoomRequestApiDTO> },
+        { roomId: string; data: BodyType<EditRoomRequestApiDTO> },
         TContext
     >
     request?: SecondParameter<typeof customInstance>
 }): UseMutationOptions<
-    Awaited<ReturnType<typeof updateRoom>>,
+    Awaited<ReturnType<typeof putRoom>>,
     TError,
-    { roomId: string; data: BodyType<CreateRoomRequestApiDTO> },
+    { roomId: string; data: BodyType<EditRoomRequestApiDTO> },
     TContext
 > => {
     const { mutation: mutationOptions, request: requestOptions } = options ?? {}
 
     const mutationFn: MutationFunction<
-        Awaited<ReturnType<typeof updateRoom>>,
-        { roomId: string; data: BodyType<CreateRoomRequestApiDTO> }
+        Awaited<ReturnType<typeof putRoom>>,
+        { roomId: string; data: BodyType<EditRoomRequestApiDTO> }
     > = (props) => {
         const { roomId, data } = props ?? {}
 
-        return updateRoom(roomId, data, requestOptions)
+        return putRoom(roomId, data, requestOptions)
     }
 
     return { mutationFn, ...mutationOptions }
 }
 
-export type UpdateRoomMutationResult = NonNullable<
-    Awaited<ReturnType<typeof updateRoom>>
+export type PutRoomMutationResult = NonNullable<
+    Awaited<ReturnType<typeof putRoom>>
 >
-export type UpdateRoomMutationBody = BodyType<CreateRoomRequestApiDTO>
-export type UpdateRoomMutationError = ErrorType<ErrorResponseApiDTO>
+export type PutRoomMutationBody = BodyType<EditRoomRequestApiDTO>
+export type PutRoomMutationError = ErrorType<ErrorResponseApiDTO>
 
-export const useUpdateRoom = <
+export const usePutRoom = <
     TError = ErrorType<ErrorResponseApiDTO>,
     TContext = unknown,
 >(options?: {
     mutation?: UseMutationOptions<
-        Awaited<ReturnType<typeof updateRoom>>,
+        Awaited<ReturnType<typeof putRoom>>,
         TError,
-        { roomId: string; data: BodyType<CreateRoomRequestApiDTO> },
+        { roomId: string; data: BodyType<EditRoomRequestApiDTO> },
         TContext
     >
     request?: SecondParameter<typeof customInstance>
 }): UseMutationResult<
-    Awaited<ReturnType<typeof updateRoom>>,
+    Awaited<ReturnType<typeof putRoom>>,
     TError,
-    { roomId: string; data: BodyType<CreateRoomRequestApiDTO> },
+    { roomId: string; data: BodyType<EditRoomRequestApiDTO> },
     TContext
 > => {
-    const mutationOptions = getUpdateRoomMutationOptions(options)
+    const mutationOptions = getPutRoomMutationOptions(options)
+
+    return useMutation(mutationOptions)
+}
+export const deleteUserFromARomm = (
+    roomId: string,
+    userId: string,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<RoomAttributesApiDTO>(
+        { url: `/room/delete-user/${roomId}/${userId}`, method: 'DELETE' },
+        options
+    )
+}
+
+export const getDeleteUserFromARommMutationOptions = <
+    TError = ErrorType<ErrorResponseApiDTO>,
+    TContext = unknown,
+>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<typeof deleteUserFromARomm>>,
+        TError,
+        { roomId: string; userId: string },
+        TContext
+    >
+    request?: SecondParameter<typeof customInstance>
+}): UseMutationOptions<
+    Awaited<ReturnType<typeof deleteUserFromARomm>>,
+    TError,
+    { roomId: string; userId: string },
+    TContext
+> => {
+    const { mutation: mutationOptions, request: requestOptions } = options ?? {}
+
+    const mutationFn: MutationFunction<
+        Awaited<ReturnType<typeof deleteUserFromARomm>>,
+        { roomId: string; userId: string }
+    > = (props) => {
+        const { roomId, userId } = props ?? {}
+
+        return deleteUserFromARomm(roomId, userId, requestOptions)
+    }
+
+    return { mutationFn, ...mutationOptions }
+}
+
+export type DeleteUserFromARommMutationResult = NonNullable<
+    Awaited<ReturnType<typeof deleteUserFromARomm>>
+>
+
+export type DeleteUserFromARommMutationError = ErrorType<ErrorResponseApiDTO>
+
+export const useDeleteUserFromARomm = <
+    TError = ErrorType<ErrorResponseApiDTO>,
+    TContext = unknown,
+>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<typeof deleteUserFromARomm>>,
+        TError,
+        { roomId: string; userId: string },
+        TContext
+    >
+    request?: SecondParameter<typeof customInstance>
+}): UseMutationResult<
+    Awaited<ReturnType<typeof deleteUserFromARomm>>,
+    TError,
+    { roomId: string; userId: string },
+    TContext
+> => {
+    const mutationOptions = getDeleteUserFromARommMutationOptions(options)
 
     return useMutation(mutationOptions)
 }
@@ -399,7 +469,7 @@ export const getRoomById = (
     options?: SecondParameter<typeof customInstance>,
     signal?: AbortSignal
 ) => {
-    return customInstance<RoomAttributesApiDTO>(
+    return customInstance<GetRoomOfUserResponseApiDTO>(
         { url: `/room/${roomSlug}`, method: 'GET', signal },
         options
     )

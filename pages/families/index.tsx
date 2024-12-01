@@ -1,8 +1,10 @@
 import { Button } from '@/components/atoms/Buttons/ClassicButton/Button'
 import FamilyCard from '@/components/moleculs/FamilyCard/FamilyCard'
 import DialogCreateFamily from '@/components/organisms/Dialog/DialogCreateFamily/DialogCreateFamily'
+import { withAuthRoute } from '@/lib/withAuthRoute'
 import { useGetRoomByOfUser } from '@/src/api/generated/room'
 import { InfoIcon, PlusIcon } from 'lucide-react'
+import { GetServerSideProps } from 'next'
 import React, { useState } from 'react'
 
 const FamilliesIndex: React.FC = () => {
@@ -66,3 +68,11 @@ const FamilliesIndex: React.FC = () => {
 }
 
 export default FamilliesIndex
+
+export const getServerSideProps: GetServerSideProps = withAuthRoute(
+    async (context) => {
+        return {
+            props: {},
+        }
+    }
+)

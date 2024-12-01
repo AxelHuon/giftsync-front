@@ -26,7 +26,7 @@ export function InviteUserToFamilyForm({
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
     roomId: string
 }) {
-    const formCreateFamilyConst = useForm<z.infer<typeof formInviteUserForm>>({
+    const formInviteUsersConst = useForm<z.infer<typeof formInviteUserForm>>({
         resolver: zodResolver(formInviteUserForm),
         defaultValues: {
             emails: [{ email: '' }],
@@ -36,7 +36,7 @@ export function InviteUserToFamilyForm({
     const { toast } = useToast()
 
     const { fields, append, remove } = useFieldArray({
-        control: formCreateFamilyConst.control,
+        control: formInviteUsersConst.control,
         name: 'emails',
     })
 
@@ -63,19 +63,19 @@ export function InviteUserToFamilyForm({
     }
 
     return (
-        <Form {...formCreateFamilyConst}>
+        <Form {...formInviteUsersConst}>
             <form
-                onSubmit={formCreateFamilyConst.handleSubmit(onSubmit)}
+                onSubmit={formInviteUsersConst.handleSubmit(onSubmit)}
                 className="flex flex-col gap-[25px] w-full"
             >
                 <div className={'flex flex-col gap-[20px] w-full'}>
                     {fields.map((field, index) => (
                         <div
                             key={field.id}
-                            className={`flex gap-2 items-end w-full ${formCreateFamilyConst.formState.errors.emails?.[index]?.email ? 'items-center' : 'items-end'}`}
+                            className={`flex gap-2 items-end w-full ${formInviteUsersConst.formState.errors.emails?.[index]?.email ? 'items-center' : 'items-end'}`}
                         >
                             <FormField
-                                control={formCreateFamilyConst.control}
+                                control={formInviteUsersConst.control}
                                 name={`emails.${index}.email`}
                                 render={({ field }) => (
                                     <FormItem className={'w-3/4'}>
@@ -90,6 +90,7 @@ export function InviteUserToFamilyForm({
                             <Button
                                 onClick={() => remove(index)}
                                 className={'w-1/4'}
+                                disabled={index === 0}
                                 variant={'destructive'}
                             >
                                 Supprimer
@@ -103,7 +104,7 @@ export function InviteUserToFamilyForm({
                     onClick={() => append({ email: '' })}
                     className="border w-fit border-neutral-200 text-neutral-900 gap-2"
                 >
-                    Ajouter un email
+                    Ajouter un membre
                     <PlusIcon width={16} />
                 </Button>
 

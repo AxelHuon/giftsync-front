@@ -104,11 +104,6 @@ const MenuSideBar: React.FC = () => {
                                     Créer une nouvelle famille
                                 </Button>
                             </li>
-                            <li>
-                                <Button size={'sm'} variant={'ghost'}>
-                                    Rejoindre une famille
-                                </Button>
-                            </li>
                         </ul>
                     </CollapsibleContent>
                 </Collapsible>

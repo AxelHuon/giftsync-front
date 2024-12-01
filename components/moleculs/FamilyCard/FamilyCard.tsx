@@ -38,9 +38,7 @@ const FamilyCard: React.FC<FamilyCardProps> = ({ family }) => {
             >
                 <TabsList className={'w-full bg-neutral-100'}>
                     <TabsTrigger
-                        className={
-                            "flex items-center justify-center w-1/2 group-[data-state='active']:!bg-destructive-500"
-                        }
+                        className={'flex items-center justify-center w-1/2'}
                         value="members"
                     >
                         Membres

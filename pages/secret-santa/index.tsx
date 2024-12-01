@@ -1,5 +1,7 @@
 import { SecretSantaForm } from '@/components/organisms/Form/SecretSantaForm/SecretSantaForm'
+import { withAuthRoute } from '@/lib/withAuthRoute'
 import { InfoIcon } from 'lucide-react'
+import { GetServerSideProps } from 'next'
 import Image from 'next/image'
 import React from 'react'
 
@@ -62,3 +64,11 @@ const SecretSanta: React.FC = () => {
 }
 
 export default SecretSanta
+
+export const getServerSideProps: GetServerSideProps = withAuthRoute(
+    async (context) => {
+        return {
+            props: {},
+        }
+    }
+)

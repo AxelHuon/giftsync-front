@@ -14,9 +14,10 @@ import { formCreateFamily } from '@/utils/schemas/family.schema'
 import { translationPatchPasswordErrorMessageApi } from '@/utils/translationErrorMessageApi/translationErrorMessageApi'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ReloadIcon } from '@radix-ui/react-icons'
+import { PlusIcon } from 'lucide-react'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { useForm } from 'react-hook-form'
+import { useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 export function CreateFamilyForm({
@@ -30,6 +31,7 @@ export function CreateFamilyForm({
         resolver: zodResolver(formCreateFamily),
         defaultValues: {
             title: '',
+            emails: [{ email: '' }],
         },
     })
 
@@ -49,11 +51,16 @@ export function CreateFamilyForm({
     })
 
     const onSubmit = async (values: z.infer<typeof formCreateFamily>) => {
+        const emailToSend = values.emails.map((email) => email.email)
         await mutate({
-            data: values,
+            data: { title: values.title, emails: emailToSend },
         })
     }
 
+    const { fields, append, remove } = useFieldArray({
+        control: formCreateFamilyConst.control,
+        name: 'emails',
+    })
     return (
         <Form {...formCreateFamilyConst}>
             <form
@@ -79,6 +86,44 @@ export function CreateFamilyForm({
                             )}
                         />
                     </div>
+                    <p>Invitez des membres à votre famille</p>
+                    {fields.map((field, index) => (
+                        <div
+                            key={field.id}
+                            className={`flex gap-2 items-end w-full ${formCreateFamilyConst.formState.errors.emails?.[index]?.email ? 'items-center' : 'items-end'}`}
+                        >
+                            <FormField
+                                control={formCreateFamilyConst.control}
+                                name={`emails.${index}.email`}
+                                render={({ field }) => (
+                                    <FormItem className={'w-3/4'}>
+                                        <FormLabel>Adresse mail</FormLabel>
+                                        <FormControl>
+                                            <Input type={'text'} {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <Button
+                                onClick={() => remove(index)}
+                                className={'w-1/4'}
+                                disabled={index === 0}
+                                variant={'destructive'}
+                            >
+                                Supprimer
+                            </Button>
+                        </div>
+                    ))}
+                    <Button
+                        type="button"
+                        variant={'secondary'}
+                        onClick={() => append({ email: '' })}
+                        className="border w-fit border-neutral-200 text-neutral-900 gap-2"
+                    >
+                        Ajouter un membre
+                        <PlusIcon width={16} />
+                    </Button>
                 </div>
                 {error && (
                     <FormMessage>

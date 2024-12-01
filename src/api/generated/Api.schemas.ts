@@ -74,6 +74,7 @@ export interface RegisterUserResponseApiDTO {
 
 export interface UserCollectionGetUserOfRoomApiDTO {
     firstName: string
+    id: string
     lastName: string
     profilePicture: string
 }
@@ -86,6 +87,10 @@ export interface GetRoomOfUserResponseApiDTO {
     title: string
     updatedAt?: string
     users: UserCollectionGetUserOfRoomApiDTO[]
+}
+
+export interface EditRoomRequestApiDTO {
+    title: string
 }
 
 export interface JoinRoomRequestApiDTO {
@@ -108,6 +113,7 @@ export interface InviteUserResponseApiDTO {
 }
 
 export interface CreateRoomRequestApiDTO {
+    emails?: string[]
     title: string
 }
 

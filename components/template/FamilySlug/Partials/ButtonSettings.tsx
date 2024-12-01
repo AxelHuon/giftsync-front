@@ -5,19 +5,35 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/atoms/Menu/DropDownMenu/dropdown-menu'
+import DialogDeleteRoom from '@/components/organisms/Dialog/DialogDeleteRoom/DialogDeleteRoom'
+import DialogEditFamily from '@/components/organisms/Dialog/DialogEditFamily/DialogEditFamily'
 import DialogInviteUserRoom from '@/components/organisms/Dialog/DialogInviteUserRoom/DialogInviteUserRoom'
+import { UserCollectionGetUserOfRoomApiDTO } from '@/src/api/generated/Api.schemas'
 import { Pencil, Settings, UsersRound } from 'lucide-react'
 import React, { useState } from 'react'
 
 interface ButtonSettingsProps {
     roomId: string
+    isOwner: boolean
+    currentTitle?: string
+    users?: UserCollectionGetUserOfRoomApiDTO[]
+    ownerId?: string
 }
 
-const ButtonSettings: React.FC<ButtonSettingsProps> = ({ roomId }) => {
+const ButtonSettings: React.FC<ButtonSettingsProps> = ({
+    roomId,
+    isOwner,
+    currentTitle,
+    users,
+    ownerId,
+}) => {
     const [openInviteUserDialog, setOpenInviteUserDialog] =
         useState<boolean>(false)
 
     const [openEditFamilyDialog, setOpenEditFamilyDialog] =
+        useState<boolean>(false)
+
+    const [openDialogDeleteRoom, setOpenDialogDeleteRoom] =
         useState<boolean>(false)
 
     return (
@@ -44,18 +60,46 @@ const ButtonSettings: React.FC<ButtonSettingsProps> = ({ roomId }) => {
                             Inviter de gens
                         </div>
                     </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                        <div className={'flex gap-2 items-center'}>
-                            <Pencil size={12} />
-                            Modifier la famille
-                        </div>
-                    </DropdownMenuItem>
+                    {isOwner && (
+                        <>
+                            <DropdownMenuItem
+                                onClick={() => setOpenEditFamilyDialog(true)}
+                                asChild
+                            >
+                                <div className={'flex gap-2 items-center'}>
+                                    <Pencil size={12} />
+                                    Modifier la famille
+                                </div>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                className={
+                                    'bg-destructive-200  hover:!bg-destructive-100 active:!bg-destructive-50'
+                                }
+                                onClick={() => setOpenDialogDeleteRoom(true)}
+                            >
+                                Supprimer la famille
+                            </DropdownMenuItem>
+                        </>
+                    )}
                 </DropdownMenuContent>
             </DropdownMenu>
             <DialogInviteUserRoom
                 roomId={roomId}
                 open={openInviteUserDialog}
                 setOpen={setOpenInviteUserDialog}
+            />
+            <DialogEditFamily
+                users={users}
+                ownerId={ownerId}
+                currentTitle={currentTitle}
+                open={openEditFamilyDialog}
+                setOpen={setOpenEditFamilyDialog}
+                roomId={roomId}
+            />
+            <DialogDeleteRoom
+                open={openDialogDeleteRoom}
+                setOpen={setOpenDialogDeleteRoom}
+                roomId={roomId}
             />
         </>
     )

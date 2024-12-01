@@ -5,7 +5,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/moleculs/Dialog/Dialog'
-import { InviteUserToFamilyForm } from '@/components/organisms/Form/CreateFamilyForm/InviteUserToFamilyForm'
+import { InviteUserToFamilyForm } from '@/components/organisms/Form/InviteUserToFamilyForm/InviteUserToFamilyForm'
 import React from 'react'
 
 interface DialogEditProfilProps {
