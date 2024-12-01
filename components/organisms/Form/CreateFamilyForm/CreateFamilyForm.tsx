@@ -43,7 +43,7 @@ export function CreateFamilyForm({
                     title: 'Vos informations ont bien été modifiées',
                 })
                 setOpen(false)
-                await router.push(`/family/${data.slug}`)
+                await router.push(`/families/${data.slug}`)
             },
         },
     })

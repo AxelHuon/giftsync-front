@@ -1,7 +1,9 @@
 import Logo from '@/components/atoms/Logo/Logo'
 import { ResetPasswordForm } from '@/components/organisms/Form/ResetPasswordForm/ResetPasswordForm'
 import Colors from '@/utils/styles/colors'
+import { GetServerSideProps } from 'next'
 import { useTheme } from 'next-themes'
+import { parseCookies } from 'nookies'
 import React from 'react'
 
 const Signing: React.FC = () => {
@@ -49,3 +51,18 @@ const Signing: React.FC = () => {
 }
 
 export default Signing
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const cookies = parseCookies(context)
+    const token = cookies.auth_token
+    if (token) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        }
+    }
+    return {
+        props: {},
+    }
+}

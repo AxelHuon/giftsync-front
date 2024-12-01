@@ -37,7 +37,6 @@ const UserButton: React.FC = () => {
     return (
         <>
             <DropdownMenu>
-                {/*Button*/}
                 <DropdownMenuTrigger asChild>
                     <div
                         className={

@@ -12,6 +12,7 @@ export const SecretSantaRequest = z.object({
     users: z
         .array(UserSecretSanta)
         .min(3, 'Il faut au moins 3 participants')
+        .max(12, 'Pas plus de 12 participants')
         .refine(
             (users) => {
                 const emails = users.map((user) => user.email.toLowerCase())

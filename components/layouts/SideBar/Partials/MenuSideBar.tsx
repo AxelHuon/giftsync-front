@@ -87,6 +87,13 @@ const MenuSideBar: React.FC = () => {
                             }
                         >
                             <li>
+                                <Button asChild size={'sm'} variant={'ghost'}>
+                                    <Link href={'/families'}>
+                                        Listes de familles
+                                    </Link>
+                                </Button>
+                            </li>
+                            <li>
                                 <Button
                                     onClick={() =>
                                         setModalCreateFamilyOpen(true)
@@ -95,13 +102,6 @@ const MenuSideBar: React.FC = () => {
                                     variant={'ghost'}
                                 >
                                     Créer une nouvelle famille
-                                </Button>
-                            </li>
-                            <li>
-                                <Button asChild size={'sm'} variant={'ghost'}>
-                                    <Link href={'/family'}>
-                                        Listes de familles
-                                    </Link>
                                 </Button>
                             </li>
                             <li>
@@ -134,12 +134,12 @@ const MenuSideBar: React.FC = () => {
                         >
                             <li>
                                 <Button size={'sm'} variant={'ghost'}>
-                                    Créer un nouveau cadeau
+                                    Liste de mes cadeaux
                                 </Button>
                             </li>
                             <li>
                                 <Button size={'sm'} variant={'ghost'}>
-                                    Liste de mes cadeaux
+                                    Créer un nouveau cadeau
                                 </Button>
                             </li>
                             <li>

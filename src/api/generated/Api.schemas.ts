@@ -4,6 +4,10 @@
  * gift-sync-back-end
  * OpenAPI spec version: 1.0.0
  */
+export type InviteUsers200 = {
+    invitedUsers: InviteUserResponseApiDTO[]
+}
+
 export type PatchUserApiBodies = {
     dateOfBirth?: string
     firstName?: string
@@ -68,17 +72,34 @@ export interface RegisterUserResponseApiDTO {
     message: string
 }
 
+export interface UserCollectionGetUserOfRoomApiDTO {
+    firstName: string
+    lastName: string
+    profilePicture: string
+}
+
+export interface GetRoomOfUserResponseApiDTO {
+    createdAt?: string
+    id: string
+    ownerId: string
+    slug: string
+    title: string
+    updatedAt?: string
+    users: UserCollectionGetUserOfRoomApiDTO[]
+}
+
 export interface JoinRoomRequestApiDTO {
     email: string
 }
 
 export interface JoinRoomResponseApiDTO {
+    code: string
     message: string
-    roomId: string
+    roomSlug: string
 }
 
 export interface InviteUserRequestApiDTO {
-    email: string
+    emails: string[]
     roomId: string
 }
 
@@ -91,10 +112,12 @@ export interface CreateRoomRequestApiDTO {
 }
 
 export interface RoomAttributesApiDTO {
+    createdAt?: string
     id: string
     ownerId: string
     slug: string
     title: string
+    updatedAt?: string
 }
 
 export interface UserSecretSantaApiDTO {
@@ -129,6 +152,11 @@ export interface UserClassEditResponseApiDTO {
     message: string
 }
 
+export interface ErrorResponseApiDTO {
+    code: string
+    message: string
+}
+
 export interface UserClassGetResponseApiDTO {
     createdAt?: string
     dateOfBirth: string
@@ -138,9 +166,4 @@ export interface UserClassGetResponseApiDTO {
     lastName: string
     profilePicture?: string
     updatedAt?: string
-}
-
-export interface ErrorResponseApiDTO {
-    code: string
-    message: string
 }

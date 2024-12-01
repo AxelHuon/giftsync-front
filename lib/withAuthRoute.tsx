@@ -19,10 +19,8 @@ export function withAuthRoute(gssp: GetServerSideProps) {
             /*Get current user*/
         }
 
-        // Appel de la fonction getServerSideProps d'origine
         const gsspData = await gssp(context)
 
-        // Fusion des props
         return {
             ...gsspData,
             props: {

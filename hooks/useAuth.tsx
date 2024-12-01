@@ -84,6 +84,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             onSuccess: async (data) => {
                 setAuthState(data)
                 document.cookie = `auth_token=${data.accessToken}; path=/; secure; samesite=strict`
+
+                /*get tokenInviteRoot in localstorage*/
+                const tokenInviteRoot = localStorage.getItem('tokenInviteRoot')
+                if (tokenInviteRoot) {
+                    localStorage.removeItem('tokenInviteRoot')
+                    await router.push(`/families/join/${tokenInviteRoot}`)
+                    return
+                }
+
                 await router.push('/dashboard')
             },
         },
