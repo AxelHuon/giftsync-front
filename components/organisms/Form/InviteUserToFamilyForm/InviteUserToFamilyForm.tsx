@@ -9,7 +9,7 @@ import {
     FormMessage,
 } from '@/components/organisms/Form/Form'
 import { useToast } from '@/hooks/useToast'
-import { useInviteUsers } from '@/src/api/generated/room'
+import { useInviteUsersToARoom } from '@/src/api/generated/room'
 import { formInviteUserForm } from '@/utils/schemas/family.schema'
 import { translationPatchPasswordErrorMessageApi } from '@/utils/translationErrorMessageApi/translationErrorMessageApi'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -40,7 +40,7 @@ export function InviteUserToFamilyForm({
         name: 'emails',
     })
 
-    const { mutate, isPending, error } = useInviteUsers({
+    const { mutate, isPending, error } = useInviteUsersToARoom({
         mutation: {
             onSuccess: async (data) => {
                 toast({

@@ -7,13 +7,16 @@ import Axios, {
 } from 'axios'
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
-    _retry?: boolean
+    _retryCount?: number
 }
+
+const MAX_RETRIES = 3 // Maximum number of retries
 
 export const AXIOS_INSTANCE = Axios.create({
     baseURL: process.env.NEXT_PUBLIC_BASE_URL_API,
 })
 
+// Handle multipart/form-data
 AXIOS_INSTANCE.interceptors.request.use((config) => {
     if (config.data instanceof FormData) {
         config.headers['Content-Type'] = 'multipart/form-data'
@@ -21,6 +24,7 @@ AXIOS_INSTANCE.interceptors.request.use((config) => {
     return config
 })
 
+// Attach access token to headers
 AXIOS_INSTANCE.interceptors.request.use((config: CustomAxiosRequestConfig) => {
     const userInformation = localStorage.getItem('user_information')
     let accessToken = null
@@ -40,6 +44,7 @@ AXIOS_INSTANCE.interceptors.request.use((config: CustomAxiosRequestConfig) => {
     return config
 })
 
+// Attach API key to headers
 AXIOS_INSTANCE.interceptors.request.use((config: CustomAxiosRequestConfig) => {
     const apiKey = process.env.NEXT_PUBLIC_API_KEY
     if (apiKey) {
@@ -48,18 +53,26 @@ AXIOS_INSTANCE.interceptors.request.use((config: CustomAxiosRequestConfig) => {
     return config
 })
 
+// Response interceptor to handle token refresh logic
 AXIOS_INSTANCE.interceptors.response.use(
     (response) => {
         return response
     },
     async (error: AxiosError<ErrorResponseApiDTO>) => {
         const originalRequest = error.config as CustomAxiosRequestConfig
-        if (
-            originalRequest &&
-            error.response?.data?.code === 'token_expired' &&
-            !originalRequest._retry
-        ) {
-            originalRequest._retry = true
+
+        if (originalRequest && error.response?.data?.code === 'token_expired') {
+            // Initialize retry count if not set
+            originalRequest._retryCount = originalRequest._retryCount || 0
+
+            // Check if maximum retries have been reached
+            if (originalRequest._retryCount >= MAX_RETRIES) {
+                return Promise.reject(error)
+            }
+
+            // Increment retry count
+            originalRequest._retryCount += 1
+
             const userInformation = localStorage.getItem('user_information')
             if (!userInformation) {
                 return Promise.reject(error)
@@ -74,6 +87,7 @@ AXIOS_INSTANCE.interceptors.response.use(
                     const refreshResponse = await refreshToken({
                         refreshToken: userInformationParsed.refreshToken,
                     })
+                    // Update user information with new tokens
                     localStorage.setItem(
                         'user_information',
                         JSON.stringify({
@@ -82,10 +96,14 @@ AXIOS_INSTANCE.interceptors.response.use(
                             refreshToken: refreshResponse.refreshToken,
                         })
                     )
+                    // Update Authorization header with new access token
                     originalRequest.headers['Authorization'] =
                         `Bearer ${refreshResponse.accessToken}`
+
+                    // Retry the original request with new token
                     return AXIOS_INSTANCE(originalRequest)
                 } catch (error: any) {
+                    // If refresh fails, remove user information and reject
                     localStorage.removeItem('user_information')
                     return Promise.reject(error)
                 }

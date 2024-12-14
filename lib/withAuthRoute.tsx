@@ -16,7 +16,7 @@ export function withAuthRoute(gssp: GetServerSideProps) {
         }
 
         if (token) {
-            /*Get current user*/
+            /*Verify token, if he is$ not valid return on signin page and delete from local storage the token*/
         }
 
         const gsspData = await gssp(context)

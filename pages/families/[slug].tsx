@@ -1,30 +1,17 @@
-import ButtonSettings from '@/components/template/FamilySlug/Partials/ButtonSettings'
-import { useAuthContext } from '@/hooks/useAuth'
+import ButtonSettingsFamilySlug from '@/components/template/FamilySlug/Partials/ButtonSettingsFamilySlug'
 import { withAuthRoute } from '@/lib/withAuthRoute'
-import { useGetRoomById } from '@/src/api/generated/room'
-import { useGetUserById } from '@/src/api/generated/user'
+import { useGetRoomBySlug } from '@/src/api/generated/room'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 const FamilySinglePage: React.FC = () => {
     /*get [slug] params*/
     const router = useRouter()
     const { slug } = router.query
-    const { authState } = useAuthContext()
-    const { data: user } = useGetUserById(authState?.id ?? '')
-    const { data: familyData } = useGetRoomById(slug as string)
-    const [isOwner, setIsOwner] = useState<boolean>(false)
-    useEffect(() => {
-        if (user && familyData) {
-            if (user?.id === familyData?.ownerId) {
-                setIsOwner(true)
-            }
-        }
-    }, [user, familyData])
-
+    const { data: familyData } = useGetRoomBySlug(slug as string)
     return (
-        <div>
+        <div className={'flex flex-col gap-[100px]'}>
             <div className={'flex justify-between'}>
                 <h1
                     className={
@@ -33,11 +20,11 @@ const FamilySinglePage: React.FC = () => {
                 >
                     {familyData?.title}
                 </h1>
-                <ButtonSettings
+                <ButtonSettingsFamilySlug
                     ownerId={familyData?.ownerId}
                     users={familyData?.users}
                     currentTitle={familyData?.title}
-                    isOwner={isOwner}
+                    isOwner={familyData?.isOwner ?? false}
                     roomId={familyData?.id ?? ''}
                 />
             </div>

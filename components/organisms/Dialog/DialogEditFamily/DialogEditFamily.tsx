@@ -20,8 +20,8 @@ import {
 import { toast } from '@/hooks/useToast'
 import { UserCollectionGetUserOfRoomApiDTO } from '@/src/api/generated/Api.schemas'
 import {
-    useDeleteUserFromARomm,
-    useGetRoomById,
+    useDeleteUserFromARoom,
+    useGetRoomBySlug,
 } from '@/src/api/generated/room'
 import { Tabs } from '@radix-ui/react-tabs'
 import { DeleteIcon } from 'lucide-react'
@@ -47,11 +47,11 @@ const DialogEditFamily: React.FC<DialogEditProfilProps> = ({
 }) => {
     const router = useRouter()
     const { slug } = router.query
-    const { refetch } = useGetRoomById(slug as string, {
+    const { refetch } = useGetRoomBySlug(slug as string, {
         query: { enabled: false },
     })
 
-    const { mutate } = useDeleteUserFromARomm({
+    const { mutate } = useDeleteUserFromARoom({
         mutation: {
             onSuccess: async () => {
                 toast({

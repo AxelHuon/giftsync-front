@@ -4,7 +4,7 @@
  * gift-sync-back-end
  * OpenAPI spec version: 1.0.0
  */
-export type InviteUsers200 = {
+export type InviteUsersToARoom200 = {
     invitedUsers: InviteUserResponseApiDTO[]
 }
 
@@ -72,23 +72,6 @@ export interface RegisterUserResponseApiDTO {
     message: string
 }
 
-export interface UserCollectionGetUserOfRoomApiDTO {
-    firstName: string
-    id: string
-    lastName: string
-    profilePicture: string
-}
-
-export interface GetRoomOfUserResponseApiDTO {
-    createdAt?: string
-    id: string
-    ownerId: string
-    slug: string
-    title: string
-    updatedAt?: string
-    users: UserCollectionGetUserOfRoomApiDTO[]
-}
-
 export interface EditRoomRequestApiDTO {
     title: string
 }
@@ -140,6 +123,24 @@ export interface SecretSantaRequestApiDTO {
 export interface SecretSantaResponseApiDTO {
     code: number
     message: string
+}
+
+export interface UserCollectionGetUserOfRoomApiDTO {
+    firstName: string
+    id: string
+    lastName: string
+    profilePicture: string
+}
+
+export interface GetRoomOfUserResponseApiDTO {
+    createdAt?: string
+    id: string
+    isOwner: boolean
+    ownerId: string
+    slug: string
+    title: string
+    updatedAt?: string
+    users: UserCollectionGetUserOfRoomApiDTO[]
 }
 
 export interface UserClassEditPasswordRequestApiDTO {

@@ -23,7 +23,7 @@ import type {
     ErrorResponseApiDTO,
     GetRoomOfUserResponseApiDTO,
     InviteUserRequestApiDTO,
-    InviteUsers200,
+    InviteUsersToARoom200,
     JoinRoomRequestApiDTO,
     JoinRoomResponseApiDTO,
     RoomAttributesApiDTO,
@@ -106,11 +106,11 @@ export const useCreateRoom = <
 
     return useMutation(mutationOptions)
 }
-export const inviteUsers = (
+export const inviteUsersToARoom = (
     inviteUserRequestApiDTO: BodyType<InviteUserRequestApiDTO>,
     options?: SecondParameter<typeof customInstance>
 ) => {
-    return customInstance<InviteUsers200>(
+    return customInstance<InviteUsersToARoom200>(
         {
             url: `/room/invite-users`,
             method: 'POST',
@@ -121,19 +121,19 @@ export const inviteUsers = (
     )
 }
 
-export const getInviteUsersMutationOptions = <
+export const getInviteUsersToARoomMutationOptions = <
     TError = ErrorType<ErrorResponseApiDTO>,
     TContext = unknown,
 >(options?: {
     mutation?: UseMutationOptions<
-        Awaited<ReturnType<typeof inviteUsers>>,
+        Awaited<ReturnType<typeof inviteUsersToARoom>>,
         TError,
         { data: BodyType<InviteUserRequestApiDTO> },
         TContext
     >
     request?: SecondParameter<typeof customInstance>
 }): UseMutationOptions<
-    Awaited<ReturnType<typeof inviteUsers>>,
+    Awaited<ReturnType<typeof inviteUsersToARoom>>,
     TError,
     { data: BodyType<InviteUserRequestApiDTO> },
     TContext
@@ -141,41 +141,41 @@ export const getInviteUsersMutationOptions = <
     const { mutation: mutationOptions, request: requestOptions } = options ?? {}
 
     const mutationFn: MutationFunction<
-        Awaited<ReturnType<typeof inviteUsers>>,
+        Awaited<ReturnType<typeof inviteUsersToARoom>>,
         { data: BodyType<InviteUserRequestApiDTO> }
     > = (props) => {
         const { data } = props ?? {}
 
-        return inviteUsers(data, requestOptions)
+        return inviteUsersToARoom(data, requestOptions)
     }
 
     return { mutationFn, ...mutationOptions }
 }
 
-export type InviteUsersMutationResult = NonNullable<
-    Awaited<ReturnType<typeof inviteUsers>>
+export type InviteUsersToARoomMutationResult = NonNullable<
+    Awaited<ReturnType<typeof inviteUsersToARoom>>
 >
-export type InviteUsersMutationBody = BodyType<InviteUserRequestApiDTO>
-export type InviteUsersMutationError = ErrorType<ErrorResponseApiDTO>
+export type InviteUsersToARoomMutationBody = BodyType<InviteUserRequestApiDTO>
+export type InviteUsersToARoomMutationError = ErrorType<ErrorResponseApiDTO>
 
-export const useInviteUsers = <
+export const useInviteUsersToARoom = <
     TError = ErrorType<ErrorResponseApiDTO>,
     TContext = unknown,
 >(options?: {
     mutation?: UseMutationOptions<
-        Awaited<ReturnType<typeof inviteUsers>>,
+        Awaited<ReturnType<typeof inviteUsersToARoom>>,
         TError,
         { data: BodyType<InviteUserRequestApiDTO> },
         TContext
     >
     request?: SecondParameter<typeof customInstance>
 }): UseMutationResult<
-    Awaited<ReturnType<typeof inviteUsers>>,
+    Awaited<ReturnType<typeof inviteUsersToARoom>>,
     TError,
     { data: BodyType<InviteUserRequestApiDTO> },
     TContext
 > => {
-    const mutationOptions = getInviteUsersMutationOptions(options)
+    const mutationOptions = getInviteUsersToARoomMutationOptions(options)
 
     return useMutation(mutationOptions)
 }
@@ -258,7 +258,7 @@ export const deleteRoom = (
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<RoomAttributesApiDTO>(
-        { url: `/room/delete/${roomId}`, method: 'DELETE' },
+        { url: `/room/${roomId}/delete`, method: 'DELETE' },
         options
     )
 }
@@ -328,7 +328,7 @@ export const putRoom = (
 ) => {
     return customInstance<RoomAttributesApiDTO>(
         {
-            url: `/room/update/${roomId}`,
+            url: `/room/${roomId}/update`,
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             data: editRoomRequestApiDTO,
@@ -395,30 +395,30 @@ export const usePutRoom = <
 
     return useMutation(mutationOptions)
 }
-export const deleteUserFromARomm = (
+export const deleteUserFromARoom = (
     roomId: string,
     userId: string,
     options?: SecondParameter<typeof customInstance>
 ) => {
     return customInstance<RoomAttributesApiDTO>(
-        { url: `/room/delete-user/${roomId}/${userId}`, method: 'DELETE' },
+        { url: `/room/${roomId}/user/${userId}`, method: 'DELETE' },
         options
     )
 }
 
-export const getDeleteUserFromARommMutationOptions = <
+export const getDeleteUserFromARoomMutationOptions = <
     TError = ErrorType<ErrorResponseApiDTO>,
     TContext = unknown,
 >(options?: {
     mutation?: UseMutationOptions<
-        Awaited<ReturnType<typeof deleteUserFromARomm>>,
+        Awaited<ReturnType<typeof deleteUserFromARoom>>,
         TError,
         { roomId: string; userId: string },
         TContext
     >
     request?: SecondParameter<typeof customInstance>
 }): UseMutationOptions<
-    Awaited<ReturnType<typeof deleteUserFromARomm>>,
+    Awaited<ReturnType<typeof deleteUserFromARoom>>,
     TError,
     { roomId: string; userId: string },
     TContext
@@ -426,45 +426,45 @@ export const getDeleteUserFromARommMutationOptions = <
     const { mutation: mutationOptions, request: requestOptions } = options ?? {}
 
     const mutationFn: MutationFunction<
-        Awaited<ReturnType<typeof deleteUserFromARomm>>,
+        Awaited<ReturnType<typeof deleteUserFromARoom>>,
         { roomId: string; userId: string }
     > = (props) => {
         const { roomId, userId } = props ?? {}
 
-        return deleteUserFromARomm(roomId, userId, requestOptions)
+        return deleteUserFromARoom(roomId, userId, requestOptions)
     }
 
     return { mutationFn, ...mutationOptions }
 }
 
-export type DeleteUserFromARommMutationResult = NonNullable<
-    Awaited<ReturnType<typeof deleteUserFromARomm>>
+export type DeleteUserFromARoomMutationResult = NonNullable<
+    Awaited<ReturnType<typeof deleteUserFromARoom>>
 >
 
-export type DeleteUserFromARommMutationError = ErrorType<ErrorResponseApiDTO>
+export type DeleteUserFromARoomMutationError = ErrorType<ErrorResponseApiDTO>
 
-export const useDeleteUserFromARomm = <
+export const useDeleteUserFromARoom = <
     TError = ErrorType<ErrorResponseApiDTO>,
     TContext = unknown,
 >(options?: {
     mutation?: UseMutationOptions<
-        Awaited<ReturnType<typeof deleteUserFromARomm>>,
+        Awaited<ReturnType<typeof deleteUserFromARoom>>,
         TError,
         { roomId: string; userId: string },
         TContext
     >
     request?: SecondParameter<typeof customInstance>
 }): UseMutationResult<
-    Awaited<ReturnType<typeof deleteUserFromARomm>>,
+    Awaited<ReturnType<typeof deleteUserFromARoom>>,
     TError,
     { roomId: string; userId: string },
     TContext
 > => {
-    const mutationOptions = getDeleteUserFromARommMutationOptions(options)
+    const mutationOptions = getDeleteUserFromARoomMutationOptions(options)
 
     return useMutation(mutationOptions)
 }
-export const getRoomById = (
+export const getRoomBySlug = (
     roomSlug: string,
     options?: SecondParameter<typeof customInstance>,
     signal?: AbortSignal
@@ -475,19 +475,19 @@ export const getRoomById = (
     )
 }
 
-export const getGetRoomByIdQueryKey = (roomSlug: string) => {
+export const getGetRoomBySlugQueryKey = (roomSlug: string) => {
     return [`/room/${roomSlug}`] as const
 }
 
-export const getGetRoomByIdQueryOptions = <
-    TData = Awaited<ReturnType<typeof getRoomById>>,
+export const getGetRoomBySlugQueryOptions = <
+    TData = Awaited<ReturnType<typeof getRoomBySlug>>,
     TError = ErrorType<ErrorResponseApiDTO>,
 >(
     roomSlug: string,
     options?: {
         query?: Partial<
             UseQueryOptions<
-                Awaited<ReturnType<typeof getRoomById>>,
+                Awaited<ReturnType<typeof getRoomBySlug>>,
                 TError,
                 TData
             >
@@ -497,11 +497,12 @@ export const getGetRoomByIdQueryOptions = <
 ) => {
     const { query: queryOptions, request: requestOptions } = options ?? {}
 
-    const queryKey = queryOptions?.queryKey ?? getGetRoomByIdQueryKey(roomSlug)
+    const queryKey =
+        queryOptions?.queryKey ?? getGetRoomBySlugQueryKey(roomSlug)
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRoomById>>> = ({
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRoomBySlug>>> = ({
         signal,
-    }) => getRoomById(roomSlug, requestOptions, signal)
+    }) => getRoomBySlug(roomSlug, requestOptions, signal)
 
     return {
         queryKey,
@@ -509,33 +510,33 @@ export const getGetRoomByIdQueryOptions = <
         enabled: !!roomSlug,
         ...queryOptions,
     } as UseQueryOptions<
-        Awaited<ReturnType<typeof getRoomById>>,
+        Awaited<ReturnType<typeof getRoomBySlug>>,
         TError,
         TData
     > & { queryKey: QueryKey }
 }
 
-export type GetRoomByIdQueryResult = NonNullable<
-    Awaited<ReturnType<typeof getRoomById>>
+export type GetRoomBySlugQueryResult = NonNullable<
+    Awaited<ReturnType<typeof getRoomBySlug>>
 >
-export type GetRoomByIdQueryError = ErrorType<ErrorResponseApiDTO>
+export type GetRoomBySlugQueryError = ErrorType<ErrorResponseApiDTO>
 
-export function useGetRoomById<
-    TData = Awaited<ReturnType<typeof getRoomById>>,
+export function useGetRoomBySlug<
+    TData = Awaited<ReturnType<typeof getRoomBySlug>>,
     TError = ErrorType<ErrorResponseApiDTO>,
 >(
     roomSlug: string,
     options: {
         query: Partial<
             UseQueryOptions<
-                Awaited<ReturnType<typeof getRoomById>>,
+                Awaited<ReturnType<typeof getRoomBySlug>>,
                 TError,
                 TData
             >
         > &
             Pick<
                 DefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof getRoomById>>,
+                    Awaited<ReturnType<typeof getRoomBySlug>>,
                     TError,
                     TData
                 >,
@@ -544,22 +545,22 @@ export function useGetRoomById<
         request?: SecondParameter<typeof customInstance>
     }
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey }
-export function useGetRoomById<
-    TData = Awaited<ReturnType<typeof getRoomById>>,
+export function useGetRoomBySlug<
+    TData = Awaited<ReturnType<typeof getRoomBySlug>>,
     TError = ErrorType<ErrorResponseApiDTO>,
 >(
     roomSlug: string,
     options?: {
         query?: Partial<
             UseQueryOptions<
-                Awaited<ReturnType<typeof getRoomById>>,
+                Awaited<ReturnType<typeof getRoomBySlug>>,
                 TError,
                 TData
             >
         > &
             Pick<
                 UndefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof getRoomById>>,
+                    Awaited<ReturnType<typeof getRoomBySlug>>,
                     TError,
                     TData
                 >,
@@ -568,15 +569,15 @@ export function useGetRoomById<
         request?: SecondParameter<typeof customInstance>
     }
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey }
-export function useGetRoomById<
-    TData = Awaited<ReturnType<typeof getRoomById>>,
+export function useGetRoomBySlug<
+    TData = Awaited<ReturnType<typeof getRoomBySlug>>,
     TError = ErrorType<ErrorResponseApiDTO>,
 >(
     roomSlug: string,
     options?: {
         query?: Partial<
             UseQueryOptions<
-                Awaited<ReturnType<typeof getRoomById>>,
+                Awaited<ReturnType<typeof getRoomBySlug>>,
                 TError,
                 TData
             >
@@ -585,15 +586,15 @@ export function useGetRoomById<
     }
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
-export function useGetRoomById<
-    TData = Awaited<ReturnType<typeof getRoomById>>,
+export function useGetRoomBySlug<
+    TData = Awaited<ReturnType<typeof getRoomBySlug>>,
     TError = ErrorType<ErrorResponseApiDTO>,
 >(
     roomSlug: string,
     options?: {
         query?: Partial<
             UseQueryOptions<
-                Awaited<ReturnType<typeof getRoomById>>,
+                Awaited<ReturnType<typeof getRoomBySlug>>,
                 TError,
                 TData
             >
@@ -601,134 +602,7 @@ export function useGetRoomById<
         request?: SecondParameter<typeof customInstance>
     }
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-    const queryOptions = getGetRoomByIdQueryOptions(roomSlug, options)
-
-    const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-        queryKey: QueryKey
-    }
-
-    query.queryKey = queryOptions.queryKey
-
-    return query
-}
-
-export const getRoomByOfUser = (
-    options?: SecondParameter<typeof customInstance>,
-    signal?: AbortSignal
-) => {
-    return customInstance<GetRoomOfUserResponseApiDTO[]>(
-        { url: `/room`, method: 'GET', signal },
-        options
-    )
-}
-
-export const getGetRoomByOfUserQueryKey = () => {
-    return [`/room`] as const
-}
-
-export const getGetRoomByOfUserQueryOptions = <
-    TData = Awaited<ReturnType<typeof getRoomByOfUser>>,
-    TError = ErrorType<ErrorResponseApiDTO>,
->(options?: {
-    query?: Partial<
-        UseQueryOptions<
-            Awaited<ReturnType<typeof getRoomByOfUser>>,
-            TError,
-            TData
-        >
-    >
-    request?: SecondParameter<typeof customInstance>
-}) => {
-    const { query: queryOptions, request: requestOptions } = options ?? {}
-
-    const queryKey = queryOptions?.queryKey ?? getGetRoomByOfUserQueryKey()
-
-    const queryFn: QueryFunction<
-        Awaited<ReturnType<typeof getRoomByOfUser>>
-    > = ({ signal }) => getRoomByOfUser(requestOptions, signal)
-
-    return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-        Awaited<ReturnType<typeof getRoomByOfUser>>,
-        TError,
-        TData
-    > & { queryKey: QueryKey }
-}
-
-export type GetRoomByOfUserQueryResult = NonNullable<
-    Awaited<ReturnType<typeof getRoomByOfUser>>
->
-export type GetRoomByOfUserQueryError = ErrorType<ErrorResponseApiDTO>
-
-export function useGetRoomByOfUser<
-    TData = Awaited<ReturnType<typeof getRoomByOfUser>>,
-    TError = ErrorType<ErrorResponseApiDTO>,
->(options: {
-    query: Partial<
-        UseQueryOptions<
-            Awaited<ReturnType<typeof getRoomByOfUser>>,
-            TError,
-            TData
-        >
-    > &
-        Pick<
-            DefinedInitialDataOptions<
-                Awaited<ReturnType<typeof getRoomByOfUser>>,
-                TError,
-                TData
-            >,
-            'initialData'
-        >
-    request?: SecondParameter<typeof customInstance>
-}): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey }
-export function useGetRoomByOfUser<
-    TData = Awaited<ReturnType<typeof getRoomByOfUser>>,
-    TError = ErrorType<ErrorResponseApiDTO>,
->(options?: {
-    query?: Partial<
-        UseQueryOptions<
-            Awaited<ReturnType<typeof getRoomByOfUser>>,
-            TError,
-            TData
-        >
-    > &
-        Pick<
-            UndefinedInitialDataOptions<
-                Awaited<ReturnType<typeof getRoomByOfUser>>,
-                TError,
-                TData
-            >,
-            'initialData'
-        >
-    request?: SecondParameter<typeof customInstance>
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey }
-export function useGetRoomByOfUser<
-    TData = Awaited<ReturnType<typeof getRoomByOfUser>>,
-    TError = ErrorType<ErrorResponseApiDTO>,
->(options?: {
-    query?: Partial<
-        UseQueryOptions<
-            Awaited<ReturnType<typeof getRoomByOfUser>>,
-            TError,
-            TData
-        >
-    >
-    request?: SecondParameter<typeof customInstance>
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey }
-
-export function useGetRoomByOfUser<
-    TData = Awaited<ReturnType<typeof getRoomByOfUser>>,
-    TError = ErrorType<ErrorResponseApiDTO>,
->(options?: {
-    query?: Partial<
-        UseQueryOptions<
-            Awaited<ReturnType<typeof getRoomByOfUser>>,
-            TError,
-            TData
-        >
-    >
-    request?: SecondParameter<typeof customInstance>
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-    const queryOptions = getGetRoomByOfUserQueryOptions(options)
+    const queryOptions = getGetRoomBySlugQueryOptions(roomSlug, options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
         queryKey: QueryKey

@@ -1,14 +1,20 @@
 import { Button } from '@/components/atoms/Buttons/ClassicButton/Button'
 import FamilyCard from '@/components/moleculs/FamilyCard/FamilyCard'
 import DialogCreateFamily from '@/components/organisms/Dialog/DialogCreateFamily/DialogCreateFamily'
+import { useAuthContext } from '@/hooks/useAuth'
 import { withAuthRoute } from '@/lib/withAuthRoute'
-import { useGetRoomByOfUser } from '@/src/api/generated/room'
+import { useGetRoomsOfUser } from '@/src/api/generated/user'
+import { generateId } from '@/utils/id'
 import { InfoIcon, PlusIcon } from 'lucide-react'
 import { GetServerSideProps } from 'next'
 import React, { useState } from 'react'
 
 const FamilliesIndex: React.FC = () => {
-    const { data: families } = useGetRoomByOfUser()
+    const { authState } = useAuthContext()
+
+    const { data: families } = useGetRoomsOfUser(authState?.id ?? '', {
+        query: { enabled: !!authState },
+    })
     const [createFamilyDialogOpen, setCreateFamilyDialogOpen] =
         useState<boolean>(false)
 
@@ -59,8 +65,8 @@ const FamilliesIndex: React.FC = () => {
                     'w-full grid gap-[20px] grid-cols-1 laptop:grid-cols-3 laptop:gap-[25px]'
                 }
             >
-                {families?.map((family, index) => {
-                    return <FamilyCard family={family} key={index} />
+                {families?.map((family) => {
+                    return <FamilyCard family={family} key={generateId()} />
                 })}
             </div>
         </div>

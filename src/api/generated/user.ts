@@ -19,6 +19,7 @@ import type {
 } from '@tanstack/react-query'
 import type {
     ErrorResponseApiDTO,
+    GetRoomOfUserResponseApiDTO,
     PatchUserApiBodies,
     UserClassEditPasswordRequestApiDTO,
     UserClassEditPasswordResponseApiDTO,
@@ -341,30 +342,30 @@ export const usePatchPassword = <
 
     return useMutation(mutationOptions)
 }
-export const getRoomOfAUser = (
+export const getRoomsOfUser = (
     userId: string,
     options?: SecondParameter<typeof customInstance>,
     signal?: AbortSignal
 ) => {
-    return customInstance<unknown>(
+    return customInstance<GetRoomOfUserResponseApiDTO[]>(
         { url: `/user/${userId}/rooms`, method: 'GET', signal },
         options
     )
 }
 
-export const getGetRoomOfAUserQueryKey = (userId: string) => {
+export const getGetRoomsOfUserQueryKey = (userId: string) => {
     return [`/user/${userId}/rooms`] as const
 }
 
-export const getGetRoomOfAUserQueryOptions = <
-    TData = Awaited<ReturnType<typeof getRoomOfAUser>>,
+export const getGetRoomsOfUserQueryOptions = <
+    TData = Awaited<ReturnType<typeof getRoomsOfUser>>,
     TError = ErrorType<ErrorResponseApiDTO>,
 >(
     userId: string,
     options?: {
         query?: Partial<
             UseQueryOptions<
-                Awaited<ReturnType<typeof getRoomOfAUser>>,
+                Awaited<ReturnType<typeof getRoomsOfUser>>,
                 TError,
                 TData
             >
@@ -374,11 +375,11 @@ export const getGetRoomOfAUserQueryOptions = <
 ) => {
     const { query: queryOptions, request: requestOptions } = options ?? {}
 
-    const queryKey = queryOptions?.queryKey ?? getGetRoomOfAUserQueryKey(userId)
+    const queryKey = queryOptions?.queryKey ?? getGetRoomsOfUserQueryKey(userId)
 
     const queryFn: QueryFunction<
-        Awaited<ReturnType<typeof getRoomOfAUser>>
-    > = ({ signal }) => getRoomOfAUser(userId, requestOptions, signal)
+        Awaited<ReturnType<typeof getRoomsOfUser>>
+    > = ({ signal }) => getRoomsOfUser(userId, requestOptions, signal)
 
     return {
         queryKey,
@@ -386,33 +387,33 @@ export const getGetRoomOfAUserQueryOptions = <
         enabled: !!userId,
         ...queryOptions,
     } as UseQueryOptions<
-        Awaited<ReturnType<typeof getRoomOfAUser>>,
+        Awaited<ReturnType<typeof getRoomsOfUser>>,
         TError,
         TData
     > & { queryKey: QueryKey }
 }
 
-export type GetRoomOfAUserQueryResult = NonNullable<
-    Awaited<ReturnType<typeof getRoomOfAUser>>
+export type GetRoomsOfUserQueryResult = NonNullable<
+    Awaited<ReturnType<typeof getRoomsOfUser>>
 >
-export type GetRoomOfAUserQueryError = ErrorType<ErrorResponseApiDTO>
+export type GetRoomsOfUserQueryError = ErrorType<ErrorResponseApiDTO>
 
-export function useGetRoomOfAUser<
-    TData = Awaited<ReturnType<typeof getRoomOfAUser>>,
+export function useGetRoomsOfUser<
+    TData = Awaited<ReturnType<typeof getRoomsOfUser>>,
     TError = ErrorType<ErrorResponseApiDTO>,
 >(
     userId: string,
     options: {
         query: Partial<
             UseQueryOptions<
-                Awaited<ReturnType<typeof getRoomOfAUser>>,
+                Awaited<ReturnType<typeof getRoomsOfUser>>,
                 TError,
                 TData
             >
         > &
             Pick<
                 DefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof getRoomOfAUser>>,
+                    Awaited<ReturnType<typeof getRoomsOfUser>>,
                     TError,
                     TData
                 >,
@@ -421,22 +422,22 @@ export function useGetRoomOfAUser<
         request?: SecondParameter<typeof customInstance>
     }
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey }
-export function useGetRoomOfAUser<
-    TData = Awaited<ReturnType<typeof getRoomOfAUser>>,
+export function useGetRoomsOfUser<
+    TData = Awaited<ReturnType<typeof getRoomsOfUser>>,
     TError = ErrorType<ErrorResponseApiDTO>,
 >(
     userId: string,
     options?: {
         query?: Partial<
             UseQueryOptions<
-                Awaited<ReturnType<typeof getRoomOfAUser>>,
+                Awaited<ReturnType<typeof getRoomsOfUser>>,
                 TError,
                 TData
             >
         > &
             Pick<
                 UndefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof getRoomOfAUser>>,
+                    Awaited<ReturnType<typeof getRoomsOfUser>>,
                     TError,
                     TData
                 >,
@@ -445,15 +446,15 @@ export function useGetRoomOfAUser<
         request?: SecondParameter<typeof customInstance>
     }
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey }
-export function useGetRoomOfAUser<
-    TData = Awaited<ReturnType<typeof getRoomOfAUser>>,
+export function useGetRoomsOfUser<
+    TData = Awaited<ReturnType<typeof getRoomsOfUser>>,
     TError = ErrorType<ErrorResponseApiDTO>,
 >(
     userId: string,
     options?: {
         query?: Partial<
             UseQueryOptions<
-                Awaited<ReturnType<typeof getRoomOfAUser>>,
+                Awaited<ReturnType<typeof getRoomsOfUser>>,
                 TError,
                 TData
             >
@@ -462,15 +463,15 @@ export function useGetRoomOfAUser<
     }
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
-export function useGetRoomOfAUser<
-    TData = Awaited<ReturnType<typeof getRoomOfAUser>>,
+export function useGetRoomsOfUser<
+    TData = Awaited<ReturnType<typeof getRoomsOfUser>>,
     TError = ErrorType<ErrorResponseApiDTO>,
 >(
     userId: string,
     options?: {
         query?: Partial<
             UseQueryOptions<
-                Awaited<ReturnType<typeof getRoomOfAUser>>,
+                Awaited<ReturnType<typeof getRoomsOfUser>>,
                 TError,
                 TData
             >
@@ -478,7 +479,7 @@ export function useGetRoomOfAUser<
         request?: SecondParameter<typeof customInstance>
     }
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-    const queryOptions = getGetRoomOfAUserQueryOptions(userId, options)
+    const queryOptions = getGetRoomsOfUserQueryOptions(userId, options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
         queryKey: QueryKey

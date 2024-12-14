@@ -20,7 +20,7 @@ interface ButtonSettingsProps {
     ownerId?: string
 }
 
-const ButtonSettings: React.FC<ButtonSettingsProps> = ({
+const ButtonSettingsFamilySlug: React.FC<ButtonSettingsProps> = ({
     roomId,
     isOwner,
     currentTitle,
@@ -105,4 +105,4 @@ const ButtonSettings: React.FC<ButtonSettingsProps> = ({
     )
 }
 
-export default ButtonSettings
+export default ButtonSettingsFamilySlug

@@ -49,7 +49,13 @@ function AppLayout({ Component, pageProps }: AppProps) {
 }
 
 export default function App({ Component, pageProps, router }: AppProps) {
-    const queryClient = new QueryClient()
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: {
+                retry: 2, // Number of retries
+            },
+        },
+    })
     return (
         <QueryClientProvider client={queryClient}>
             <ThemeProvider
