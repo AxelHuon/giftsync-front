@@ -5,19 +5,18 @@ import {
     CollapsibleTrigger,
 } from '@/components/moleculs/Collapsible/Collapsible'
 import DialogCreateFamily from '@/components/organisms/Dialog/DialogCreateFamily/DialogCreateFamily'
-import { useSettings } from '@/providers/SettingsProvider'
 import {
     CandyCaneIcon,
+    ChevronDown,
     GiftIcon,
     LayoutDashboardIcon,
     UsersIcon,
 } from 'lucide-react'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
 
 const MenuSideBar: React.FC = () => {
-    const { sideBarIsOpen, toggleSideBar } = useSettings()
-
     const [famillyCollapseOpen, setFamillyCollapseOpen] =
         useState<boolean>(false)
 
@@ -28,56 +27,64 @@ const MenuSideBar: React.FC = () => {
     }
 
     const handleClickCollapsible = (collapseToOpen: string) => {
-        if (!sideBarIsOpen) {
-            toggleSideBar()
-        }
-
         if (collapseToOpen === 'familly') {
-            if (!sideBarIsOpen) {
-                setFamillyCollapseOpen(true)
-            } else {
-                setFamillyCollapseOpen(!famillyCollapseOpen)
-            }
+            setFamillyCollapseOpen(!famillyCollapseOpen)
         } else if (collapseToOpen === 'gift') {
-            if (!sideBarIsOpen) {
-                setGiftCollapseOpen(true)
-            } else {
-                setGiftCollapseOpen(!giftCollapseOpen)
-            }
+            setGiftCollapseOpen(!giftCollapseOpen)
         }
     }
 
     const [modalCreateFamilyOpen, setModalCreateFamilyOpen] =
         useState<boolean>(false)
 
+    const router = useRouter()
+
+    useEffect(() => {
+        if (router.pathname.includes('families')) {
+            setFamillyCollapseOpen(true)
+        }
+        if (router.pathname.includes('gifts')) {
+            setGiftCollapseOpen(true)
+        }
+    }, [])
+
     return (
         <div className={'flex flex-col gap-[12px]'}>
-            {sideBarIsOpen && (
-                <p className={'text-base text-neutral-500 font-400'}>Menu</p>
-            )}
             <div className={'flex flex-col gap-[18px]'}>
                 <Button
                     asChild
                     variant={'outline'}
-                    className={`flex ${sideBarIsOpen ? 'justify-start' : 'justify-center'} gap-[8px]`}
+                    className={`flex  justify-start gap-[8px] !border-2`}
                 >
                     <Link href={'/dashboard'}>
                         <LayoutDashboardIcon width={16} />
-                        {sideBarIsOpen && <p>Dashboard</p>}
+                        <p className={'text-m'}>Dashboard</p>
                     </Link>
                 </Button>
                 <Collapsible
-                    open={sideBarIsOpen && famillyCollapseOpen}
+                    open={famillyCollapseOpen}
                     onClick={() => handleClickCollapsible('familly')}
                     className={'flex flex-col gap-[12px]'}
                 >
                     <CollapsibleTrigger className={'w-full'} asChild>
                         <Button
                             variant={'outline'}
-                            className={`flex ${sideBarIsOpen ? 'justify-start' : 'justify-center'} gap-[8px]`}
+                            className={`flex  justify-between items-center !border-2`}
                         >
-                            <UsersIcon width={16} />
-                            {sideBarIsOpen && <p>Familles</p>}
+                            <div
+                                className={
+                                    'flex justify-start items-center gap-[8px]'
+                                }
+                            >
+                                <UsersIcon width={16} />
+                                <p className={'text-sm'}>Familles</p>
+                            </div>
+                            <ChevronDown
+                                className={
+                                    famillyCollapseOpen ? 'rotate-180' : ''
+                                }
+                                width={16}
+                            />
                         </Button>
                     </CollapsibleTrigger>
                     <CollapsibleContent onClick={handleContentClick}>
@@ -108,17 +115,27 @@ const MenuSideBar: React.FC = () => {
                     </CollapsibleContent>
                 </Collapsible>
                 <Collapsible
-                    open={sideBarIsOpen && giftCollapseOpen}
+                    open={giftCollapseOpen}
                     onClick={() => handleClickCollapsible('gift')}
                     className={'flex flex-col gap-[12px]'}
                 >
                     <CollapsibleTrigger className={'w-full'} asChild>
                         <Button
                             variant={'outline'}
-                            className={`flex ${sideBarIsOpen ? 'justify-start' : 'justify-center'} gap-[8px]`}
+                            className={`flex  justify-between items-center !border-2`}
                         >
-                            <GiftIcon width={16} />
-                            {sideBarIsOpen && <p>Cadeaux</p>}
+                            <div
+                                className={
+                                    'flex justify-start items-center gap-[8px]'
+                                }
+                            >
+                                <GiftIcon width={16} />
+                                <p className={'text-sm'}>Cadeaux</p>
+                            </div>
+                            <ChevronDown
+                                className={giftCollapseOpen ? 'rotate-180' : ''}
+                                width={16}
+                            />
                         </Button>
                     </CollapsibleTrigger>
                     <CollapsibleContent>
@@ -148,11 +165,11 @@ const MenuSideBar: React.FC = () => {
                 <Button
                     asChild
                     variant={'outline'}
-                    className={`flex ${sideBarIsOpen ? 'justify-start' : 'justify-center'} gap-[8px]`}
+                    className={`flex  justify-start gap-[8px] !border-2`}
                 >
                     <Link href={'/secret-santa'}>
                         <CandyCaneIcon width={16} />
-                        {sideBarIsOpen && <p>Secret Santa</p>}
+                        <p className={'text-sm'}>Secret Santa</p>
                     </Link>
                 </Button>
             </div>

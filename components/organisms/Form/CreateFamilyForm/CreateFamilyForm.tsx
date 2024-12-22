@@ -26,16 +26,14 @@ export function CreateFamilyForm({
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }) {
     const router = useRouter()
+    const { toast } = useToast()
 
     const formCreateFamilyConst = useForm<z.infer<typeof formCreateFamily>>({
         resolver: zodResolver(formCreateFamily),
         defaultValues: {
             title: '',
-            emails: [{ email: '' }],
         },
     })
-
-    const { toast } = useToast()
 
     const { mutate, isPending, error } = useCreateRoom({
         mutation: {
@@ -51,7 +49,10 @@ export function CreateFamilyForm({
     })
 
     const onSubmit = async (values: z.infer<typeof formCreateFamily>) => {
-        const emailToSend = values.emails.map((email) => email.email)
+        const emailToSend = values.emails
+            .filter(({ email }) => email.trim().length > 0)
+            .map((item) => item.email)
+
         await mutate({
             data: { title: values.title, emails: emailToSend },
         })
@@ -61,6 +62,7 @@ export function CreateFamilyForm({
         control: formCreateFamilyConst.control,
         name: 'emails',
     })
+
     return (
         <Form {...formCreateFamilyConst}>
             <form
@@ -90,13 +92,19 @@ export function CreateFamilyForm({
                     {fields.map((field, index) => (
                         <div
                             key={field.id}
-                            className={`flex gap-2 items-end w-full ${formCreateFamilyConst.formState.errors.emails?.[index]?.email ? 'items-center' : 'items-end'}`}
+                            className={`flex gap-2 w-full ${
+                                formCreateFamilyConst.formState.errors.emails?.[
+                                    index
+                                ]?.email
+                                    ? 'items-center'
+                                    : 'items-end'
+                            }`}
                         >
                             <FormField
                                 control={formCreateFamilyConst.control}
                                 name={`emails.${index}.email`}
                                 render={({ field }) => (
-                                    <FormItem className={'w-3/4'}>
+                                    <FormItem className="w-3/4">
                                         <FormLabel>Adresse mail</FormLabel>
                                         <FormControl>
                                             <Input type={'text'} {...field} />
@@ -107,9 +115,8 @@ export function CreateFamilyForm({
                             />
                             <Button
                                 onClick={() => remove(index)}
-                                className={'w-1/4'}
-                                disabled={index === 0}
-                                variant={'destructive'}
+                                className="w-1/4"
+                                variant="destructive"
                             >
                                 Supprimer
                             </Button>
@@ -117,7 +124,7 @@ export function CreateFamilyForm({
                     ))}
                     <Button
                         type="button"
-                        variant={'secondary'}
+                        variant="secondary"
                         onClick={() => append({ email: '' })}
                         className="border w-fit border-neutral-200 text-neutral-900 gap-2"
                     >
@@ -132,7 +139,7 @@ export function CreateFamilyForm({
                         )}
                     </FormMessage>
                 )}
-                <Button className={'w-fit'} disabled={isPending} type="submit">
+                <Button className="w-fit" disabled={isPending} type="submit">
                     {isPending && (
                         <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
                     )}

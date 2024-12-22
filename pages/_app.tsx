@@ -1,52 +1,12 @@
-import { Toaster } from '@/components/atoms/Toast/toaster'
-import MobileMenuBar from '@/components/layouts/MobileMenuBar/MobileMenuBar'
-import SideBar from '@/components/layouts/SideBar/SideBar'
-import { AuthProvider, useAuthContext } from '@/hooks/useAuth'
-import { SettingsProvider, useSettings } from '@/providers/SettingsProvider'
+import { AuthProvider } from '@/hooks/useAuth'
+import { SettingsProvider } from '@/providers/SettingsProvider'
 import { ThemeProvider } from '@/providers/ThemeProvider'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { AppProps } from 'next/app'
+import { NuqsAdapter } from 'nuqs/adapters/next/pages'
 import React from 'react'
-import { useIsClient } from 'usehooks-ts'
 import './global.css'
-
-function AppLayout({ Component, pageProps }: AppProps) {
-    const isClient = useIsClient()
-    const { sideBarIsOpen } = useSettings()
-
-    const { authState } = useAuthContext()
-
-    return (
-        <>
-            {isClient && (
-                <>
-                    <main>
-                        {authState?.id ? (
-                            <article
-                                className={'w-full px-[5%] flex justify-end'}
-                            >
-                                <SideBar />
-                                <MobileMenuBar />
-                                <div
-                                    className={`transition-[width] w-full duration-200 ${
-                                        sideBarIsOpen
-                                            ? 'tablet:w-[calc(100%-350px)]'
-                                            : 'tablet:w-[calc(100%-160px)]'
-                                    } py-5 tablet:py-10`}
-                                >
-                                    <Component {...pageProps} />
-                                </div>
-                            </article>
-                        ) : (
-                            <Component {...pageProps} />
-                        )}
-                    </main>
-                    <Toaster />
-                </>
-            )}
-        </>
-    )
-}
 
 export default function App({ Component, pageProps, router }: AppProps) {
     const queryClient = new QueryClient({
@@ -56,24 +16,27 @@ export default function App({ Component, pageProps, router }: AppProps) {
             },
         },
     })
+    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
+
     return (
         <QueryClientProvider client={queryClient}>
-            <ThemeProvider
-                attribute="class"
-                defaultTheme="dark"
-                enableSystem
-                disableTransitionOnChange
-            >
-                <AuthProvider>
-                    <SettingsProvider>
-                        <AppLayout
-                            router={router}
-                            Component={Component}
-                            pageProps={pageProps}
-                        />
-                    </SettingsProvider>
-                </AuthProvider>
-            </ThemeProvider>
+            <GoogleOAuthProvider clientId={clientId ?? ''}>
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="dark"
+                    enableSystem
+                >
+                    <AuthProvider>
+                        <NuqsAdapter>
+                            <SettingsProvider>
+                                <main className={'min-h-[100vh] bg-neutral-50'}>
+                                    <Component {...pageProps} />
+                                </main>
+                            </SettingsProvider>
+                        </NuqsAdapter>
+                    </AuthProvider>
+                </ThemeProvider>
+            </GoogleOAuthProvider>
         </QueryClientProvider>
     )
 }

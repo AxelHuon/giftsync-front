@@ -22,6 +22,7 @@ import type {
     ResetPasswordResponseApiDTO,
     SignInUserRequestApiDTO,
     SignInUserResponseApiDTO,
+    SignInWithGoogleRequestApiDTO,
 } from './Api.schemas'
 import { customInstance } from '../customInstance'
 import type { ErrorType, BodyType } from '../customInstance'
@@ -171,6 +172,80 @@ export const useSignInUser = <
     TContext
 > => {
     const mutationOptions = getSignInUserMutationOptions(options)
+
+    return useMutation(mutationOptions)
+}
+export const signInUserWithGoogle = (
+    signInWithGoogleRequestApiDTO: BodyType<SignInWithGoogleRequestApiDTO>,
+    options?: SecondParameter<typeof customInstance>
+) => {
+    return customInstance<SignInUserResponseApiDTO>(
+        {
+            url: `/auth/signin-google`,
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            data: signInWithGoogleRequestApiDTO,
+        },
+        options
+    )
+}
+
+export const getSignInUserWithGoogleMutationOptions = <
+    TError = ErrorType<ErrorResponseApiDTO>,
+    TContext = unknown,
+>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<typeof signInUserWithGoogle>>,
+        TError,
+        { data: BodyType<SignInWithGoogleRequestApiDTO> },
+        TContext
+    >
+    request?: SecondParameter<typeof customInstance>
+}): UseMutationOptions<
+    Awaited<ReturnType<typeof signInUserWithGoogle>>,
+    TError,
+    { data: BodyType<SignInWithGoogleRequestApiDTO> },
+    TContext
+> => {
+    const { mutation: mutationOptions, request: requestOptions } = options ?? {}
+
+    const mutationFn: MutationFunction<
+        Awaited<ReturnType<typeof signInUserWithGoogle>>,
+        { data: BodyType<SignInWithGoogleRequestApiDTO> }
+    > = (props) => {
+        const { data } = props ?? {}
+
+        return signInUserWithGoogle(data, requestOptions)
+    }
+
+    return { mutationFn, ...mutationOptions }
+}
+
+export type SignInUserWithGoogleMutationResult = NonNullable<
+    Awaited<ReturnType<typeof signInUserWithGoogle>>
+>
+export type SignInUserWithGoogleMutationBody =
+    BodyType<SignInWithGoogleRequestApiDTO>
+export type SignInUserWithGoogleMutationError = ErrorType<ErrorResponseApiDTO>
+
+export const useSignInUserWithGoogle = <
+    TError = ErrorType<ErrorResponseApiDTO>,
+    TContext = unknown,
+>(options?: {
+    mutation?: UseMutationOptions<
+        Awaited<ReturnType<typeof signInUserWithGoogle>>,
+        TError,
+        { data: BodyType<SignInWithGoogleRequestApiDTO> },
+        TContext
+    >
+    request?: SecondParameter<typeof customInstance>
+}): UseMutationResult<
+    Awaited<ReturnType<typeof signInUserWithGoogle>>,
+    TError,
+    { data: BodyType<SignInWithGoogleRequestApiDTO> },
+    TContext
+> => {
+    const mutationOptions = getSignInUserWithGoogleMutationOptions(options)
 
     return useMutation(mutationOptions)
 }

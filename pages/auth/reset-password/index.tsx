@@ -7,7 +7,7 @@ import { parseCookies } from 'nookies'
 import React from 'react'
 
 const Signing: React.FC = () => {
-    const { theme } = useTheme()
+    const { theme, systemTheme } = useTheme()
 
     return (
         <section
@@ -20,9 +20,13 @@ const Signing: React.FC = () => {
                     <Logo
                         width={250}
                         colorText={
-                            theme === 'light'
-                                ? Colors.Neutral['900'].hex
-                                : Colors.Neutral['25'].hex
+                            theme === 'system'
+                                ? systemTheme === 'light'
+                                    ? Colors.Neutral['900'].hex
+                                    : Colors.Neutral['25'].hex
+                                : theme === 'light'
+                                  ? Colors.Neutral['900'].hex
+                                  : Colors.Neutral['25'].hex
                         }
                         colorIcon={Colors.Primary['500'].hex}
                     />

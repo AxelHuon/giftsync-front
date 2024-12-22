@@ -18,7 +18,7 @@ import { parseCookies } from 'nookies'
 import React, { useEffect, useState } from 'react'
 
 const Signing: React.FC = () => {
-    const { theme } = useTheme()
+    const { theme, systemTheme } = useTheme()
     const { isSuccessForgotPassword } = useAuthContext()
 
     const [open, setOpen] = useState(false)
@@ -66,9 +66,13 @@ const Signing: React.FC = () => {
                     <Logo
                         width={250}
                         colorText={
-                            theme === 'light'
-                                ? Colors.Neutral['900'].hex
-                                : Colors.Neutral['25'].hex
+                            theme === 'system'
+                                ? systemTheme === 'light'
+                                    ? Colors.Neutral['900'].hex
+                                    : Colors.Neutral['25'].hex
+                                : theme === 'light'
+                                  ? Colors.Neutral['900'].hex
+                                  : Colors.Neutral['25'].hex
                         }
                         colorIcon={Colors.Primary['500'].hex}
                     />

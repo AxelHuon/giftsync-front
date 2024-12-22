@@ -39,6 +39,7 @@ interface AuthContextProps {
         },
         unknown
     >
+    onSucessLoginGoogle: (data: SignInUserResponseApiDTO) => void
     handleForgotPassword: UseMutateFunction<
         ForgotPasswordResponseApiDTO,
         ErrorType<ErrorResponseApiDTO>,
@@ -74,6 +75,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         )
 
     const router = useRouter()
+
+    const onSucessLoginGoogle = async (data: SignInUserResponseApiDTO) => {
+        setAuthState(data)
+        document.cookie = `auth_token=${data.accessToken}; path=/; secure; samesite=strict`
+
+        /*get tokenInviteRoot in localstorage*/
+        const tokenInviteRoot = localStorage.getItem('tokenInviteRoot')
+        if (tokenInviteRoot) {
+            localStorage.removeItem('tokenInviteRoot')
+            await router.push(`/families/join/${tokenInviteRoot}`)
+            return
+        }
+
+        await router.push('/dashboard')
+    }
 
     const {
         mutate: handleLogin,
@@ -145,6 +161,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return (
         <AuthContext.Provider
             value={{
+                onSucessLoginGoogle,
                 isPendingResetPassword,
                 resetPasswordError,
                 isSuccessResetPassword,

@@ -15,15 +15,14 @@ import {
 } from '@/components/atoms/Menu/DropDownMenu/dropdown-menu'
 import DialogEditProfil from '@/components/organisms/Dialog/DialogEditProfil/DialogEditProfil'
 import { useAuthContext } from '@/hooks/useAuth'
-import { useSettings } from '@/providers/SettingsProvider'
 import { useGetUserById } from '@/src/api/generated/user'
+import { returnGoodUrlPdpUser } from '@/utils/userPdpUrl'
 import { EllipsisIcon, ReceiptText, UserRoundIcon } from 'lucide-react'
 import Link from 'next/link'
 import React, { useState } from 'react'
 
 const UserButton: React.FC = () => {
     const { authState, handleLogout } = useAuthContext()
-    const { sideBarIsOpen } = useSettings()
 
     const { data: userData } = useGetUserById(authState?.id ?? '', {
         query: { enabled: !!authState },
@@ -32,7 +31,7 @@ const UserButton: React.FC = () => {
     const [editProfileDialogOpen, setEditProfileDialogOpen] =
         useState<boolean>(false)
 
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
+    const userPdpUrl = returnGoodUrlPdpUser(userData?.profilePicture ?? '')
 
     return (
         <>
@@ -41,45 +40,32 @@ const UserButton: React.FC = () => {
                     <div
                         className={
                             buttonVariants({ variant: 'outline' }) +
-                            `flex items-center h-[60px] p-[12px] gap-3 cursor-pointer relative ${sideBarIsOpen ? 'justify-between' : 'justify-center'}`
+                            `flex items-center h-[60px] p-[12px] gap-3 cursor-pointer relative  justify-between`
                         }
                     >
                         <div
-                            className={`flex items-center gap-2 ${sideBarIsOpen ? 'justify-start' : 'justify-center'}`}
+                            className={`flex items-center gap-2 justify-start `}
                         >
                             <Avatar>
-                                <AvatarImage
-                                    src={`${backendUrl}${userData?.profilePicture}`}
-                                />
+                                <AvatarImage src={userPdpUrl} />
                                 <AvatarFallback>
                                     {userData?.firstName[0]}
                                     {userData?.lastName[0]}
                                 </AvatarFallback>
                             </Avatar>
-                            {sideBarIsOpen && (
-                                <p className={'text-base'}>
-                                    {userData?.firstName} {userData?.lastName}
-                                </p>
-                            )}
+                            <p className={'text-base'}>
+                                {userData?.firstName} {userData?.lastName}
+                            </p>
                         </div>
-                        {sideBarIsOpen && (
-                            <EllipsisIcon
-                                className={`rotate-90 ${sideBarIsOpen ? 'opacity-100' : 'opacity-0'} transition-property:opacity duration-200 `}
-                            />
-                        )}
+                        <EllipsisIcon className={`rotate-90 `} />
                     </div>
                 </DropdownMenuTrigger>
                 {/*End Button*/}
-                <DropdownMenuContent
-                    align={sideBarIsOpen ? 'end' : 'start'}
-                    className="w-56"
-                >
+                <DropdownMenuContent align={'end'} className="w-56">
                     <DropdownMenuLabel>
                         <div className={'flex items-center gap-3'}>
                             <Avatar style={{ width: '35px', height: '35px' }}>
-                                <AvatarImage
-                                    src={`${backendUrl}${userData?.profilePicture}`}
-                                />
+                                <AvatarImage src={userPdpUrl} />
                                 <AvatarFallback>
                                     {userData?.firstName[0]}
                                     {userData?.lastName[0]}

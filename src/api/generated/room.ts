@@ -21,7 +21,7 @@ import type {
     CreateRoomRequestApiDTO,
     EditRoomRequestApiDTO,
     ErrorResponseApiDTO,
-    GetRoomOfUserResponseApiDTO,
+    GetRoomElementApiDTO,
     InviteUserRequestApiDTO,
     InviteUsersToARoom200,
     JoinRoomRequestApiDTO,
@@ -469,7 +469,7 @@ export const getRoomBySlug = (
     options?: SecondParameter<typeof customInstance>,
     signal?: AbortSignal
 ) => {
-    return customInstance<GetRoomOfUserResponseApiDTO>(
+    return customInstance<GetRoomElementApiDTO>(
         { url: `/room/${roomSlug}`, method: 'GET', signal },
         options
     )

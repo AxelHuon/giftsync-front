@@ -8,6 +8,10 @@ export type InviteUsersToARoom200 = {
     invitedUsers: InviteUserResponseApiDTO[]
 }
 
+export type GetRoomsOfUserParams = {
+    queryString?: string
+}
+
 export type PatchUserApiBodies = {
     dateOfBirth?: string
     firstName?: string
@@ -43,14 +47,20 @@ export interface RefreshTokenResponseApiDTO {
     refreshToken: string
 }
 
+export interface SignInWithGoogleRequestApiDTO {
+    idToken: string
+}
+
 export interface SignInUserRequestApiDTO {
     email: string
     password: string
 }
 
+export type SignInUserResponseApiDTODateOfBirth = string | string
+
 export interface SignInUserResponseApiDTO {
     accessToken: string
-    dateOfBirth: string
+    dateOfBirth?: SignInUserResponseApiDTODateOfBirth
     email: string
     firstName: string
     id: string
@@ -67,9 +77,21 @@ export interface RegisterUserRequestApiDTO {
     password: string
 }
 
+export type RegisterUserResponseApiDTOUpdatedAt = string | string
+
+export type RegisterUserResponseApiDTODateOfBirth = string | string
+
+export type RegisterUserResponseApiDTOCreatedAt = string | string
+
 export interface RegisterUserResponseApiDTO {
-    code: string
-    message: string
+    createdAt: RegisterUserResponseApiDTOCreatedAt
+    dateOfBirth: RegisterUserResponseApiDTODateOfBirth
+    email: string
+    firstName: string
+    id: string
+    lastName: string
+    profilePicture?: string
+    updatedAt: RegisterUserResponseApiDTOUpdatedAt
 }
 
 export interface EditRoomRequestApiDTO {
@@ -132,7 +154,7 @@ export interface UserCollectionGetUserOfRoomApiDTO {
     profilePicture: string
 }
 
-export interface GetRoomOfUserResponseApiDTO {
+export interface GetRoomElementApiDTO {
     createdAt?: string
     id: string
     isOwner: boolean
@@ -141,6 +163,11 @@ export interface GetRoomOfUserResponseApiDTO {
     title: string
     updatedAt?: string
     users: UserCollectionGetUserOfRoomApiDTO[]
+}
+
+export interface GetRoomOfUserResponseApiDTO {
+    rooms: GetRoomElementApiDTO[]
+    total: number
 }
 
 export interface UserClassEditPasswordRequestApiDTO {

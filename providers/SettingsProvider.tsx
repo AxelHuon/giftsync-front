@@ -1,57 +1,30 @@
-import React, {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, { createContext, ReactNode, useContext } from 'react'
 
-interface SettingsContextType {
-  sideBarIsOpen: boolean;
-  toggleSideBar: () => void;
-}
+interface SettingsContextType {}
 
 const SettingsContext = createContext<SettingsContextType | undefined>(
-  undefined,
-);
+    undefined
+)
 
 interface SettingsProviderProps {
-  children: ReactNode;
+    children: ReactNode
 }
 
 export const SettingsProvider: React.FC<SettingsProviderProps> = ({
-  children,
+    children,
 }) => {
-  const [sideBarIsOpen, setSideBarIsOpen] = useState<boolean>(false);
-
-  useEffect(() => {
-    const storedState = localStorage.getItem('sideBarIsOpen');
-    if (storedState !== null) {
-      setSideBarIsOpen(JSON.parse(storedState));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('sideBarIsOpen', JSON.stringify(sideBarIsOpen));
-  }, [sideBarIsOpen]);
-
-  const toggleSideBar = () => {
-    setSideBarIsOpen((prevState) => !prevState);
-  };
-
-  const value = { sideBarIsOpen, toggleSideBar };
-
-  return (
-    <SettingsContext.Provider value={value}>
-      {children}
-    </SettingsContext.Provider>
-  );
-};
+    const value = {}
+    return (
+        <SettingsContext.Provider value={value}>
+            {children}
+        </SettingsContext.Provider>
+    )
+}
 
 export const useSettings = (): SettingsContextType => {
-  const context = useContext(SettingsContext);
-  if (context === undefined) {
-    throw new Error('useSettings must be used within a SettingsProvider');
-  }
-  return context;
-};
+    const context = useContext(SettingsContext)
+    if (context === undefined) {
+        throw new Error('useSettings must be used within a SettingsProvider')
+    }
+    return context
+}

@@ -1,7 +1,7 @@
 import MobileMenuBar from '@/components/layouts/MobileMenuBar/MobileMenuBar'
 import SideBar from '@/components/layouts/SideBar/SideBar'
-import { useAuthContext } from '@/hooks/useAuth'
-import { useSettings } from '@/providers/SettingsProvider'
+import { withAuthRoute } from '@/lib/withAuthRoute'
+import { GetServerSideProps } from 'next'
 import React from 'react'
 
 interface AppLayoutProps {
@@ -9,27 +9,25 @@ interface AppLayoutProps {
 }
 
 const AppLayoutServer: React.FC<AppLayoutProps> = ({ children }) => {
-    const { sideBarIsOpen } = useSettings()
-    const { authState } = useAuthContext()
-    if (authState?.id) {
-        return (
-            <article className={'w-full px-[5%] flex justify-end'}>
-                <SideBar />
-                <MobileMenuBar />
-                <div
-                    className={`transition transition-[width] w-full duration-200 ${
-                        sideBarIsOpen
-                            ? 'tablet:w-[calc(100%-350px)]'
-                            : 'tablet:w-[calc(100%-160px)]'
-                    } py-5 tablet:py-10`}
-                >
-                    {children}
-                </div>
-            </article>
-        )
-    } else {
-        return children
-    }
+    return (
+        <article className={'w-full px-[5%] flex justify-end'}>
+            <SideBar />
+            <MobileMenuBar />
+            <div
+                className={` w-full duration-200  tablet:w-[calc(100%-300px)]
+                 py-[42px]`}
+            >
+                {children}
+            </div>
+        </article>
+    )
 }
 
 export default AppLayoutServer
+export const getServerSideProps: GetServerSideProps = withAuthRoute(
+    async (context) => {
+        return {
+            props: {},
+        }
+    }
+)

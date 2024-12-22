@@ -7,20 +7,29 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/atoms/Menu/DropDownMenu/dropdown-menu'
-import { useSettings } from '@/providers/SettingsProvider'
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
-import * as React from 'react'
+import React, { useEffect, useState } from 'react'
 
 export function ToggleButtonMode() {
     const { setTheme, theme } = useTheme()
-    const { sideBarIsOpen } = useSettings()
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        setMounted(true) // Assurez-vous que le composant est monté côté client
+    }, [])
+
+    if (!mounted) {
+        // Retournez un placeholder ou rien tant que le composant n'est pas monté
+        return null
+    }
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button
                     variant={'outline'}
-                    className={`flex items-center ${sideBarIsOpen ? 'justify-start' : 'justify-center'} gap-[8px]`}
+                    className={`flex items-center justify-start gap-[8px]`}
                 >
                     {theme === 'light' ? (
                         <Sun size={20} />
@@ -29,9 +38,7 @@ export function ToggleButtonMode() {
                     ) : (
                         <Sun size={20} />
                     )}
-                    {sideBarIsOpen && (
-                        <p className={'font-500'}>Changer le thème</p>
-                    )}
+                    <p className={'font-500'}>Changer le thème</p>
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className={'bg-neutral-25'} align="center">

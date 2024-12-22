@@ -20,6 +20,7 @@ import { PatchUserApiBodies } from '@/src/api/generated/Api.schemas'
 import { useGetUserById, usePatchUser } from '@/src/api/generated/user'
 import { formEditUser } from '@/utils/schemas/user.schema'
 import { translationPatchUserInformationsErrorMessageApi } from '@/utils/translationErrorMessageApi/translationErrorMessageApi'
+import { returnGoodUrlPdpUser } from '@/utils/userPdpUrl'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ReloadIcon } from '@radix-ui/react-icons'
 import React from 'react'
@@ -33,7 +34,9 @@ export function EditUserInformationForm() {
         refetch,
         isLoading,
     } = useGetUserById(authState?.id ?? '')
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
+
+    const userPdpUrl = returnGoodUrlPdpUser(userData?.profilePicture ?? '')
+
     const form = useForm<z.infer<typeof formEditUser>>({
         resolver: zodResolver(formEditUser),
         defaultValues: {
@@ -84,9 +87,7 @@ export function EditUserInformationForm() {
             >
                 <div className={'flex items-center gap-[15px]'}>
                     <Avatar className={'w-[72px] h-[72px]'}>
-                        <AvatarImage
-                            src={`${backendUrl}${userData?.profilePicture}`}
-                        />
+                        <AvatarImage src={userPdpUrl} />
                         <AvatarFallback className={'bg-neutral-100'}>
                             <p className={'text-xl'}>
                                 {userData?.firstName[0]}

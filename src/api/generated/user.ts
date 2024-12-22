@@ -20,6 +20,7 @@ import type {
 import type {
     ErrorResponseApiDTO,
     GetRoomOfUserResponseApiDTO,
+    GetRoomsOfUserParams,
     PatchUserApiBodies,
     UserClassEditPasswordRequestApiDTO,
     UserClassEditPasswordResponseApiDTO,
@@ -344,17 +345,21 @@ export const usePatchPassword = <
 }
 export const getRoomsOfUser = (
     userId: string,
+    params?: GetRoomsOfUserParams,
     options?: SecondParameter<typeof customInstance>,
     signal?: AbortSignal
 ) => {
-    return customInstance<GetRoomOfUserResponseApiDTO[]>(
-        { url: `/user/${userId}/rooms`, method: 'GET', signal },
+    return customInstance<GetRoomOfUserResponseApiDTO>(
+        { url: `/user/${userId}/rooms`, method: 'GET', params, signal },
         options
     )
 }
 
-export const getGetRoomsOfUserQueryKey = (userId: string) => {
-    return [`/user/${userId}/rooms`] as const
+export const getGetRoomsOfUserQueryKey = (
+    userId: string,
+    params?: GetRoomsOfUserParams
+) => {
+    return [`/user/${userId}/rooms`, ...(params ? [params] : [])] as const
 }
 
 export const getGetRoomsOfUserQueryOptions = <
@@ -362,6 +367,7 @@ export const getGetRoomsOfUserQueryOptions = <
     TError = ErrorType<ErrorResponseApiDTO>,
 >(
     userId: string,
+    params?: GetRoomsOfUserParams,
     options?: {
         query?: Partial<
             UseQueryOptions<
@@ -375,11 +381,12 @@ export const getGetRoomsOfUserQueryOptions = <
 ) => {
     const { query: queryOptions, request: requestOptions } = options ?? {}
 
-    const queryKey = queryOptions?.queryKey ?? getGetRoomsOfUserQueryKey(userId)
+    const queryKey =
+        queryOptions?.queryKey ?? getGetRoomsOfUserQueryKey(userId, params)
 
     const queryFn: QueryFunction<
         Awaited<ReturnType<typeof getRoomsOfUser>>
-    > = ({ signal }) => getRoomsOfUser(userId, requestOptions, signal)
+    > = ({ signal }) => getRoomsOfUser(userId, params, requestOptions, signal)
 
     return {
         queryKey,
@@ -403,6 +410,7 @@ export function useGetRoomsOfUser<
     TError = ErrorType<ErrorResponseApiDTO>,
 >(
     userId: string,
+    params: undefined | GetRoomsOfUserParams,
     options: {
         query: Partial<
             UseQueryOptions<
@@ -427,6 +435,7 @@ export function useGetRoomsOfUser<
     TError = ErrorType<ErrorResponseApiDTO>,
 >(
     userId: string,
+    params?: GetRoomsOfUserParams,
     options?: {
         query?: Partial<
             UseQueryOptions<
@@ -451,6 +460,7 @@ export function useGetRoomsOfUser<
     TError = ErrorType<ErrorResponseApiDTO>,
 >(
     userId: string,
+    params?: GetRoomsOfUserParams,
     options?: {
         query?: Partial<
             UseQueryOptions<
@@ -468,6 +478,7 @@ export function useGetRoomsOfUser<
     TError = ErrorType<ErrorResponseApiDTO>,
 >(
     userId: string,
+    params?: GetRoomsOfUserParams,
     options?: {
         query?: Partial<
             UseQueryOptions<
@@ -479,7 +490,7 @@ export function useGetRoomsOfUser<
         request?: SecondParameter<typeof customInstance>
     }
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-    const queryOptions = getGetRoomsOfUserQueryOptions(userId, options)
+    const queryOptions = getGetRoomsOfUserQueryOptions(userId, params, options)
 
     const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
         queryKey: QueryKey
