@@ -54,7 +54,7 @@ const MenuSideBar: React.FC = () => {
                 <Button
                     asChild
                     variant={'outline'}
-                    className={`flex  justify-start gap-[8px] !border-2`}
+                    className={`flex  justify-start gap-[8px] !border`}
                 >
                     <Link href={'/dashboard'}>
                         <LayoutDashboardIcon width={16} />
@@ -69,7 +69,7 @@ const MenuSideBar: React.FC = () => {
                     <CollapsibleTrigger className={'w-full'} asChild>
                         <Button
                             variant={'outline'}
-                            className={`flex  justify-between items-center !border-2`}
+                            className={`flex  justify-between items-center !border`}
                         >
                             <div
                                 className={
@@ -122,7 +122,7 @@ const MenuSideBar: React.FC = () => {
                     <CollapsibleTrigger className={'w-full'} asChild>
                         <Button
                             variant={'outline'}
-                            className={`flex  justify-between items-center !border-2`}
+                            className={`flex  justify-between items-center !border`}
                         >
                             <div
                                 className={
@@ -165,7 +165,7 @@ const MenuSideBar: React.FC = () => {
                 <Button
                     asChild
                     variant={'outline'}
-                    className={`flex  justify-start gap-[8px] !border-2`}
+                    className={`flex  justify-start gap-[8px] !border`}
                 >
                     <Link href={'/secret-santa'}>
                         <CandyCaneIcon width={16} />
