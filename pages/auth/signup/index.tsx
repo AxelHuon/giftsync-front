@@ -16,7 +16,7 @@ const Signup: React.FC = () => {
             }
         >
             <aside className={'w-full flex gap-[20px] flex-col'}>
-                <div className={'flex justify-center'}>
+                <div className={'justify-center flex laptop:hidden'}>
                     <Logo
                         width={250}
                         colorText={
@@ -39,7 +39,7 @@ const Signup: React.FC = () => {
                     >
                         <h2
                             className={
-                                'text-center  max-w-2xl text-2xl laptop:text-4xl font-variable font-600 text-neutral-900 '
+                                'text-center  max-w-2xl text-2xl laptop:text-4xl font-variable font-500 text-neutral-900 '
                             }
                         >
                             Commence tes listes de Noël 🎄
@@ -49,7 +49,7 @@ const Signup: React.FC = () => {
                                 'font-variable text-center  font-400 text-neutral-700'
                             }
                         >
-                            Rentre t’es informations d'inscription ci-dessous !
+                            Rentre tes informations d’inscription ci-dessous !
                         </p>
                     </div>
                     <div className={'w-full laptop:max-w-[550px]'}>

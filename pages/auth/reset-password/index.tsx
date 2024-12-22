@@ -39,7 +39,7 @@ const Signing: React.FC = () => {
                     >
                         <h2
                             className={
-                                'text-center text-2xl laptop:text-4xl font-variable font-600 text-neutral-900 '
+                                'text-center text-2xl laptop:text-4xl font-variable font-500 text-neutral-900 '
                             }
                         >
                             Nouveau mot de passe 🧐

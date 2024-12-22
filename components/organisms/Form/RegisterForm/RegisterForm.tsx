@@ -4,7 +4,9 @@ import {
     Button,
     buttonVariants,
 } from '@/components/atoms/Buttons/ClassicButton/Button'
+import GoogleLoginButton from '@/components/atoms/Buttons/GoogleLoginButton/GoogleLoginButton'
 import { Input } from '@/components/atoms/Input/input'
+import { Separator } from '@/components/atoms/Separator/Separator'
 import { DatePicker } from '@/components/moleculs/DatePicker/DatePicker'
 import {
     Form,
@@ -54,7 +56,7 @@ export function RegisterForm() {
         <Form {...form}>
             <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="flex flex-col gap-5 w-full"
+                className="flex flex-col gap-7 w-full"
             >
                 <div className={'flex justify-between gap-[20px]'}>
                     <div className={'w-1/2'}>
@@ -88,70 +90,88 @@ export function RegisterForm() {
                         />
                     </div>
                 </div>
-                <FormField
-                    control={form.control}
-                    name="dateOfBirth"
-                    render={({ field }) => (
-                        <FormItem className="flex flex-col w-full">
-                            <FormLabel>Date de naissance</FormLabel>
-                            <DatePicker
-                                date={field.value}
-                                setDate={field.onChange}
-                            />
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Adresse mail</FormLabel>
-                            <FormControl>
-                                <Input
-                                    placeholder="exemple@email.com"
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="password"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Mot de passe</FormLabel>
-                            <FormControl>
-                                <Input
-                                    type="password"
-                                    placeholder="Mot de passe"
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="confirmPassword"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Confirmer le mot de passe</FormLabel>
-                            <FormControl>
-                                <Input
-                                    type="password"
-                                    placeholder="Confirmer le mot de passe"
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+                <div className={'flex justify-between items-center gap-[20px]'}>
+                    <div className={'w-1/2'}>
+                        <FormField
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Adresse mail</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="exemple@email.com"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                    <div
+                        className={
+                            'w-1/2 min-h-[72px] flex flex-col justify-end'
+                        }
+                    >
+                        <FormField
+                            control={form.control}
+                            name="dateOfBirth"
+                            render={({ field }) => (
+                                <FormItem className="flex flex-col w-full">
+                                    <FormLabel>Date de naissance</FormLabel>
+                                    <DatePicker
+                                        date={field.value}
+                                        setDate={field.onChange}
+                                    />
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                </div>
+                <div className={'flex justify-between gap-[20px]'}>
+                    <div className={'w-1/2'}>
+                        <FormField
+                            control={form.control}
+                            name="password"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Mot de passe</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="password"
+                                            placeholder="Mot de passe"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                    <div className={'w-1/2'}>
+                        <FormField
+                            control={form.control}
+                            name="confirmPassword"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>
+                                        Confirmer le mot de passe
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="password"
+                                            placeholder="Confirmer le mot de passe"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                </div>
                 {registerError && (
                     <FormMessage>
                         {translationSignupErrorMessageApi(
@@ -184,6 +204,20 @@ export function RegisterForm() {
                     </Link>
                 </p>
             </form>
+            <div className={'flex justify-center flex-col items-center'}>
+                <div className={'w-full flex items-center gap-3 my-7'}>
+                    <Separator className={'w-2/6 bg-neutral-500'} />
+                    <p
+                        className={
+                            'text-sm font-500 w-2/6 text-center text-neutral-500'
+                        }
+                    >
+                        Ou continue avec
+                    </p>
+                    <Separator className={'w-2/6 bg-neutral-500'} />
+                </div>
+                <GoogleLoginButton />
+            </div>
         </Form>
     )
 }

@@ -2,6 +2,7 @@ import {
     Button,
     buttonVariants,
 } from '@/components/atoms/Buttons/ClassicButton/Button'
+import GoogleLoginButton from '@/components/atoms/Buttons/GoogleLoginButton/GoogleLoginButton'
 import { Input } from '@/components/atoms/Input/input'
 import { Separator } from '@/components/atoms/Separator/Separator'
 import {
@@ -13,22 +14,17 @@ import {
     FormMessage,
 } from '@/components/organisms/Form/Form'
 import { useAuthContext } from '@/hooks/useAuth'
-import { toast } from '@/hooks/useToast'
-import { SignInUserResponseApiDTO } from '@/src/api/generated/Api.schemas'
-import { useSignInUserWithGoogle } from '@/src/api/generated/auth'
 import { formLoginSchema } from '@/utils/schemas/auth.schema'
 import { translationSigninErrorMessageApi } from '@/utils/translationErrorMessageApi/translationErrorMessageApi'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ReloadIcon } from '@radix-ui/react-icons'
-import { CredentialResponse, GoogleLogin } from '@react-oauth/google'
 import Link from 'next/link'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 export function LoginForm() {
-    const { handleLogin, signInError, isSigningIn, onSucessLoginGoogle } =
-        useAuthContext()
+    const { handleLogin, signInError, isSigningIn } = useAuthContext()
 
     const form = useForm<z.infer<typeof formLoginSchema>>({
         resolver: zodResolver(formLoginSchema),
@@ -42,35 +38,11 @@ export function LoginForm() {
         await handleLogin({ data: values })
     }
 
-    const { mutate } = useSignInUserWithGoogle({
-        mutation: {
-            onSuccess: (data: SignInUserResponseApiDTO) => {
-                onSucessLoginGoogle(data)
-            },
-            onError: () => {
-                toast({
-                    variant: 'destructive',
-                    title: 'Une erreur est survenue',
-                })
-            },
-        },
-    })
-
-    const loginWithGoogle = (res: CredentialResponse) => {
-        if (res.credential) {
-            mutate({
-                data: {
-                    idToken: res.credential,
-                },
-            })
-        }
-    }
-
     return (
         <Form {...form}>
             <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="flex flex-col gap-5 w-full"
+                className="flex flex-col gap-7 w-full"
             >
                 <FormField
                     control={form.control}
@@ -135,7 +107,7 @@ export function LoginForm() {
                     Connexion
                 </Button>
                 <p className={'text-sm font-variable font-500 text-center'}>
-                    Vous n'avez pas encore de compte ?{' '}
+                    Tu n'as pas encore de compte ?{' '}
                     <Link
                         href={'signup'}
                         className={
@@ -148,14 +120,18 @@ export function LoginForm() {
                 </p>
             </form>
             <div className={'flex justify-center flex-col items-center'}>
-                <Separator className={'my-7 w-2/3 bg-neutral-700'} />
-                <GoogleLogin
-                    text={'continue_with'}
-                    logo_alignment={'center'}
-                    onSuccess={(res: CredentialResponse) =>
-                        loginWithGoogle(res)
-                    }
-                />
+                <div className={'w-full flex items-center gap-3 my-7'}>
+                    <Separator className={'w-2/6 bg-neutral-500'} />
+                    <p
+                        className={
+                            'text-sm font-500 w-2/6 text-center text-neutral-500'
+                        }
+                    >
+                        Ou continue avec
+                    </p>
+                    <Separator className={'w-2/6 bg-neutral-500'} />
+                </div>
+                <GoogleLoginButton />
             </div>
         </Form>
     )

@@ -9,12 +9,14 @@ import {
     ResetPasswordResponseApiDTO,
     SignInUserRequestApiDTO,
     SignInUserResponseApiDTO,
+    SignInWithGoogleRequestApiDTO,
 } from '@/src/api/generated/Api.schemas'
 import {
     useForgotPassword,
     useRegisterUser,
     useResetPassword,
     useSignInUser,
+    useSignInUserWithGoogle,
 } from '@/src/api/generated/auth'
 import { UseMutateFunction } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
@@ -31,6 +33,14 @@ interface AuthContextProps {
         },
         unknown
     >
+    handleLoginGoogle: UseMutateFunction<
+        SignInUserResponseApiDTO,
+        ErrorType<ErrorResponseApiDTO>,
+        {
+            data: BodyType<SignInWithGoogleRequestApiDTO>
+        },
+        unknown
+    >
     handleRegister: UseMutateFunction<
         RegisterUserResponseApiDTO,
         ErrorType<ErrorResponseApiDTO>,
@@ -39,7 +49,6 @@ interface AuthContextProps {
         },
         unknown
     >
-    onSucessLoginGoogle: (data: SignInUserResponseApiDTO) => void
     handleForgotPassword: UseMutateFunction<
         ForgotPasswordResponseApiDTO,
         ErrorType<ErrorResponseApiDTO>,
@@ -52,6 +61,8 @@ interface AuthContextProps {
         { data: BodyType<ResetPasswordRequestApiDTO> },
         unknown
     >
+    loginGoogleError: ErrorType<ErrorResponseApiDTO> | null
+    isPendingLoginGoogle: boolean
     isPendingResetPassword: boolean
     resetPasswordError: ErrorType<ErrorResponseApiDTO> | null
     isSuccessResetPassword: boolean
@@ -76,26 +87,34 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const router = useRouter()
 
-    const onSucessLoginGoogle = async (data: SignInUserResponseApiDTO) => {
-        setAuthState(data)
-        document.cookie = `auth_token=${data.accessToken}; path=/; secure; samesite=strict`
-
-        /*get tokenInviteRoot in localstorage*/
-        const tokenInviteRoot = localStorage.getItem('tokenInviteRoot')
-        if (tokenInviteRoot) {
-            localStorage.removeItem('tokenInviteRoot')
-            await router.push(`/families/join/${tokenInviteRoot}`)
-            return
-        }
-
-        await router.push('/dashboard')
-    }
-
     const {
         mutate: handleLogin,
         isPending: isSigningIn,
         error: signInError,
     } = useSignInUser({
+        mutation: {
+            onSuccess: async (data) => {
+                setAuthState(data)
+                document.cookie = `auth_token=${data.accessToken}; path=/; secure; samesite=strict`
+
+                /*get tokenInviteRoot in localstorage*/
+                const tokenInviteRoot = localStorage.getItem('tokenInviteRoot')
+                if (tokenInviteRoot) {
+                    localStorage.removeItem('tokenInviteRoot')
+                    await router.push(`/families/join/${tokenInviteRoot}`)
+                    return
+                }
+
+                await router.push('/dashboard')
+            },
+        },
+    })
+
+    const {
+        mutate: handleLoginGoogle,
+        isPending: isPendingLoginGoogle,
+        error: loginGoogleError,
+    } = useSignInUserWithGoogle({
         mutation: {
             onSuccess: async (data) => {
                 setAuthState(data)
@@ -161,7 +180,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return (
         <AuthContext.Provider
             value={{
-                onSucessLoginGoogle,
+                isPendingLoginGoogle,
+                loginGoogleError,
+                handleLoginGoogle,
                 isPendingResetPassword,
                 resetPasswordError,
                 isSuccessResetPassword,

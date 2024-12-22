@@ -35,7 +35,7 @@ const SecretSanta: React.FC = () => {
                         </div>
                         <div className={'z-10 relative'}>
                             <h1
-                                className={`font-600 text-white text-4xl laptop:text-5xl`}
+                                className={`font-500 text-white text-4xl laptop:text-5xl`}
                             >
                                 Secret Santa 🎁
                             </h1>

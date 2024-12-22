@@ -39,7 +39,7 @@ const Signing: React.FC = () => {
                 <Dialog open={open} onOpenChange={setOpen}>
                     <DialogContent className="sm:max-w-[90%] laptop:max-w-[600px]">
                         <DialogHeader>
-                            <DialogTitle className={'text-2xl font-600'}>
+                            <DialogTitle className={'text-2xl font-500'}>
                                 C'est presque terminé 📨
                             </DialogTitle>
                         </DialogHeader>
@@ -51,7 +51,7 @@ const Signing: React.FC = () => {
                             les instructions.
                         </DialogDescription>
                         <DialogDescription
-                            className={'text-neutral-900 text-base font-600'}
+                            className={'text-neutral-900 text-base font-500'}
                         >
                             Verifiez les spams si vous ne trouvez pas le mail.
                         </DialogDescription>
@@ -85,7 +85,7 @@ const Signing: React.FC = () => {
                     >
                         <h2
                             className={
-                                'text-center text-2xl laptop:text-4xl font-variable font-600 text-neutral-900 '
+                                'text-center text-2xl laptop:text-4xl font-variable font-500 text-neutral-900 '
                             }
                         >
                             Réinitialisation de mot de passe 🔐

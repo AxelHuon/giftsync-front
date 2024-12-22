@@ -17,7 +17,7 @@ const FamilySinglePage: React.FC = () => {
                 <div className={'flex justify-between'}>
                     <h1
                         className={
-                            'text-2xl laptop:text-4xl font-variable font-600 text-neutral-900 '
+                            'text-2xl laptop:text-4xl font-variable font-500 text-neutral-900 '
                         }
                     >
                         {familyData?.title}

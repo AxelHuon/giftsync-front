@@ -16,7 +16,7 @@ const Signin: React.FC = () => {
             }
         >
             <aside className={'w-full flex gap-[20px] flex-col'}>
-                <div className={'flex justify-center'}>
+                <div className={'justify-center flex laptop:hidden'}>
                     <Logo
                         width={250}
                         colorText={
@@ -35,7 +35,7 @@ const Signin: React.FC = () => {
                     <div className={'flex flex-col gap-[20px] items-center'}>
                         <h2
                             className={
-                                'text-center  text-2xl laptop:text-4xl font-variable font-600 text-neutral-900 '
+                                'text-center  text-2xl laptop:text-4xl font-variable font-500 text-neutral-900 '
                             }
                         >
                             Content de te revoir 👋
@@ -45,7 +45,7 @@ const Signin: React.FC = () => {
                                 'font-variable text-center  font-400 text-neutral-700'
                             }
                         >
-                            Rentre t’es informations de connexion ci-dessous !
+                            Rentre tes informations de connexion ci-dessous !
                         </p>
                     </div>
                     <div className={'w-full laptop:max-w-[550px]'}>

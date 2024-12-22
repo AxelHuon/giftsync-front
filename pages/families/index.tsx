@@ -49,7 +49,7 @@ const FamilliesIndex: React.FC = () => {
                 <div className={'flex flex-row justify-between'}>
                     <h1
                         className={
-                            'text-2xl laptop:text-4xl font-variable font-600 text-neutral-900 '
+                            'text-2xl laptop:text-4xl font-variable font-500 text-neutral-900 '
                         }
                     >
                         Vos familles 🏡
@@ -103,7 +103,7 @@ const FamilliesIndex: React.FC = () => {
                                 </Avatar>
                                 <p
                                     className={
-                                        'text-neutral-900 font-600 text-xl'
+                                        'text-neutral-900 font-500 text-xl'
                                     }
                                 >
                                     {family.title}
