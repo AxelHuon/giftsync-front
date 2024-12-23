@@ -12,13 +12,14 @@ const Signup: React.FC = () => {
     return (
         <section
             className={
-                'container w-full laptop:w-1/2 gap-[20px] flex flex-col h-screen items-center justify-center'
+                'container w-full py-10 laptop:py-0 laptop:w-1/2 gap-[20px] flex flex-col laptop:h-screen items-center justify-center'
             }
         >
             <aside className={'w-full flex gap-[20px] flex-col'}>
                 <div className={'justify-center flex laptop:hidden'}>
                     <Logo
-                        width={250}
+                        width={200}
+                        height={50}
                         colorText={
                             theme === 'system'
                                 ? systemTheme === 'light'
@@ -42,7 +43,7 @@ const Signup: React.FC = () => {
                                 'text-center  max-w-2xl text-2xl laptop:text-4xl font-variable font-500 text-neutral-900 '
                             }
                         >
-                            Commence tes listes de Noël 🎄
+                            Inscrit toi pour commencer 🎉
                         </h2>
                         <p
                             className={

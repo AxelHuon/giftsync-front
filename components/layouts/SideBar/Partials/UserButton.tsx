@@ -53,7 +53,7 @@ const UserButton: React.FC = () => {
                                     {userData?.lastName[0]}
                                 </AvatarFallback>
                             </Avatar>
-                            <p className={'text-base'}>
+                            <p className={'text-base font-500'}>
                                 {userData?.firstName} {userData?.lastName}
                             </p>
                         </div>

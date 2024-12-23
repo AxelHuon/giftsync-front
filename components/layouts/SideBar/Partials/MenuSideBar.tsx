@@ -58,7 +58,7 @@ const MenuSideBar: React.FC = () => {
                 >
                     <Link href={'/dashboard'}>
                         <LayoutDashboardIcon width={16} />
-                        <p className={'text-m'}>Dashboard</p>
+                        <p className={'font-500 text-sm'}>Dashboard</p>
                     </Link>
                 </Button>
                 <Collapsible
@@ -77,7 +77,7 @@ const MenuSideBar: React.FC = () => {
                                 }
                             >
                                 <UsersIcon width={16} />
-                                <p className={'text-sm'}>Familles</p>
+                                <p className={'font-500 text-sm'}>Familles</p>
                             </div>
                             <ChevronDown
                                 className={
@@ -94,7 +94,12 @@ const MenuSideBar: React.FC = () => {
                             }
                         >
                             <li>
-                                <Button asChild size={'sm'} variant={'ghost'}>
+                                <Button
+                                    asChild
+                                    size={'sm'}
+                                    className={'font-500'}
+                                    variant={'ghost'}
+                                >
                                     <Link href={'/families'}>
                                         Listes de familles
                                     </Link>
@@ -105,6 +110,7 @@ const MenuSideBar: React.FC = () => {
                                     onClick={() =>
                                         setModalCreateFamilyOpen(true)
                                     }
+                                    className={'font-500'}
                                     size={'sm'}
                                     variant={'ghost'}
                                 >
@@ -130,7 +136,7 @@ const MenuSideBar: React.FC = () => {
                                 }
                             >
                                 <GiftIcon width={16} />
-                                <p className={'text-sm'}>Cadeaux</p>
+                                <p className={'font-500 text-sm'}>Cadeaux</p>
                             </div>
                             <ChevronDown
                                 className={giftCollapseOpen ? 'rotate-180' : ''}
@@ -145,17 +151,29 @@ const MenuSideBar: React.FC = () => {
                             }
                         >
                             <li>
-                                <Button size={'sm'} variant={'ghost'}>
+                                <Button
+                                    className={'font-500'}
+                                    size={'sm'}
+                                    variant={'ghost'}
+                                >
                                     Liste de mes cadeaux
                                 </Button>
                             </li>
                             <li>
-                                <Button size={'sm'} variant={'ghost'}>
+                                <Button
+                                    size={'sm'}
+                                    className={'font-500'}
+                                    variant={'ghost'}
+                                >
                                     Créer un nouveau cadeau
                                 </Button>
                             </li>
                             <li>
-                                <Button size={'sm'} variant={'ghost'}>
+                                <Button
+                                    size={'sm'}
+                                    className={'font-500'}
+                                    variant={'ghost'}
+                                >
                                     Mes participations
                                 </Button>
                             </li>
@@ -169,7 +187,7 @@ const MenuSideBar: React.FC = () => {
                 >
                     <Link href={'/secret-santa'}>
                         <CandyCaneIcon width={16} />
-                        <p className={'text-sm'}>Secret Santa</p>
+                        <p className={'font-500 text-sm'}>Secret Santa</p>
                     </Link>
                 </Button>
             </div>

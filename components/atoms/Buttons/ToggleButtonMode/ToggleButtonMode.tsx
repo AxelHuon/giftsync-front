@@ -38,7 +38,7 @@ export function ToggleButtonMode() {
                     ) : (
                         <Sun size={20} />
                     )}
-                    <p className={'font-500'}>Changer le thème</p>
+                    <p className={'font-400 text-sm'}>Changer le thème</p>
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className={'bg-neutral-25'} align="center">

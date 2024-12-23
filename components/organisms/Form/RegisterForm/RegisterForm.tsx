@@ -58,8 +58,12 @@ export function RegisterForm() {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="flex flex-col gap-7 w-full"
             >
-                <div className={'flex justify-between gap-[20px]'}>
-                    <div className={'w-1/2'}>
+                <div
+                    className={
+                        'flex flex-col laptop:flex-row justify-between gap-[20px]'
+                    }
+                >
+                    <div className={'w-full laptop:w-1/2'}>
                         <FormField
                             control={form.control}
                             name="firstName"
@@ -74,7 +78,7 @@ export function RegisterForm() {
                             )}
                         />
                     </div>
-                    <div className={'w-1/2'}>
+                    <div className={'w-full laptop:w-1/2'}>
                         <FormField
                             control={form.control}
                             name="lastName"
@@ -90,48 +94,39 @@ export function RegisterForm() {
                         />
                     </div>
                 </div>
-                <div className={'flex justify-between items-center gap-[20px]'}>
-                    <div className={'w-1/2'}>
-                        <FormField
-                            control={form.control}
-                            name="email"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Adresse mail</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            placeholder="exemple@email.com"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
-                    <div
-                        className={
-                            'w-1/2 min-h-[72px] flex flex-col justify-end'
-                        }
-                    >
-                        <FormField
-                            control={form.control}
-                            name="dateOfBirth"
-                            render={({ field }) => (
-                                <FormItem className="flex flex-col w-full">
-                                    <FormLabel>Date de naissance</FormLabel>
-                                    <DatePicker
-                                        date={field.value}
-                                        setDate={field.onChange}
-                                    />
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
-                </div>
-                <div className={'flex justify-between gap-[20px]'}>
-                    <div className={'w-1/2'}>
+                <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Adresse mail</FormLabel>
+                            <FormControl>
+                                <Input
+                                    placeholder="exemple@email.com"
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="dateOfBirth"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-col w-full">
+                            <FormLabel>Date de naissance</FormLabel>
+                            <DatePicker setDate={field.onChange} />
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <div
+                    className={
+                        'flex flex-col laptop:flex-row justify-between gap-[20px]'
+                    }
+                >
+                    <div className={'w-full laptop:w-1/2'}>
                         <FormField
                             control={form.control}
                             name="password"
@@ -150,7 +145,7 @@ export function RegisterForm() {
                             )}
                         />
                     </div>
-                    <div className={'w-1/2'}>
+                    <div className={'w-full laptop:w-1/2'}>
                         <FormField
                             control={form.control}
                             name="confirmPassword"
