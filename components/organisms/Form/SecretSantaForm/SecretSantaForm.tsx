@@ -8,7 +8,6 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/organisms/Form/Form'
-import { useAuthContext } from '@/hooks/useAuth'
 import { useToast } from '@/hooks/useToast'
 import { usePostSecretSanta } from '@/src/api/generated/secret-santa'
 import { useGetUserById } from '@/src/api/generated/user'
@@ -17,14 +16,15 @@ import { translationResetPasswordErrorMessageApi } from '@/utils/translationErro
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ReloadIcon } from '@radix-ui/react-icons'
 import { PlusIcon, TrashIcon } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 import React, { useEffect } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 export function SecretSantaForm() {
-    const { authState } = useAuthContext()
+    const { data: session } = useSession()
 
-    const { data: userBasedData } = useGetUserById(authState?.id ?? '')
+    const { data: userBasedData } = useGetUserById(session?.user?.id ?? '')
 
     const form = useForm<z.infer<typeof SecretSantaRequest>>({
         resolver: zodResolver(SecretSantaRequest),

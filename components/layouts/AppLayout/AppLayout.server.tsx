@@ -1,7 +1,5 @@
 import MobileMenuBar from '@/components/layouts/MobileMenuBar/MobileMenuBar'
 import SideBar from '@/components/layouts/SideBar/SideBar'
-import { withAuthRoute } from '@/lib/withAuthRoute'
-import { GetServerSideProps } from 'next'
 import React from 'react'
 
 interface AppLayoutProps {
@@ -24,10 +22,3 @@ const AppLayoutServer: React.FC<AppLayoutProps> = ({ children }) => {
 }
 
 export default AppLayoutServer
-export const getServerSideProps: GetServerSideProps = withAuthRoute(
-    async (context) => {
-        return {
-            props: {},
-        }
-    }
-)

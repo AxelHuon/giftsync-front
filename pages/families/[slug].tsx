@@ -1,8 +1,6 @@
 import AppLayoutServer from '@/components/layouts/AppLayout/AppLayout.server'
 import ButtonSettingsFamilySlug from '@/components/template/FamilySlug/Partials/ButtonSettingsFamilySlug'
-import { withAuthRoute } from '@/lib/withAuthRoute'
 import { useGetRoomBySlug } from '@/src/api/generated/room'
-import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import React from 'react'
 
@@ -36,11 +34,3 @@ const FamilySinglePage: React.FC = () => {
 }
 
 export default FamilySinglePage
-
-export const getServerSideProps: GetServerSideProps = withAuthRoute(
-    async (context) => {
-        return {
-            props: {},
-        }
-    }
-)

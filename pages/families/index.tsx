@@ -3,23 +3,24 @@ import { Button } from '@/components/atoms/Buttons/ClassicButton/Button'
 import { Input } from '@/components/atoms/Input/input'
 import AppLayoutServer from '@/components/layouts/AppLayout/AppLayout.server'
 import DialogCreateFamily from '@/components/organisms/Dialog/DialogCreateFamily/DialogCreateFamily'
-import { useAuthContext } from '@/hooks/useAuth'
 import { GetRoomsOfUserParams } from '@/src/api/generated/Api.schemas'
 import { useGetRoomsOfUser } from '@/src/api/generated/user'
 import { generateId } from '@/utils/id'
 import { PlusIcon, SearchIcon } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useQueryState } from 'nuqs'
 import React, { useEffect, useState } from 'react'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 const FamilliesIndex: React.FC = () => {
-    const { authState } = useAuthContext()
+    const { data: session } = useSession()
+
     const [queryString, setQueryString] = useQueryState('query')
     const [localQuery, setLocalQuery] = useState(queryString ?? '')
     const [query, setQuery] = useState<GetRoomsOfUserParams>({})
     const { data: families, isLoading } = useGetRoomsOfUser(
-        authState?.id ?? '',
+        session?.user?.id ?? '',
         query
     )
     const [createFamilyDialogOpen, setCreateFamilyDialogOpen] =

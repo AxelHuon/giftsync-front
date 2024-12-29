@@ -8,20 +8,19 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/organisms/Form/Form'
-import { useAuthContext } from '@/hooks/useAuth'
 import { useToast } from '@/hooks/useToast'
 import { usePatchPassword } from '@/src/api/generated/user'
 import { formEditPassword } from '@/utils/schemas/user.schema'
 import { translationPatchPasswordErrorMessageApi } from '@/utils/translationErrorMessageApi/translationErrorMessageApi'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ReloadIcon } from '@radix-ui/react-icons'
+import { useSession } from 'next-auth/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 export function EditPasswordForm() {
-    const { authState } = useAuthContext()
-
+    const { data: session } = useSession()
     const formEditPasswordConst = useForm<z.infer<typeof formEditPassword>>({
         resolver: zodResolver(formEditPassword),
         defaultValues: {
@@ -46,7 +45,7 @@ export function EditPasswordForm() {
 
     const onSubmit = async (values: z.infer<typeof formEditPassword>) => {
         await mutate({
-            userId: authState?.id ?? '',
+            userId: session?.user?.id ?? '',
             data: values,
         })
     }

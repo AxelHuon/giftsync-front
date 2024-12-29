@@ -8,11 +8,12 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/organisms/Form/Form'
-import { useAuthContext } from '@/hooks/useAuth'
+import { useResetPassword } from '@/src/api/generated/auth'
 import { formResetPassword } from '@/utils/schemas/auth.schema'
 import { translationResetPasswordErrorMessageApi } from '@/utils/translationErrorMessageApi/translationErrorMessageApi'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ReloadIcon } from '@radix-ui/react-icons'
+import { router } from 'next/client'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -26,8 +27,17 @@ export function ResetPasswordForm() {
         },
     })
 
-    const { handleResetPassword, resetPasswordError, isPendingResetPassword } =
-        useAuthContext()
+    const {
+        mutate: handleResetPassword,
+        isPending: isPendingResetPassword,
+        error: resetPasswordError,
+    } = useResetPassword({
+        mutation: {
+            onSuccess: () => {
+                router?.push('/auth/signin')
+            },
+        },
+    })
 
     const onSubmit = async (values: z.infer<typeof formResetPassword>) => {
         const urlParams = new URLSearchParams(window.location.search)

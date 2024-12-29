@@ -14,18 +14,18 @@ import {
     DropdownMenuTrigger,
 } from '@/components/atoms/Menu/DropDownMenu/dropdown-menu'
 import DialogEditProfil from '@/components/organisms/Dialog/DialogEditProfil/DialogEditProfil'
-import { useAuthContext } from '@/hooks/useAuth'
 import { useGetUserById } from '@/src/api/generated/user'
 import { returnGoodUrlPdpUser } from '@/utils/userPdpUrl'
 import { EllipsisIcon, ReceiptText, UserRoundIcon } from 'lucide-react'
+import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import React, { useState } from 'react'
 
 const UserButton: React.FC = () => {
-    const { authState, handleLogout } = useAuthContext()
+    const { data: session } = useSession()
 
-    const { data: userData } = useGetUserById(authState?.id ?? '', {
-        query: { enabled: !!authState },
+    const { data: userData } = useGetUserById(session?.user?.id ?? '', {
+        query: { enabled: !!session },
     })
 
     const [editProfileDialogOpen, setEditProfileDialogOpen] =
@@ -107,7 +107,7 @@ const UserButton: React.FC = () => {
                         className={
                             'bg-destructive-200  hover:!bg-destructive-100 active:!bg-destructive-50'
                         }
-                        onClick={() => handleLogout()}
+                        onClick={() => signOut({ callbackUrl: '/auth/signin' })}
                     >
                         Déconnexion
                     </DropdownMenuItem>

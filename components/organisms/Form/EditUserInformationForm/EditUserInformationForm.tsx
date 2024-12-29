@@ -14,7 +14,6 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/organisms/Form/Form'
-import { useAuthContext } from '@/hooks/useAuth'
 import { useToast } from '@/hooks/useToast'
 import { PatchUserApiBodies } from '@/src/api/generated/Api.schemas'
 import { useGetUserById, usePatchUser } from '@/src/api/generated/user'
@@ -23,30 +22,25 @@ import { translationPatchUserInformationsErrorMessageApi } from '@/utils/transla
 import { returnGoodUrlPdpUser } from '@/utils/userPdpUrl'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ReloadIcon } from '@radix-ui/react-icons'
+import { useSession } from 'next-auth/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 export function EditUserInformationForm() {
-    const { authState } = useAuthContext()
-    const {
-        data: userData,
-        refetch,
-        isLoading,
-    } = useGetUserById(authState?.id ?? '')
+    const { data: session } = useSession()
+    const { data: userData, refetch } = useGetUserById(session?.user?.id ?? '')
 
     const userPdpUrl = returnGoodUrlPdpUser(userData?.profilePicture ?? '')
 
     const form = useForm<z.infer<typeof formEditUser>>({
         resolver: zodResolver(formEditUser),
         defaultValues: {
-            firstName: userData?.firstName ?? authState?.firstName ?? '',
-            lastName: userData?.lastName ?? authState?.lastName ?? '',
+            firstName: userData?.firstName ?? '',
+            lastName: userData?.lastName ?? '',
             dateOfBirth: userData?.dateOfBirth
                 ? new Date(userData?.dateOfBirth)
-                : authState?.dateOfBirth
-                  ? new Date(authState?.dateOfBirth)
-                  : new Date(),
+                : new Date(),
         },
     })
 
@@ -74,7 +68,7 @@ export function EditUserInformationForm() {
             data.profilePicture = values.profilePicture[0]
         }
         await mutate({
-            userId: authState?.id ?? '',
+            userId: session?.user?.id ?? '',
             data: data,
         })
     }

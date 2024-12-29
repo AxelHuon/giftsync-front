@@ -1,22 +1,15 @@
 import AppLayoutServer from '@/components/layouts/AppLayout/AppLayout.server'
-import { withAuthRoute } from '@/lib/withAuthRoute'
-import { GetServerSideProps } from 'next'
+import { useSession } from 'next-auth/react'
 import React from 'react'
 
 const Dashboard = () => {
+    const { data: session } = useSession()
+
     return (
         <AppLayoutServer>
-            <p>dsqdsq</p>
+            <p>dsqdqs</p>
         </AppLayoutServer>
     )
 }
 
 export default Dashboard
-
-export const getServerSideProps: GetServerSideProps = withAuthRoute(
-    async (context) => {
-        return {
-            props: {},
-        }
-    }
-)

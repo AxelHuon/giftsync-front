@@ -38,7 +38,6 @@ export function DatePicker({ date, setDate }: DatePickerProps) {
         setCalendarDate(newDate)
     }
 
-    // Synchronize the selected date with calendarDate
     React.useEffect(() => {
         if (date) {
             setCalendarDate(date)

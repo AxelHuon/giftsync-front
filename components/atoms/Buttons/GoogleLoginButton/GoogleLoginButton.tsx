@@ -1,15 +1,32 @@
 import { Button } from '@/components/atoms/Buttons/ClassicButton/Button'
 import GoogleIcon from '@/components/atoms/Icons/GoogleIcon'
-import { useAuthContext } from '@/hooks/useAuth'
 import { useGoogleLogin } from '@react-oauth/google'
+import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/router'
 import React from 'react'
 
 const GoogleLoginButton: React.FC = () => {
-    const { handleLoginGoogle } = useAuthContext()
+    const router = useRouter()
 
     const login = useGoogleLogin({
-        onSuccess: (codeResponse) =>
-            handleLoginGoogle({ data: { idToken: codeResponse.access_token } }),
+        onSuccess: async (codeResponse) => {
+            const result = await signIn('google-credentials', {
+                idToken: codeResponse.access_token,
+                redirect: false,
+            })
+
+            if (result?.ok) {
+                const urlParams = new URLSearchParams(window.location.search)
+                const callBackUrl = urlParams.get('callbackUrl')
+                if (callBackUrl) {
+                    router.push(callBackUrl)
+                } else {
+                    router.push('/dashboard')
+                }
+            } else {
+                console.error('Google sign-in error:', result)
+            }
+        },
         flow: 'implicit',
     })
 

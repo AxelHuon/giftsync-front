@@ -16,19 +16,20 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/organisms/Form/Form'
-import { useAuthContext } from '@/hooks/useAuth'
+import { useRegisterUser } from '@/src/api/generated/auth'
 import { formRegisterSchema } from '@/utils/schemas/auth.schema'
 import { translationSignupErrorMessageApi } from '@/utils/translationErrorMessageApi/translationErrorMessageApi'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ReloadIcon } from '@radix-ui/react-icons'
+import { signIn } from 'next-auth/react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 export function RegisterForm() {
-    const { handleRegister, isRegistering, isSigningIn, registerError } =
-        useAuthContext()
+    const router = useRouter()
     const form = useForm<z.infer<typeof formRegisterSchema>>({
         resolver: zodResolver(formRegisterSchema),
         defaultValues: {
@@ -37,6 +38,33 @@ export function RegisterForm() {
             email: '',
             password: '',
             confirmPassword: '',
+        },
+    })
+
+    const {
+        mutate: handleRegister,
+        isPending: isRegistering,
+        error: registerError,
+    } = useRegisterUser({
+        mutation: {
+            onSuccess: async (data, variables, context) => {
+                const request = await signIn('credentials', {
+                    redirect: false,
+                    email: variables.data.email,
+                    password: variables.data.password,
+                })
+                if (request?.ok) {
+                    const urlParams = new URLSearchParams(
+                        window.location.search
+                    )
+                    const callBackUrl = urlParams.get('callbackUrl')
+                    if (callBackUrl) {
+                        router.push(callBackUrl)
+                    } else {
+                        router.push('/dashboard')
+                    }
+                }
+            },
         },
     })
 
@@ -116,7 +144,10 @@ export function RegisterForm() {
                     render={({ field }) => (
                         <FormItem className="flex flex-col w-full">
                             <FormLabel>Date de naissance</FormLabel>
-                            <DatePicker setDate={field.onChange} />
+                            <DatePicker
+                                date={field.value}
+                                setDate={field.onChange}
+                            />
                             <FormMessage />
                         </FormItem>
                     )}
@@ -177,13 +208,12 @@ export function RegisterForm() {
                 )}
                 <Button
                     className={'w-full'}
-                    disabled={isRegistering || isSigningIn}
+                    disabled={isRegistering}
                     type="submit"
                 >
-                    {isRegistering ||
-                        (isSigningIn && (
-                            <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                        ))}
+                    {isRegistering && (
+                        <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                    )}
                     S'inscrire
                 </Button>
                 <p className={'text-sm font-variable font-500 text-center'}>

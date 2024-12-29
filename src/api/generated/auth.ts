@@ -4,12 +4,14 @@
  * gift-sync-back-end
  * OpenAPI spec version: 1.0.0
  */
-import { useMutation } from '@tanstack/react-query'
 import type {
     MutationFunction,
     UseMutationOptions,
     UseMutationResult,
 } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
+import type { BodyType, ErrorType } from '../customInstance'
+import { customInstance } from '../customInstance'
 import type {
     ErrorResponseApiDTO,
     ForgotPasswordRequestApiDTO,
@@ -24,8 +26,6 @@ import type {
     SignInUserResponseApiDTO,
     SignInWithGoogleRequestApiDTO,
 } from './Api.schemas'
-import { customInstance } from '../customInstance'
-import type { ErrorType, BodyType } from '../customInstance'
 
 type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
 
@@ -102,6 +102,7 @@ export const useRegisterUser = <
 
     return useMutation(mutationOptions)
 }
+
 export const signInUser = (
     signInUserRequestApiDTO: BodyType<SignInUserRequestApiDTO>,
     options?: SecondParameter<typeof customInstance>

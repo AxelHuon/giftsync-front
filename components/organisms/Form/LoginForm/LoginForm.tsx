@@ -13,18 +13,23 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/organisms/Form/Form'
-import { useAuthContext } from '@/hooks/useAuth'
 import { formLoginSchema } from '@/utils/schemas/auth.schema'
 import { translationSigninErrorMessageApi } from '@/utils/translationErrorMessageApi/translationErrorMessageApi'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ReloadIcon } from '@radix-ui/react-icons'
+import { signIn } from 'next-auth/react'
 import Link from 'next/link'
-import React from 'react'
+import { useRouter } from 'next/router'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 export function LoginForm() {
-    const { handleLogin, signInError, isSigningIn } = useAuthContext()
+    const [signInError, setSignInError] = useState<string | null>(null)
+
+    const [isSigningIn, setIsSigningIn] = useState<boolean>(false)
+
+    const router = useRouter()
 
     const form = useForm<z.infer<typeof formLoginSchema>>({
         resolver: zodResolver(formLoginSchema),
@@ -35,7 +40,26 @@ export function LoginForm() {
     })
 
     const onSubmit = async (values: z.infer<typeof formLoginSchema>) => {
-        await handleLogin({ data: values })
+        setSignInError(null)
+        setIsSigningIn(true)
+        const result = await signIn('credentials', {
+            redirect: false,
+            email: values.email,
+            password: values.password,
+        })
+        setIsSigningIn(false)
+        if (result?.error) {
+            setSignInError(result?.error)
+        } else {
+            /*Get params callBackUrl*/
+            const urlParams = new URLSearchParams(window.location.search)
+            const callBackUrl = urlParams.get('callbackUrl')
+            if (callBackUrl) {
+                router.push(callBackUrl)
+            } else {
+                router.push('/dashboard')
+            }
+        }
     }
 
     return (
@@ -79,10 +103,7 @@ export function LoginForm() {
                 />
                 {signInError && (
                     <FormMessage>
-                        {translationSigninErrorMessageApi(
-                            signInError?.response?.data?.code ??
-                                signInError?.message
-                        )}
+                        {translationSigninErrorMessageApi(signInError)}
                     </FormMessage>
                 )}
                 <div className={'flex justify-center'}>
