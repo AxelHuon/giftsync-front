@@ -13,12 +13,14 @@ import { formResetPassword } from '@/utils/schemas/auth.schema'
 import { translationResetPasswordErrorMessageApi } from '@/utils/translationErrorMessageApi/translationErrorMessageApi'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ReloadIcon } from '@radix-ui/react-icons'
-import { router } from 'next/client'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 export function ResetPasswordForm() {
+    const router = useRouter()
+
     const form = useForm<z.infer<typeof formResetPassword>>({
         resolver: zodResolver(formResetPassword),
         defaultValues: {
