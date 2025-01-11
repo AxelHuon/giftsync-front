@@ -3,6 +3,7 @@ import { Button } from '@/components/atoms/Buttons/ClassicButton/Button'
 import { Input } from '@/components/atoms/Input/input'
 import AppLayoutServer from '@/components/layouts/AppLayout/AppLayout.server'
 import DialogCreateFamily from '@/components/organisms/Dialog/DialogCreateFamily/DialogCreateFamily'
+import useDebounceCallback from '@/hooks/use-custom-debounce-callback'
 import { GetRoomsOfUserParams } from '@/src/api/generated/Api.schemas'
 import { useGetRoomsOfUser } from '@/src/api/generated/user'
 import { generateId } from '@/utils/id'
@@ -16,33 +17,50 @@ import 'react-loading-skeleton/dist/skeleton.css'
 const FamilliesIndex: React.FC = () => {
     const { data: session } = useSession()
 
-    const [queryString, setQueryString] = useQueryState('query')
-    const [localQuery, setLocalQuery] = useState(queryString ?? '')
+    const [queryString, setQueryString] = useQueryState('queryString', {
+        defaultValue: '',
+    })
+
     const [query, setQuery] = useState<GetRoomsOfUserParams>({})
+    const [inputValue, setInputValue] = useState(queryString ?? '')
+
+    useEffect(() => {
+        if (queryString !== inputValue) {
+            setInputValue(queryString ?? '')
+        }
+    }, [queryString])
+
     const { data: families, isLoading } = useGetRoomsOfUser(
         session?.user?.id ?? '',
         query
     )
+
     const [createFamilyDialogOpen, setCreateFamilyDialogOpen] =
         useState<boolean>(false)
 
-    useEffect(() => {
-        const handler = setTimeout(() => {
-            setQueryString(localQuery)
-        }, 500)
-        return () => {
-            clearTimeout(handler)
-        }
-    }, [localQuery, setQueryString])
+    const debouncedSearch = useDebounceCallback(
+        async (value: string | null) => {
+            await setQueryString(value || null)
+            if (value === null) {
+                const { queryString, ...rest } = query
+                setQuery(rest)
+            } else {
+                setQuery((prev) => ({
+                    ...prev,
+                    queryString: value,
+                }))
+            }
+        },
+        500
+    )
 
-    useEffect(() => {
-        if (queryString) {
-            setQuery({ queryString })
-        } else {
-            const { queryString, ...rest } = query
-            setQuery(rest)
-        }
-    }, [queryString])
+    const handleInputChange = async (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const value = e.target.value
+        setInputValue(value)
+        await debouncedSearch(value === '' ? null : value)
+    }
 
     return (
         <AppLayoutServer>
@@ -70,8 +88,9 @@ const FamilliesIndex: React.FC = () => {
                 <div className={'flex items-center gap-4'}>
                     <div className={'w-[500px]'}>
                         <Input
+                            value={inputValue}
                             defaultValue={queryString ?? ''}
-                            onChange={(e) => setLocalQuery(e.target.value)}
+                            onChange={handleInputChange}
                             icon={<SearchIcon width={18} />}
                             placeholder={'Rechercher une famille'}
                         />

@@ -5,6 +5,7 @@ import {
     signInUser,
     signInUserWithGoogle,
 } from '@/src/api/generated/auth'
+import { getGetUserByIdQueryOptions } from '@/src/api/generated/user'
 import type { NextAuthOptions } from 'next-auth'
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
@@ -72,7 +73,6 @@ export const authOptions: NextAuthOptions = {
                 idToken: { label: 'Google ID Token', type: 'text' },
             },
             async authorize(credentials) {
-                console.log(credentials)
                 if (!credentials || !credentials.idToken) {
                     throw new Error('Missing Google idToken')
                 }
@@ -103,6 +103,7 @@ export const authOptions: NextAuthOptions = {
             }
 
             const isExpired = Date.now() > (token.accessTokenExpires as number)
+            console.log(isExpired)
             if (isExpired) {
                 try {
                     const refreshed = await refreshToken({
@@ -117,6 +118,8 @@ export const authOptions: NextAuthOptions = {
                         error: 'RefreshTokenError',
                     }
                 }
+            } else {
+                await getGetUserByIdQueryOptions(token.id as string)
             }
 
             return token
